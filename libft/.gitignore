@@ -1,0 +1,9 @@
+a.out
+*.o
+*.a
+*~
+test/*
+compil.sh
+main.c
+*.swp
+main.c

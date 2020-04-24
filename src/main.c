@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/13 16:10:26 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/22 15:32:29 by niduches         ###   ########.fr       */
+/*   Updated: 2020/04/25 01:18:44 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	draw(GLuint arayObj, GLuint shader)
 int		main(void)
 {
 	t_window	win;
+	t_mega_obj	objs;
 
 	win = init("test", 800, 600);
 	if (!win.open)
@@ -84,8 +85,23 @@ int		main(void)
 	}
 	//TODO texture with parser
 	//TODO material with parser
-	//TODO object
 	t_camera	cam = init_cam();
+
+	//MEGA
+	objs.objs = NULL;
+	objs.materials = NULL;
+	objs.nb_obj = 0;
+	objs.nb_material = 0;
+	if (!load_obj(&objs, "resources/cube.obj"))
+	{
+		//TODO delete MEGA
+		glDeleteProgram(id_shader);
+		delete_mesh(&mesh);
+		quit(win);
+		return (0);
+	}
+	//
+
 	while (win.open)
 	{
 		clear();
@@ -101,6 +117,7 @@ int		main(void)
 		draw(mesh.array_obj, id_shader);
 		update(&win);
 	}
+	//TODO delete MEGA
 	glDeleteProgram(id_shader);
 	delete_mesh(&mesh);
 	quit(win);

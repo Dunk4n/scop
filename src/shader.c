@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 10:40:04 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/22 10:51:40 by niduches         ###   ########.fr       */
+/*   Updated: 2020/04/23 11:02:58 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,7 @@ static GLuint	link_program(GLuint vertex, GLuint fragment)
 	if (!success)
 	{
 		glGetProgramInfoLog(prog, 512, NULL, info);
-		//TODO print error like that
-		printf("%s\n", info);
-		//std::cout << "\033[0;31mERROR\033[0m::SHADER::COULD_NOT_LINK_PROGRAM" << std::endl;
-        //std::cout << info << std::endl;
+		ft_printf("\033[0;31mERROR\033[0m::SHADER::COULD_NOT_LINK_PROGRAM\n%s", info);
 		glUseProgram(0);
 		return (0);
 	}
@@ -113,10 +110,7 @@ static GLuint	load_shader(GLenum type, const char *name)
 	if (!success)
 	{
 		glGetShaderInfoLog(shader, 512, NULL, info);
-		//TODO print error like that
-		printf("--%s\n", info);
-		//std::cout << "\033[0;31mERROR\033[0m::SHADER::COULD_NOT_COMPILE_SHADER" << fileName << std::endl;
-        //std::cout << info << std::endl;
+		ft_printf("\033[0;31mERROR\033[0m::SHADER::COULD_NOT_COMPILE_SHADER\n%s", info);
 		return (0);
 	}
 	return (shader);
