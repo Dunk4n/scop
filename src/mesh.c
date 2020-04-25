@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 23:00:37 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/25 01:20:13 by niduches         ###   ########.fr       */
+/*   Updated: 2020/04/25 14:05:31 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,6 @@ rotation_matrix(mesh->model_matrix, (mesh->rotation.y * M_PI) / 180.0, (t_vec3f)
 rotation_matrix(mesh->model_matrix, (mesh->rotation.z * M_PI) / 180.0, (t_vec3f){0, 0, 1});
 	mesh->model_matrix = translation_matrix(mesh->model_matrix, sub_vec3f(mesh->position, mesh->origin));
 	mesh->model_matrix = scale_matrix(mesh->model_matrix, mesh->scale);
-}
-
-void	delete_mesh(t_mesh *mesh)
-{
-	glDeleteBuffers(1, &mesh->array_buffer);
-	glDeleteBuffers(1, &mesh->array_buffer_index);
-	glDeleteVertexArrays(1, &mesh->array_obj);
 }
 
 t_mesh	get_mesh(const char *name)
@@ -99,4 +92,5 @@ void	init_mesh(t_mesh *mesh)
 	mesh->nb_index = 0;
 	mesh->material = 0;
 	mesh->name[0] = '\0';
+	mesh->load = false;
 }

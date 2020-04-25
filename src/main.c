@@ -6,16 +6,16 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/13 16:10:26 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/25 01:18:44 by niduches         ###   ########.fr       */
+/*   Updated: 2020/04/25 15:18:19 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.h"
 
-void	quit(t_window window)
+void	quit(t_window *window)
 {
-	SDL_GL_DeleteContext(window.contex);
-	SDL_DestroyWindow(window.win);
+	SDL_GL_DeleteContext(window->contex);
+	SDL_DestroyWindow(window->win);
 	SDL_Quit();
 }
 
@@ -66,7 +66,7 @@ void	draw(GLuint arayObj, GLuint shader)
 int		main(void)
 {
 	t_window	win;
-	t_mega_obj	objs;
+ 	t_mega_obj	objs;
 
 	win = init("test", 800, 600);
 	if (!win.open)
@@ -79,8 +79,8 @@ int		main(void)
 "resources/shader/basicShader.vs", "resources/shader/basicShader.fs");
 	if (!id_shader)
 	{
-		delete_mesh(&mesh);
-		quit(win);
+		unload_gl_mesh(&mesh);
+		quit(&win);
 		return (0);
 	}
 	//TODO texture with parser
@@ -94,10 +94,10 @@ int		main(void)
 	objs.nb_material = 0;
 	if (!load_obj(&objs, "resources/cube.obj"))
 	{
-		//TODO delete MEGA
+		delete_mega(&objs);
 		glDeleteProgram(id_shader);
-		delete_mesh(&mesh);
-		quit(win);
+		unload_gl_mesh(&mesh);
+		quit(&win);
 		return (0);
 	}
 	//
@@ -117,9 +117,9 @@ int		main(void)
 		draw(mesh.array_obj, id_shader);
 		update(&win);
 	}
-	//TODO delete MEGA
+	delete_mega(&objs);
 	glDeleteProgram(id_shader);
-	delete_mesh(&mesh);
-	quit(win);
+	unload_gl_mesh(&mesh);
+	quit(&win);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 14:41:51 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/25 01:13:11 by niduches         ###   ########.fr       */
+/*   Updated: 2020/04/25 14:32:57 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct	s_mesh
 	unsigned int	nb_index;
 	unsigned int	material;
 	char			name[64];
+	bool			load;
 }				t_mesh;
 
 typedef struct	s_obj
@@ -166,6 +167,8 @@ int		parse_s(char *line, t_load_vertex *array, t_mega_obj *mega);
 int		format_obj(t_obj *obj, t_load_vertex *array);
 int		parse_mtllib(char *line, t_load_vertex *array, t_mega_obj *mega);
 int		parse_usemtl(char *line, t_load_vertex *array, t_mega_obj *mega);
+void	delete_mega(t_mega_obj *mega);
+void	unload_gl_mesh(t_mesh *mesh);
 
 //MATH
 t_vec3f	sub_vec3f(t_vec3f a, t_vec3f b);

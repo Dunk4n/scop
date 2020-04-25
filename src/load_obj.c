@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 23:16:38 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/25 01:17:53 by niduches         ###   ########.fr       */
+/*   Updated: 2020/04/25 14:28:50 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,20 +39,6 @@ int		add_new_obj(t_mega_obj *mega)
 	++mega->nb_obj;
 	free(tmp);
 	return (1);
-}
-
-void	delete_mega(t_mega_obj *mega)
-{
-	(void)mega;
-	//unsigned int	i;
-
-	//TODO make delete obj and material
-	//i = 0;
-	//while (i < mega->nb_obj)
-	//	delete_obj(&mega->objs[i++]);
-	//i = 0;
-	//while (i < mega->nb_material)
-	//	delete_material(&mega->materials[i++]);
 }
 
 int		init_load(t_mega_obj *mega, const char *name, int *fd, t_load_vertex *array)
@@ -100,6 +86,22 @@ void	remove_comment(char *line)
 		}
 		++line;
 	}
+}
+
+void	delete_array(t_load_vertex *array)
+{
+	free(array->position);
+	free(array->normal);
+	free(array->texture);
+	array->position = NULL;
+	array->normal = NULL;
+	array->texture = NULL;
+	array->nb_position = 0;
+	array->nb_normal = 0;
+	array->nb_texture = 0;
+	array->capacity_position = 0;
+	array->capacity_normal = 0;
+	array->capacity_texture = 0;
 }
 
 //TODO make it const
@@ -155,7 +157,8 @@ int		load_obj(t_mega_obj *mega, const char *name)
 		}
 		if (type < 0 || !g_parse_line[type](line, &array, mega))
 		{
-			//TODO delete all
+			delete_array(&array);
+			delete_mega(mega);
 			free(line);
 			return (0);
 		}
@@ -163,16 +166,14 @@ int		load_obj(t_mega_obj *mega, const char *name)
 		line = NULL;
 	}
 	free(line);
+	close(fd);
 	if (ret == -1)
 	{
+		delete_array(&array);
 		delete_mega(mega);
-		close(fd);
-		//TODO delete all
 		return (0);
 	}
-
 	format_obj(get_actual_obj(mega), &array);
-	//TODO init openGL array ...
-	close(fd);
+	delete_array(&array);
 	return (1);
 }

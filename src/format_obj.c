@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 23:40:39 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/25 01:04:56 by niduches         ###   ########.fr       */
+/*   Updated: 2020/04/25 14:45:52 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ static int		format_mesh(t_mesh *mesh, t_load_vertex *array)
 	mesh->nb_index = mesh->nb_index / 3;
 	if (!(mesh->vertex = malloc(sizeof(t_vertex) * mesh->nb_index)))
 		return (0);
+	if (!(mesh->index = malloc(sizeof(uint) * mesh->nb_index)))
+		return (0);
 	mesh->nb_vertex = 0;
 	i = 0;
 	while (i < mesh->nb_index)
@@ -105,7 +107,7 @@ int				format_obj(t_obj *obj, t_load_vertex *array)
 	i = 0;
 	while (i < obj->nb_mesh)
 	{
-		if (format_mesh(&obj->meshs[i], array))
+		if (!format_mesh(&obj->meshs[i], array))
 		{
 			free(array->position);
 			array->position = NULL;
