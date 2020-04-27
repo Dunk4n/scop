@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 20:37:48 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/22 19:28:08 by niduches         ###   ########.fr       */
+/*   Updated: 2020/04/26 15:30:05 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ t_mat4	translation_matrix(t_mat4 mat, t_vec3f vec)
 	t_mat4	new;
 
 	new = identity_matrix();
-	new.val[3][0] = vec.x;
-	new.val[3][1] = vec.y;
-	new.val[3][2] = vec.z;
+	new.val[0][3] = vec.x;
+	new.val[1][3] = vec.y;
+	new.val[2][3] = vec.z;
 	return (mult_matrix(mat, new));
 }
 
@@ -78,8 +78,8 @@ t_mat4	rotation_matrix(t_mat4 mat, float angl, t_vec3f vec)
 	new = identity_matrix();
 	tmp = angl * vec.z;
 	new.val[0][0] = cos(tmp);
-	new.val[0][1] = -sin(tmp);
-	new.val[1][0] = sin(tmp);
+	new.val[0][1] = sin(tmp);
+	new.val[1][0] = -sin(tmp);
 	new.val[1][1] = cos(tmp);
 	return (mult_matrix(mat, new));
 }

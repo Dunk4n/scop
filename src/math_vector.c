@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/22 15:17:56 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/22 19:28:01 by niduches         ###   ########.fr       */
+/*   Updated: 2020/04/26 18:49:39 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ t_vec3f	mult_matrix_vector(t_vec3f vec, t_mat4 mat)
 {
 	t_vec3f	new;
 
-	new.x = mat.val[0][0] * vec.x + mat.val[0][1] * vec.y * mat.val[0][2] * vec.z;
-	new.y = mat.val[1][0] * vec.y + mat.val[1][1] * vec.y * mat.val[1][2] * vec.z;
-	new.z = mat.val[2][0] * vec.z + mat.val[2][1] * vec.y * mat.val[2][2] * vec.z;
+	new.x = mat.val[0][0] * vec.x + mat.val[0][1] * vec.y + mat.val[0][2] * vec.z + mat.val[0][3];
+	new.y = mat.val[1][0] * vec.x + mat.val[1][1] * vec.y + mat.val[1][2] * vec.z + mat.val[1][3];
+	new.z = mat.val[2][0] * vec.x + mat.val[2][1] * vec.y + mat.val[2][2] * vec.z + mat.val[2][3];
 	return (new);
 }
 
@@ -60,4 +60,9 @@ t_vec3f	sub_vector(t_vec3f a, t_vec3f b)
 float	dot_vector(t_vec3f a, t_vec3f b)
 {
 	return (a.x * b.x + a.y * b.y + a.z * b.z);
+}
+
+t_vec3f	mult_vector(t_vec3f vec, float nb)
+{
+	return ((t_vec3f){vec.x * nb, vec.y * nb, vec.z * nb});
 }

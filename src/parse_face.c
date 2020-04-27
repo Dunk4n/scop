@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 15:37:30 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/24 17:34:33 by niduches         ###   ########.fr       */
+/*   Updated: 2020/04/25 19:00:22 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ t_load_vertex *array, t_mesh *mesh)
 		if (triangle[i].z != (uint)-1 && triangle[i].z > array->nb_normal)
 			return (0);
 		mesh->index[mesh->nb_index * 9 + 3 * i] = triangle[i].x;
-		mesh->index[mesh->nb_index * 9 + 1 + 3 * i] = triangle[i].y;
-		mesh->index[mesh->nb_index * 9 + 2 + 3 * i] = triangle[i].z;
+		mesh->index[mesh->nb_index * 9 + 1 + 3 * i] = triangle[i].z;
+		mesh->index[mesh->nb_index * 9 + 2 + 3 * i] = triangle[i].y;
 		++i;
 	}
 	++mesh->nb_index;
@@ -109,8 +109,7 @@ int		parse_face(char *line, t_load_vertex *array, t_mega_obj *mega)
 		if (!i)
 			return (0);
 		line += pass_spaces(line + i) + i;
-		if (!add_index_triangle(triangle, array,
-&mega->objs[mega->nb_obj - 1].meshs[mega->objs[mega->nb_obj - 1].nb_mesh - 1]))
+		if (!add_index_triangle(triangle, array, get_actual_mesh(mega)))
 			return (0);
 		triangle[1] = triangle[2];
 	}

@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 14:41:51 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/25 14:32:57 by niduches         ###   ########.fr       */
+/*   Updated: 2020/04/27 15:21:18 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,31 @@ typedef struct	s_camera
 	GLfloat	roll;
 }				t_camera;
 
+typedef struct	s_texture
+{
+	GLuint			id;
+	uint			type;
+	uint			width;
+	uint			height;
+	unsigned char	*data;
+	bool			load;
+}				t_texture;
+
+enum	e_key
+{
+	KEY_W,
+	KEY_S,
+	KEY_D,
+	KEY_A,
+	KEY_E,
+	KEY_Q,
+	KEY_UP,
+	KEY_DOWN,
+	KEY_RIGHT,
+	KEY_LEFT,
+	NB_KEY
+};
+
 typedef struct	s_window
 {
 	SDL_Window		*win;
@@ -136,11 +161,13 @@ typedef struct	s_window
 	int				width;
 	int				height;
 	bool			open;
+	bool			key[NB_KEY];
 }				t_window;
 
 t_window	init(char *name, int width, int height);
 GLuint	get_shader(const char *vertex_name, const char *fragment_name);
-void	update_model_matrix(t_mesh *mesh);
+void	update_mesh_matrix(t_mesh *mesh, t_mat4 obj_model);
+void	update_obj_matrix(t_obj *obj);
 t_mesh	get_mesh(const char *name);
 void	delete_mesh(t_mesh *mesh);
 void	update_mesh_uniform(t_mesh *mesh, GLuint shader);
@@ -169,6 +196,19 @@ int		parse_mtllib(char *line, t_load_vertex *array, t_mega_obj *mega);
 int		parse_usemtl(char *line, t_load_vertex *array, t_mega_obj *mega);
 void	delete_mega(t_mega_obj *mega);
 void	unload_gl_mesh(t_mesh *mesh);
+void	load_gl_mega(t_mega_obj *mega);
+void	load_gl_obj(t_obj *obj);
+void	load_gl_mesh(t_mesh *mesh);
+void	draw_mega(t_mega_obj *mega, GLuint shader, t_texture *tex);
+void	draw_obj(t_obj *obj, GLuint shader);
+void	draw_mesh(t_mesh *mesh, GLuint shader);
+void	update(t_window *win, t_camera *cam, float *vitesse_transition);
+void	update_camera_vector(t_camera *cam);
+t_texture	get_bmp(char *name, GLenum type);
+void	load_texture(t_texture *tex);
+void	unload_texture(t_texture *tex);
+void	bind_texture(t_texture *tex, const GLint pos);
+void	unbind_texture(t_texture *tex);
 
 //MATH
 t_vec3f	sub_vec3f(t_vec3f a, t_vec3f b);
@@ -184,9 +224,6 @@ t_vec3f	cross_vector(t_vec3f a, t_vec3f b);
 t_vec3f	add_vector(t_vec3f a, t_vec3f b);
 t_vec3f	sub_vector(t_vec3f a, t_vec3f b);
 float	dot_vector(t_vec3f a, t_vec3f b);
-
-t_vertex	array[32];
-
-unsigned int	idx[6];
+t_vec3f	mult_vector(t_vec3f vec, float nb);
 
 #endif

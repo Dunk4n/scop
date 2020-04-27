@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 23:40:39 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/25 14:45:52 by niduches         ###   ########.fr       */
+/*   Updated: 2020/04/25 22:36:48 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static int		format_mesh(t_mesh *mesh, t_load_vertex *array)
 	uint		i;
 
 	old_idx = mesh->index;
-	mesh->nb_index = mesh->nb_index / 3;
+	mesh->nb_index = mesh->nb_index * 3;
 	if (!(mesh->vertex = malloc(sizeof(t_vertex) * mesh->nb_index)))
 		return (0);
 	if (!(mesh->index = malloc(sizeof(uint) * mesh->nb_index)))

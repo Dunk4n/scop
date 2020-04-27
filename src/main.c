@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/13 16:10:26 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/25 15:18:19 by niduches         ###   ########.fr       */
+/*   Updated: 2020/04/27 15:41:47 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,102 +24,88 @@ void	clear(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void	update(t_window *win)
+void	main_update_uniform(t_window win, t_camera cam, GLuint shader,
+float transition, t_texture *tex)
 {
-	SDL_Event	event;
-
-	SDL_GL_SwapWindow(win->win);
-	while (SDL_PollEvent(&event))
-	{
-		if (event.type == SDL_QUIT)
-			win->open = false;
-		else if (event.type == SDL_KEYUP)
-		{
-			if (event.key.keysym.sym == SDLK_ESCAPE)
-				win->open = false;
-		}
-	}
-}
-
-t_vertex	array[] = {
-	{{-0.5, -0.5, 0},	{1.0, 0.0, 0.0},	{0.0, 1.0}},
-	{{0.5, -0.5, 0},	{0.0, 1.0, 0.0},	{1.0, 1.0}},
-	{{-0.5, 0.5, 0},	{0.0, 0.0, 1.0},	{0.0, 0.0}},
-	{{0.5, 0.5, 0},	{1.0, 0.0, 0.0},	{1.0, 0.0}}
-};
-
-unsigned int	idx[] = {
-	0, 1, 2,
-	1, 3, 2};
-
-void	draw(GLuint arayObj, GLuint shader)
-{
+	t_mat4	proj = perspective_matrix(90, (float)win.width / (float)win.height, 0.1, 1000);
+	t_mat4	view = get_view_matrix(&cam);
 	glUseProgram(shader);
-	glBindVertexArray(arayObj);
-
-	glDrawElements(GL_TRIANGLES, sizeof(idx) / sizeof(idx[0]), GL_UNSIGNED_INT, 0);
-
-	glBindVertexArray(0);
+	glUniformMatrix4fv(glGetUniformLocation(shader, "ProjectionMatrix"), 1,
+GL_FALSE, (const GLfloat*)proj.val);
+	glUniformMatrix4fv(glGetUniformLocation(shader, "ViewMatrix"), 1,
+GL_FALSE, (const GLfloat*)view.val);
+	glUniform1f(glGetUniformLocation(shader, "transition"),
+(GLfloat)transition);
+	glUniform1i(glGetUniformLocation(shader, "tex"), tex->type);
 	glUseProgram(0);
 }
 
 int		main(void)
 {
 	t_window	win;
- 	t_mega_obj	objs;
+ 	t_mega_obj	mega;
 
-	win = init("test", 800, 600);
+	win = init("test", 1920, 1080);
 	if (!win.open)
 		return (1);
-
-	t_mesh	mesh = get_mesh("resources/cube.obj");
-	if (!mesh.array_obj)
-		return (0);
-	GLuint	id_shader = get_shader(
+	GLuint	shader = get_shader(
 "resources/shader/basicShader.vs", "resources/shader/basicShader.fs");
-	if (!id_shader)
+	if (!shader)
 	{
-		unload_gl_mesh(&mesh);
 		quit(&win);
 		return (0);
 	}
-	//TODO texture with parser
 	//TODO material with parser
 	t_camera	cam = init_cam();
 
 	//MEGA
-	objs.objs = NULL;
-	objs.materials = NULL;
-	objs.nb_obj = 0;
-	objs.nb_material = 0;
-	if (!load_obj(&objs, "resources/cube.obj"))
+	mega.objs = NULL;
+	mega.materials = NULL;
+	mega.nb_obj = 0;
+	mega.nb_material = 0;
+	if (!load_obj(&mega, "resources/cube.obj"))
 	{
-		delete_mega(&objs);
-		glDeleteProgram(id_shader);
-		unload_gl_mesh(&mesh);
+		printf("a\n");
+		delete_mega(&mega);
+		glDeleteProgram(shader);
 		quit(&win);
 		return (0);
 	}
 	//
+	load_gl_mega(&mega);
+	t_texture tex = get_bmp("gri.bmp", GL_TEXTURE_2D);
+	if (!tex.data)
+	{
+		delete_mega(&mega);
+		glDeleteProgram(shader);
+		quit(&win);
+		return (0);
+	}
+	load_texture(&tex);
 
+//	mega.objs[0].meshs[1].scale = (t_vec3f){0.1, 0.1, 0.1};
+//	mega.objs[0].meshs[1].position.x = 1;
+	float	transition = 0;
+	float	vitesse_transition = -8;
 	while (win.open)
 	{
 		clear();
-		update_mesh_uniform(&mesh, id_shader);
+		main_update_uniform(win, cam, shader, transition, &tex);
 
-		t_mat4	proj = perspective_matrix(90, (float)win.width / (float)win.height, 0.1, 1000);
-		t_mat4	view = get_view_matrix(&cam);
-		glUseProgram(id_shader);
-		glUniformMatrix4fv(glGetUniformLocation(id_shader, "ProjectionMatrix"), 1, GL_FALSE, (const GLfloat*)proj.val);
-		glUniformMatrix4fv(glGetUniformLocation(id_shader, "ViewMatrix"), 1, GL_FALSE, (const GLfloat*)view.val);
-		glUseProgram(0);
+		//TODO make mega update matrix
+		update_obj_matrix(&mega.objs[0]);
+		update_mesh_matrix(&mega.objs[0].meshs[0], mega.objs[0].model_matrix);
+//		update_mesh_matrix(&mega.objs[0].meshs[1], mega.objs[0].model_matrix);
 
-		draw(mesh.array_obj, id_shader);
-		update(&win);
+		draw_mega(&mega, shader, &tex);
+		update(&win, &cam, &vitesse_transition);
+
+		if ((transition > 0 && vitesse_transition < 0) ||
+(transition < 1920 && vitesse_transition > 0))
+			transition += vitesse_transition;
 	}
-	delete_mega(&objs);
-	glDeleteProgram(id_shader);
-	unload_gl_mesh(&mesh);
+	delete_mega(&mega);
+	glDeleteProgram(shader);
 	quit(&win);
 	return (0);
 }

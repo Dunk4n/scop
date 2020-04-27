@@ -6,13 +6,13 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/22 14:05:26 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/22 20:02:50 by niduches         ###   ########.fr       */
+/*   Updated: 2020/04/27 14:50:16 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.h"
 
-static void	update_camera_vector(t_camera *cam)
+void	update_camera_vector(t_camera *cam)
 {
 	cam->front.x = cos(cam->yaw * M_PI / 180.0) * cos(cam->pitch * M_PI / 180.0);
 	cam->front.y = sin(cam->pitch * M_PI / 180.0);
@@ -56,16 +56,16 @@ t_camera		init_cam()
 	t_camera	cam;
 
 	cam.view_matrix = identity_matrix();
-	cam.movement_speed = 3.0;
+	cam.movement_speed = 0.1;
 	cam.sensitivity = 5.0;
 	cam.world_up = (t_vec3f){0, 1, 0};
-	cam.position = (t_vec3f){0, 0, 1};
+	cam.position = (t_vec3f){0, 0, -2};
 	cam.right = (t_vec3f){0, 0, 0};
 	cam.up = cam.world_up;
 
 	cam.pitch = 0;
-	cam.yaw = -90;
-	cam.roll = 20;
+	cam.yaw = 90;
+	cam.roll = 0;
 	update_camera_vector(&cam);
 	return (cam);
 }

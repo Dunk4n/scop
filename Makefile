@@ -6,7 +6,7 @@
 #    By: niduches <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/19 16:00:17 by niduches          #+#    #+#              #
-#    Updated: 2020/04/25 15:06:36 by niduches         ###   ########.fr        #
+#    Updated: 2020/04/26 22:17:26 by niduches         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,10 +30,15 @@ SRC_PATH	=	main.c				\
 				parse_vertex.c		\
 				parse_face.c		\
 				parse_group.c		\
+				parse_obj.c			\
 				parse_s.c			\
 				parse_mtl.c			\
 				format_obj.c		\
 				delete.c			\
+				load_gl.c			\
+				draw.c				\
+				update.c			\
+				get_bmp.c			\
 
 SRC			=	$(addprefix $(D_SRC),$(SRC_PATH))
 
@@ -41,7 +46,7 @@ NAME		=	a.out
 
 OBJ			=	$(SRC:%.c=$(BUILD_DIR)/%.o)
 
-CFLAGS		=	-I$(D_INC) -Wall -Wextra -g #-Werror
+CFLAGS		=	-I$(D_INC) -Wall -Wextra #-Werror
 
 LDFLAGS		=	-L./libft/ -lft -lm -lGL -lX11 -lSDL2 -lGLEW
 
