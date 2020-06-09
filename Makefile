@@ -6,7 +6,7 @@
 #    By: niduches <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/19 16:00:17 by niduches          #+#    #+#              #
-#    Updated: 2020/04/26 22:17:26 by niduches         ###   ########.fr        #
+#    Updated: 2020/06/09 17:47:41 by niduches         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,8 @@ SRC_PATH	=	main.c				\
 				draw.c				\
 				update.c			\
 				get_bmp.c			\
+				preprocess.c		\
+				update_matrix.c		\
 
 SRC			=	$(addprefix $(D_SRC),$(SRC_PATH))
 

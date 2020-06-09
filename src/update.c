@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/26 12:04:06 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/27 18:52:10 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/08 19:56:36 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,9 @@ void	update(t_window *win, t_camera *cam, float *vitesse_transition)
 		cam->position = add_vector(cam->position, mult_vector(cam->up, cam->movement_speed));
 	if (win->key[KEY_Q])
 		cam->position = sub_vector(cam->position, mult_vector(cam->up, cam->movement_speed));
-	if (win->key[KEY_UP])
+	if (win->key[KEY_UP] && cam->pitch + 1 <= 90)
 		cam->pitch += 1;
-	if (win->key[KEY_DOWN])
+	if (win->key[KEY_DOWN] && cam->pitch - 1 >= -90)
 		cam->pitch -= 1;
 	if (win->key[KEY_RIGHT])
 		cam->yaw -= 1;

@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/13 16:10:26 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/27 15:41:47 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/09 17:55:51 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,88 +24,46 @@ void	clear(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void	main_update_uniform(t_window win, t_camera cam, GLuint shader,
-float transition, t_texture *tex)
+void	update_uniform(t_scop *scop)
 {
-	t_mat4	proj = perspective_matrix(90, (float)win.width / (float)win.height, 0.1, 1000);
-	t_mat4	view = get_view_matrix(&cam);
-	glUseProgram(shader);
-	glUniformMatrix4fv(glGetUniformLocation(shader, "ProjectionMatrix"), 1,
+	t_mat4	proj = perspective_matrix(90,
+(float)scop->win.width / (float)scop->win.height, 0.1, 1000);
+	t_mat4	view = get_view_matrix(&scop->cam);
+	glUseProgram(scop->shader);
+	glUniformMatrix4fv(glGetUniformLocation(scop->shader, "ProjectionMatrix"), 1,
 GL_FALSE, (const GLfloat*)proj.val);
-	glUniformMatrix4fv(glGetUniformLocation(shader, "ViewMatrix"), 1,
+	glUniformMatrix4fv(glGetUniformLocation(scop->shader, "ViewMatrix"), 1,
 GL_FALSE, (const GLfloat*)view.val);
-	glUniform1f(glGetUniformLocation(shader, "transition"),
-(GLfloat)transition);
-	glUniform1i(glGetUniformLocation(shader, "tex"), tex->type);
+	glUniform1f(glGetUniformLocation(scop->shader, "transition"),
+(GLfloat)scop->transition);
+	glUniform1i(glGetUniformLocation(scop->shader, "tex"), scop->tex.type);
 	glUseProgram(0);
 }
 
-int		main(void)
+int		main(int ac, char **av)
 {
-	t_window	win;
- 	t_mega_obj	mega;
+	t_scop		scop;
 
-	win = init("test", 1920, 1080);
-	if (!win.open)
+	if (ac != 2)
+		return (0);
+	if (!init(&scop, av[1]))
 		return (1);
-	GLuint	shader = get_shader(
-"resources/shader/basicShader.vs", "resources/shader/basicShader.fs");
-	if (!shader)
-	{
-		quit(&win);
-		return (0);
-	}
-	//TODO material with parser
-	t_camera	cam = init_cam();
-
-	//MEGA
-	mega.objs = NULL;
-	mega.materials = NULL;
-	mega.nb_obj = 0;
-	mega.nb_material = 0;
-	if (!load_obj(&mega, "resources/cube.obj"))
-	{
-		printf("a\n");
-		delete_mega(&mega);
-		glDeleteProgram(shader);
-		quit(&win);
-		return (0);
-	}
-	//
-	load_gl_mega(&mega);
-	t_texture tex = get_bmp("gri.bmp", GL_TEXTURE_2D);
-	if (!tex.data)
-	{
-		delete_mega(&mega);
-		glDeleteProgram(shader);
-		quit(&win);
-		return (0);
-	}
-	load_texture(&tex);
-
-//	mega.objs[0].meshs[1].scale = (t_vec3f){0.1, 0.1, 0.1};
-//	mega.objs[0].meshs[1].position.x = 1;
-	float	transition = 0;
-	float	vitesse_transition = -8;
-	while (win.open)
+	while (scop.win.open)
 	{
 		clear();
-		main_update_uniform(win, cam, shader, transition, &tex);
+		update_uniform(&scop);
+		update_matrix(&scop.mega);
+		draw_mega(&scop.mega, scop.shader, &scop.tex);
 
-		//TODO make mega update matrix
-		update_obj_matrix(&mega.objs[0]);
-		update_mesh_matrix(&mega.objs[0].meshs[0], mega.objs[0].model_matrix);
-//		update_mesh_matrix(&mega.objs[0].meshs[1], mega.objs[0].model_matrix);
+		update(&scop.win, &scop.cam, &scop.transition_speed);
 
-		draw_mega(&mega, shader, &tex);
-		update(&win, &cam, &vitesse_transition);
-
-		if ((transition > 0 && vitesse_transition < 0) ||
-(transition < 1920 && vitesse_transition > 0))
-			transition += vitesse_transition;
+		if ((scop.transition > 0 && scop.transition_speed < 0) ||
+(scop.transition < 1 && scop.transition_speed > 0))
+			scop.transition += scop.transition_speed;
 	}
-	delete_mega(&mega);
-	glDeleteProgram(shader);
-	quit(&win);
+	free(scop.tex.data);
+	delete_mega(&scop.mega);
+	glDeleteProgram(scop.shader);
+	quit(&scop.win);
 	return (0);
 }

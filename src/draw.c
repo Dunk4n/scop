@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/25 17:28:59 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/27 15:22:10 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/09 17:52:26 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ void	draw_mesh(t_mesh *mesh, GLuint shader)
 	if (!mesh->load)
 		return ;
 	glUseProgram(shader);
-
-
 	glBindVertexArray(mesh->array_obj);
 	glUniformMatrix4fv(glGetUniformLocation(shader, "ModelMatrix"),
 1, GL_TRUE, (const GLfloat*)mesh->model_matrix.val);

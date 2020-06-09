@@ -11,8 +11,5 @@ uniform sampler2D tex;
 
 void main()
 {
-//	if (gl_FragCoord.x <= transition)
-		fs_color = texture(tex, vs_texcoord);
-//	else
-//		fs_color = vec4(vs_normal, 1.f);
+	fs_color = texture(tex, vs_texcoord) * transition + vec4(vs_normal, 1.f) * (1.f - transition);
 }

@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 14:41:51 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/27 15:21:18 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/09 18:15:29 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,14 @@ typedef struct	s_obj
 
 typedef struct	s_material
 {
+	char	name[64];
+	t_vec3f	ambient;
+	t_vec3f	diffuse;
+	t_vec3f	spec_color;
+	float	spec_weight;
+	float	transparency;
+	float	dencity;
+	char	illumination;
 }				t_material;
 
 typedef struct	s_mega_obj
@@ -164,7 +172,18 @@ typedef struct	s_window
 	bool			key[NB_KEY];
 }				t_window;
 
-t_window	init(char *name, int width, int height);
+typedef struct	s_scop
+{
+	t_window	win;
+	t_mega_obj	mega;
+	GLuint		shader;
+	t_camera	cam;
+	t_texture	tex;
+	float		transition;
+	float		transition_speed;
+}				t_scop;
+
+int		init(t_scop *scop, const char *filename);
 GLuint	get_shader(const char *vertex_name, const char *fragment_name);
 void	update_mesh_matrix(t_mesh *mesh, t_mat4 obj_model);
 void	update_obj_matrix(t_obj *obj);
@@ -178,6 +197,8 @@ void	init_obj(t_obj *obj);
 void	init_mesh(t_mesh *mesh);
 unsigned int	pass_spaces(char *line);
 unsigned int	pass_word(char *line);
+void	quit(t_window *window);
+void	update_matrix(t_mega_obj *mega);
 
 int		parse_position(char *line, t_load_vertex *array, t_mega_obj *mega);
 int		parse_normal(char *line, t_load_vertex *array, t_mega_obj *mega);
@@ -209,6 +230,7 @@ void	load_texture(t_texture *tex);
 void	unload_texture(t_texture *tex);
 void	bind_texture(t_texture *tex, const GLint pos);
 void	unbind_texture(t_texture *tex);
+void	preprocess_mega(t_mega_obj *mega);
 
 //MATH
 t_vec3f	sub_vec3f(t_vec3f a, t_vec3f b);

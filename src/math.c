@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 20:37:48 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/26 15:30:05 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/08 19:49:12 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ t_mat4	perspective_matrix(float fov, float ar, float near, float far)
 	new.val[0][0] = 1.0 / (ar * tan_half_fov);
 	new.val[1][1] = 1.0 / tan_half_fov;
 	new.val[2][2] = -(far + near) / (far - near);
-	new.val[2][3] = -1.0;
+	new.val[2][3] = -1;
 	new.val[3][2] = -(2.0 * far * near) / (far - near);
 	return (new);
 }

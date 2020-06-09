@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/26 22:09:51 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/27 18:50:51 by niduches         ###   ########.fr       */
+/*   Updated: 2020/04/29 16:30:56 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,23 +79,34 @@ static int	bmp_get_header(int fd, t_texture *new, unsigned int *data_size)
 	return (1);
 }
 
+void	swap_red_blue(unsigned int *color)
+{
+	unsigned char	tmp;
+
+	tmp = *(unsigned char*)color;
+	*(unsigned char*)color = *((unsigned char*)color + 2);
+	*((unsigned char*)color + 2) = tmp;
+}
+
 static void	bmp_format_data(t_texture *tex)
 {
 	unsigned int	i;
 	unsigned int	j;
-	unsigned int	idx;
-	unsigned char	tmp;
+	unsigned int	tmp;
 
 	i = 0;
-	while (i < tex->height)
+	while (i < tex->height / 2)
 	{
 		j = 0;
 		while (j < tex->width)
 		{
-			idx = (i * tex->width * 4) + j * 4;
-			tmp = tex->data[idx];
-			tex->data[idx] = tex->data[idx + 2];
-			tex->data[idx + 2] = tmp;
+			swap_red_blue(((unsigned int*)(tex->data)) + (i * tex->width) + j);
+			swap_red_blue(((unsigned int*)(tex->data)) +
+((tex->height - 1 - i) * tex->width) + j);
+			tmp = ((unsigned int*)(tex->data))[(i * tex->width) + j];
+			((unsigned int*)(tex->data))[(i * tex->width) + j] =
+			((unsigned int*)(tex->data))[((tex->height - 1 - i) * tex->width) + j];
+			((unsigned int*)(tex->data))[((tex->height - 1 - i) * tex->width) + j] = tmp;
 			++j;
 		}
 		++i;
