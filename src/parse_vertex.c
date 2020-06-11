@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 13:12:27 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/11 20:22:56 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/11 20:39:49 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,13 +121,14 @@ int			parse_texture(char *line, t_load_vertex *array, t_mega_obj *mega)
 	t_vec2f	new;
 
 	(void)mega;
+	new = (t_vec2f){-1, 0};
 	line += pass_spaces(line);
 	line += pass_word(line);
 	line += pass_spaces(line);
-	line += get_float(line, &new.x);
-	line += pass_spaces(line);
 	if (!*line)
 		return (0);
+	line += get_float(line, &new.x);
+	line += pass_spaces(line);
 	line += get_float(line, &new.y);
 	line += pass_spaces(line);
 	line += get_float(line, NULL);

@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 23:40:39 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/11 19:49:21 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/11 20:31:48 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,15 @@ static t_vertex	generate_vertex(uint idx, uint *old_idx, t_load_vertex *array)
 {
 	t_vertex	new;
 
-	if (old_idx[idx * 3] == (uint)-1 || old_idx[idx * 3] > array->nb_position ||
-old_idx[idx * 3] == 0)
+	if (old_idx[idx * 3] == 0 || old_idx[idx * 3] > array->nb_position)
 		new.position = (t_vec3f){0, 0, 0};
 	else
 		new.position = array->position[old_idx[idx * 3] - 1];
-	if (old_idx[idx * 3 + 1] == (uint)-1 || old_idx[idx * 3 + 1] >
-array->nb_normal || old_idx[idx * 3 + 1] == 0)
+	if (old_idx[idx * 3 + 1] == 0 || old_idx[idx * 3 + 1] > array->nb_normal)
 		new.normal = (t_vec3f){0, 0, 0};
 	else
 		new.normal = array->normal[old_idx[idx * 3 + 1] - 1];
-	if (old_idx[idx * 3 + 2] == (uint)-1 || old_idx[idx * 3 + 2] >
-array->nb_texture || old_idx[idx * 3 + 2] == 0)
+	if (old_idx[idx * 3 + 2] == 0 || old_idx[idx * 3 + 2] > array->nb_texture)
 		new.texcoord = (t_vec2f){0, 0};
 	else
 		new.texcoord = array->texture[old_idx[idx * 3 + 2] - 1];
@@ -90,10 +87,10 @@ static bool	is_optimisable(t_mesh *mesh, t_load_vertex *array)
 	opti = false;
 	while (i < mesh->nb_index && !opti)
 	{
-		if (mesh->index[i * 3 + 1] != (uint)-1 && ft_memcmp(&array->normal[
+		if (mesh->index[i * 3 + 1] != 0 && ft_memcmp(&array->normal[
 mesh->index[i * 3 + 1] - 1], &(t_vec3f){0, 0, 0}, sizeof(t_vec3f)))
 			opti = true;
-		if (mesh->index[i * 3 + 2] != (uint)-1 && ft_memcmp(&array->texture[
+		if (mesh->index[i * 3 + 2] != 0 && ft_memcmp(&array->texture[
 mesh->index[i * 3 + 2] - 1], &(t_vec2f){0, 0}, sizeof(t_vec2f)))
 			opti = true;
 		++i;

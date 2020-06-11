@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 15:37:30 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/11 20:23:11 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/11 20:29:44 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ t_load_vertex *array, t_mesh *mesh)
 	i = 0;
 	while (i < 3)
 	{
-		if (triangle[i].x != (uint)-1 && triangle[i].x > array->nb_position)
+		if (triangle[i].x > array->nb_position)
 			return (0);
-		if (triangle[i].y != (uint)-1 && triangle[i].y > array->nb_texture)
+		if (triangle[i].y > array->nb_texture)
 			return (0);
-		if (triangle[i].z != (uint)-1 && triangle[i].z > array->nb_normal)
+		if (triangle[i].z > array->nb_normal)
 			return (0);
 		mesh->index[mesh->nb_index * 9 + 3 * i] = triangle[i].x;
 		mesh->index[mesh->nb_index * 9 + 1 + 3 * i] = triangle[i].z;
@@ -71,21 +71,17 @@ static uint	get_arg_face(char *line, t_vec3ui *vec)
 	uint	i;
 	uint	tmp;
 
-	*vec = (t_vec3ui){0, (uint)-1, (uint)-1};
+	*vec = (t_vec3ui){0, 0, 0};
 	i = get_uint(line, &vec->x);
 	if (*(line + i) != '/')
 		return (i);
 	++i;
 	tmp = get_uint(line + i, &vec->y);
-	if (!tmp || vec->y == 0)
-		vec->y = (uint)-1;
 	i += tmp;
 	if (*(line + i) != '/')
 		return (i);
 	++i;
 	tmp = get_uint(line + i, &vec->z);
-	if (!tmp || vec->z == 0)
-		vec->z = (uint)-1;
 	i += tmp;
 	return (i);
 }
@@ -102,14 +98,12 @@ int		parse_face(char *line, t_load_vertex *array, t_mega_obj *mega)
 	line += pass_spaces(line);
 	line += get_arg_face(line, triangle + 1);
 	line += pass_spaces(line);
-	if (!*line || triangle[0].x == 0 || triangle[0].y == 0 || triangle[0].z == 0
-	|| triangle[1].x == 0 || triangle[1].y == 0 || triangle[1].z == 0)
+	if (!*line || triangle[0].x == 0 || triangle[1].x == 0)
 		return (0);
 	while (*line)
 	{
 		i = get_arg_face(line, triangle + 2);
-		if (!i ||
-		triangle[2].x == 0 || triangle[2].y == 0 || triangle[2].z == 0)
+		if (!i || triangle[2].x == 0)
 			return (0);
 		line += pass_spaces(line + i) + i;
 		if (!add_index_triangle(triangle, array, get_actual_mesh(mega)))
