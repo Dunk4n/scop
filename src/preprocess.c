@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 22:50:19 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/09 00:21:44 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/11 05:27:07 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void	is_empty_norm_tex(bool *norm, bool *tex, t_mesh *mesh)
 	*tex = false;
 	*norm = false;
 	i = 0;
-	while (i < mesh->nb_vertex && (!*tex || !*norm))
+	while (i < mesh->nb_vertex && !*tex && !*norm)
 	{
 		if (mesh->vertex[i].normal.x || mesh->vertex[i].normal.y ||
 mesh->vertex[i].normal.z)
@@ -74,24 +74,44 @@ static void	preprocess_mesh_rand(t_mesh *mesh)
 	uint	i;
 	bool	tex;
 	bool	norm;
+	bool	square;
 
 	if (!mesh)
 		return ;
 	is_empty_norm_tex(&norm, &tex, mesh);
 	if (norm && tex)
 		return ;
+//		if (!norm)
+//			mesh->vertex[i].normal = (t_vec3f){(float)(rand() % 100) / 100.0,
+//(float)(rand() % 100) / 100.0, (float)(rand() % 100) / 100.0};
+//		if (!tex)
+//			mesh->vertex[i].texcoord =
+//(t_vec2f){(float)(rand() % 100) / 100.0, (float)(rand() % 100) / 100.0};
+
+	square = false;
 	i = 0;
-	while (i < mesh->nb_vertex)
+	while (i < mesh->nb_index)
 	{
 		if (!norm)
 		{
-			mesh->vertex[i].normal = (t_vec3f){(float)(rand() % 100) / 100.0,
+			mesh->vertex[mesh->index[i]].normal = (t_vec3f){(float)(rand() % 100) / 100.0,
+(float)(rand() % 100) / 100.0, (float)(rand() % 100) / 100.0};
+			mesh->vertex[mesh->index[i + 1]].normal = (t_vec3f){(float)(rand() % 100) / 100.0,
+(float)(rand() % 100) / 100.0, (float)(rand() % 100) / 100.0};
+			mesh->vertex[mesh->index[i + 2]].normal = (t_vec3f){(float)(rand() % 100) / 100.0,
 (float)(rand() % 100) / 100.0, (float)(rand() % 100) / 100.0};
 		}
 		if (!tex)
-			mesh->vertex[i].texcoord =
-(t_vec2f){(float)(rand() % 100) / 100.0, (float)(rand() % 100) / 100.0};
-		++i;
+		{
+			if (square)
+				mesh->vertex[mesh->index[i]].texcoord = (t_vec2f){1.0, 1.0};
+			else
+				mesh->vertex[mesh->index[i]].texcoord = (t_vec2f){0.0, 0.0};
+			mesh->vertex[mesh->index[i + (square ? 2 : 1)]].texcoord = (t_vec2f){1.0, 0.0};
+			mesh->vertex[mesh->index[i + (square ? 1 : 2)]].texcoord = (t_vec2f){0.0, 1.0};
+			square = !square;
+		}
+		i += 3;
 	}
 }
 

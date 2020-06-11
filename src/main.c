@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/13 16:10:26 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/09 17:55:51 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/11 02:29:05 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,21 @@ void	clear(void)
 
 void	update_uniform(t_scop *scop)
 {
-	t_mat4	proj = perspective_matrix(90,
-(float)scop->win.width / (float)scop->win.height, 0.1, 1000);
+	t_mat4	proj = perspective_matrix(90.0,
+(float)scop->win.width / (float)scop->win.height, 0.1, 1000.0);
 	t_mat4	view = get_view_matrix(&scop->cam);
 	glUseProgram(scop->shader);
 	glUniformMatrix4fv(glGetUniformLocation(scop->shader, "ProjectionMatrix"), 1,
 GL_FALSE, (const GLfloat*)proj.val);
 	glUniformMatrix4fv(glGetUniformLocation(scop->shader, "ViewMatrix"), 1,
 GL_FALSE, (const GLfloat*)view.val);
+
+	t_vec3f	light = (t_vec3f){0, 0, -1};
+	glUniform3fv(glGetUniformLocation(scop->shader, "lightPos"), 1,
+	(const GLfloat*)&light);
+	glUniform3fv(glGetUniformLocation(scop->shader, "cameraPos"), 1,
+	(const GLfloat*)&scop->cam.position);
+
 	glUniform1f(glGetUniformLocation(scop->shader, "transition"),
 (GLfloat)scop->transition);
 	glUniform1i(glGetUniformLocation(scop->shader, "tex"), scop->tex.type);

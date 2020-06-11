@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 14:41:51 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/09 18:15:29 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/10 21:45:50 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@
 # include <SDL2/SDL.h>
 # include "../libft/libft.h"
 
-# define NB_KEYWORD 9
+# define NB_OBJ_KEYWORD 9
+# define NB_MTL_KEYWORD 9
 
 typedef unsigned int uint;
 
@@ -94,11 +95,11 @@ typedef struct	s_material
 	char	name[64];
 	t_vec3f	ambient;
 	t_vec3f	diffuse;
-	t_vec3f	spec_color;
-	float	spec_weight;
+	t_vec3f	specular;
+	float	shininess;
 	float	transparency;
 	float	dencity;
-	char	illumination;
+	char	illum;
 }				t_material;
 
 typedef struct	s_mega_obj
@@ -121,6 +122,13 @@ typedef struct	s_load_vertex
 	unsigned int	capacity_normal;
 	unsigned int	capacity_texture;
 }				t_load_vertex;
+
+typedef struct	s_mtl_vector
+{
+	t_material		*materials;
+	unsigned int	nb_material;
+	unsigned int	capacity_material;
+}				t_mtl_vector;
 
 typedef struct	s_camera
 {
@@ -221,8 +229,6 @@ void	load_gl_mega(t_mega_obj *mega);
 void	load_gl_obj(t_obj *obj);
 void	load_gl_mesh(t_mesh *mesh);
 void	draw_mega(t_mega_obj *mega, GLuint shader, t_texture *tex);
-void	draw_obj(t_obj *obj, GLuint shader);
-void	draw_mesh(t_mesh *mesh, GLuint shader);
 void	update(t_window *win, t_camera *cam, float *vitesse_transition);
 void	update_camera_vector(t_camera *cam);
 t_texture	get_bmp(char *name, GLenum type);
@@ -231,6 +237,18 @@ void	unload_texture(t_texture *tex);
 void	bind_texture(t_texture *tex, const GLint pos);
 void	unbind_texture(t_texture *tex);
 void	preprocess_mega(t_mega_obj *mega);
+void	remove_comment(char *line);
+
+int		load_mtl(char *filename, t_mega_obj *mega);
+int		parse_shininess(char *line, t_mtl_vector *mtl);
+int		parse_transparency(char *line, t_mtl_vector *mtl);
+int		parse_inv_transparency(char *line, t_mtl_vector *mtl);
+int		parse_density(char *line, t_mtl_vector *mtl);
+int		parse_illum(char *line, t_mtl_vector *mtl);
+int		parse_newmtl(char *line, t_mtl_vector *mtl);
+int		parse_ambient(char *line, t_mtl_vector *mtl);
+int		parse_diffuse(char *line, t_mtl_vector *mtl);
+int		parse_specular(char *line, t_mtl_vector *mtl);
 
 //MATH
 t_vec3f	sub_vec3f(t_vec3f a, t_vec3f b);

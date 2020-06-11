@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 12:22:41 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/24 19:37:29 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/11 01:44:43 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ char			*ft_strchr(const char *s, int c);
 char			*ft_strrchr(const char *s, int c);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 size_t			ft_strlcpy(char *dst, const char *src, size_t size);
+char			*ft_strcat(char *dest, char const *src);
+char			*ft_strncat(char *dest, char const *src, int nb);
 size_t			ft_strlcat(char *dst, char *src, size_t size);
 char			*ft_strnstr(const char *haystack, const char *needle,
 size_t len);
@@ -51,7 +53,7 @@ void			ft_putchar_fd(char c, int fd);
 void			ft_putstr_fd(char *s, int fd);
 void			ft_putendl_fd(char *s, int fd);
 void			ft_putnbr_fd(int n, int fd);
-char			*my_strncpy(char *dest, char const *src, int n);
+char			*ft_strncpy(char *dest, char const *src, int n);
 int				ft_pow(int nb, int p);
 char			*ft_strcpy(char *dest, char const *src);
 

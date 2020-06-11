@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 23:16:38 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/25 14:28:50 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/10 21:51:30 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,20 +104,19 @@ void	delete_array(t_load_vertex *array)
 	array->capacity_texture = 0;
 }
 
-//TODO make it const
-int		(*g_parse_line[NB_KEYWORD])(char *line, t_load_vertex *array,
-t_mega_obj *mega) =
+static int		(* const g_parse_line[NB_OBJ_KEYWORD])
+(char *line, t_load_vertex *array, t_mega_obj *mega) =
 {
 parse_position, parse_normal, parse_texture, parse_face, parse_group, parse_obj,
 parse_s, parse_mtllib, parse_usemtl
 };
 
-const char	*keyword[NB_KEYWORD] =
+static const char	*keyword[NB_OBJ_KEYWORD] =
 {
 "v", "vn", "vt", "f", "g", "o", "s", "mtllib", "usemtl"
 };
 
-int		get_type(char *line)
+static int	get_type(char *line)
 {
 	unsigned int	i;
 	unsigned int	size;
@@ -127,7 +126,7 @@ int		get_type(char *line)
 		return (-1);
 	size = pass_word(line);
 	i = 0;
-	while (i < NB_KEYWORD)
+	while (i < NB_OBJ_KEYWORD)
 	{
 		if (size == ft_strlen(keyword[i]) &&
 !ft_strncmp(line, keyword[i], size))
@@ -157,10 +156,8 @@ int		load_obj(t_mega_obj *mega, const char *name)
 		}
 		if (type < 0 || !g_parse_line[type](line, &array, mega))
 		{
-			delete_array(&array);
-			delete_mega(mega);
-			free(line);
-			return (0);
+			ret = -1;
+			break ;
 		}
 		free(line);
 		line = NULL;

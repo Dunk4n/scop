@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 14:59:29 by niduches          #+#    #+#             */
-/*   Updated: 2019/12/01 22:13:36 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/11 01:50:40 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*ft_strcat(char *dest, char const *src)
 	i = 0;
 	while (src[i] != '\0')
 	{
-		dest[len] = src[i];
+		dest[len + i] = src[i];
 		i++;
 	}
 	dest[len + i] = '\0';

@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/09 12:27:24 by niduches          #+#    #+#             */
-/*   Updated: 2019/10/23 19:52:29 by niduches         ###   ########.fr       */
+/*   Created: 2019/10/09 17:55:02 by niduches          #+#    #+#             */
+/*   Updated: 2020/06/10 22:04:35 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
-#include "libft.h"
+#include <stdlib.h>
+#include "get_next_line.h"
 
 static void	to_nl(char *buff)
 {
@@ -72,8 +73,8 @@ static char	*next_line(int fd, char *buff, size_t nb, int *rt)
 	{
 		if (!(line = malloc((nb + i + 1) * sizeof(char))))
 			return (NULL);
-		line[nb + i] = '\0';
 		*rt = put_in_buff(line, tmp, size, buff);
+		line[nb + i] = '\0';
 		while (i-- > 0)
 			line[nb + i] = tmp[i];
 		return (line);
@@ -85,15 +86,11 @@ static char	*next_line(int fd, char *buff, size_t nb, int *rt)
 	return (line);
 }
 
-int			get_next_line(int fd, char **line)
+static int	get_next_line_buff(int fd, char **line, char *buff)
 {
-	static char	buff[BUFFER_SIZE] = "";
 	size_t		i;
 	int			rt;
 
-	if (fd < 0 || !line)
-		return (-1);
-	*line = NULL;
 	i = 0;
 	rt = 1;
 	while (i < BUFFER_SIZE && buff[i] && buff[i] != '\n')
@@ -110,4 +107,26 @@ int			get_next_line(int fd, char **line)
 		return (-1);
 	to_nl(buff);
 	return (rt);
+}
+
+int			get_next_line(int fd, char **line)
+{
+	static t_nl	fdbuff[NB_FD];
+	size_t		i;
+
+	if (fd < 0 || !line)
+		return (-1);
+	*line = NULL;
+	i = 0;
+	while (i < NB_FD)
+		if (fd == fdbuff[i++].fd - 1)
+			return (get_next_line_buff(fd, line, fdbuff[i - 1].buff));
+	i = 0;
+	while (i < NB_FD)
+		if (fdbuff[i++].fd == 0)
+		{
+			fdbuff[i - 1].fd = fd + 1;
+			return (get_next_line_buff(fd, line, fdbuff[i - 1].buff));
+		}
+	return (-1);
 }

@@ -1,34 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_s.c                                          :+:      :+:    :+:   */
+/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/04/24 22:00:32 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/10 18:11:50 by niduches         ###   ########.fr       */
+/*   Created: 2019/10/09 19:17:40 by niduches          #+#    #+#             */
+/*   Updated: 2020/06/10 22:03:39 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "scop.h"
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
 
-int		parse_s(char *line, t_load_vertex *array, t_mega_obj *mega)
+# define NB_FD 5
+
+# include "libft.h"
+
+typedef struct	s_nl
 {
-	(void)array;
-	(void)mega;
-	line += pass_spaces(line);
-	line += pass_word(line);
-	line += pass_spaces(line);
-	if (!*line)
-		return (0);
-	if (!ft_strcmp(line, "off"))
-		line += 3;
-	else if (*line >= '0' && *line <= '9')
-		++line;
-	else
-		return (0);
-	line += pass_spaces(line);
-	if (*line)
-		return (0);
-	return (1);
-}
+	short	fd;
+	char	buff[BUFFER_SIZE];
+}				t_nl;
+
+int				get_next_line(int fd, char **line);
+
+#endif

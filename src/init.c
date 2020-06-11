@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 14:32:39 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/09 17:36:24 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/11 05:11:59 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static void		init_value(t_scop *scop)
 int				init(t_scop *scop, const char *filename)
 {
 	srand(time(NULL));
-	scop->win = init_window("scop", 800, 600);
+	scop->win = init_window("scop", 1920, 1080);
 	if (!scop->win.open)
 		return (0);
 	if (!(scop->shader = get_shader(
@@ -103,7 +103,7 @@ int				init(t_scop *scop, const char *filename)
 	}
 	scop->cam = init_cam();
 	init_value(scop);
-	scop->tex = get_bmp("gri.bmp", GL_TEXTURE_2D);
+	scop->tex = get_bmp("resources/gri.bmp", GL_TEXTURE_2D);
 	//TODO material with parser
 	if (!scop->tex.data || !load_obj(&scop->mega, filename))
 	{

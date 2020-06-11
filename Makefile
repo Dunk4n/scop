@@ -6,7 +6,7 @@
 #    By: niduches <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/19 16:00:17 by niduches          #+#    #+#              #
-#    Updated: 2020/06/09 17:47:41 by niduches         ###   ########.fr        #
+#    Updated: 2020/06/11 04:41:59 by niduches         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,9 @@ SRC_PATH	=	main.c				\
 				get_bmp.c			\
 				preprocess.c		\
 				update_matrix.c		\
+				load_mtl.c			\
+				parse_mtl_one_arg.c	\
+				parse_mtl_args.c	\
 
 SRC			=	$(addprefix $(D_SRC),$(SRC_PATH))
 
@@ -48,7 +51,7 @@ NAME		=	a.out
 
 OBJ			=	$(SRC:%.c=$(BUILD_DIR)/%.o)
 
-CFLAGS		=	-I$(D_INC) -Wall -Wextra #-Werror
+CFLAGS		=	-I$(D_INC) -g -Wall -Wextra #-Werror
 
 LDFLAGS		=	-L./libft/ -lft -lm -lGL -lX11 -lSDL2 -lGLEW
 

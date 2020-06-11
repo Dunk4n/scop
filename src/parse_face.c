@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 15:37:30 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/25 19:00:22 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/11 04:05:51 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,23 +69,24 @@ t_load_vertex *array, t_mesh *mesh)
 static uint	get_arg_face(char *line, t_vec3ui *vec)
 {
 	uint	i;
+	uint	tmp;
 
-	*vec = (t_vec3ui){(uint)-1, (uint)-1, (uint)-1};
+	*vec = (t_vec3ui){0, (uint)-1, (uint)-1};
 	i = get_uint(line, &vec->x);
-	if (!i)
-		vec->x = (uint)-1;
 	if (*(line + i) != '/')
 		return (i);
 	++i;
-	i += get_uint(line + i, &vec->y);
-	if (!i)
+	tmp = get_uint(line + i, &vec->y);
+	if (!tmp)
 		vec->y = (uint)-1;
+	i += tmp;
 	if (*(line + i) != '/')
 		return (i);
 	++i;
-	i += get_uint(line + i, &vec->z);
-	if (!i)
+	tmp = get_uint(line + i, &vec->z);
+	if (!tmp)
 		vec->z = (uint)-1;
+	i += tmp;
 	return (i);
 }
 
@@ -101,12 +102,14 @@ int		parse_face(char *line, t_load_vertex *array, t_mega_obj *mega)
 	line += pass_spaces(line);
 	line += get_arg_face(line, triangle + 1);
 	line += pass_spaces(line);
-	if (!*line)
+	if (!*line || triangle[0].x == 0 || triangle[0].y == 0 || triangle[0].z == 0
+	|| triangle[1].x == 0 || triangle[1].y == 0 || triangle[1].z == 0)
 		return (0);
 	while (*line)
 	{
 		i = get_arg_face(line, triangle + 2);
-		if (!i)
+		if (!i ||
+		triangle[2].x == 0 || triangle[2].y == 0 || triangle[2].z == 0)
 			return (0);
 		line += pass_spaces(line + i) + i;
 		if (!add_index_triangle(triangle, array, get_actual_mesh(mega)))

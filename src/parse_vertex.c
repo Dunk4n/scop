@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 13:12:27 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/24 19:01:12 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/10 21:05:26 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ int			parse_position(char *line, t_load_vertex *array, t_mega_obj *mega)
 	line += pass_spaces(line);
 	line += get_float(line, &new.y);
 	line += pass_spaces(line);
+	if (!*line)
+		return (0);
 	line += get_float(line, &new.z);
 	line += pass_spaces(line);
 	if (*line)
@@ -102,6 +104,8 @@ int			parse_normal(char *line, t_load_vertex *array, t_mega_obj *mega)
 	line += pass_spaces(line);
 	line += get_float(line, &new.y);
 	line += pass_spaces(line);
+	if (!*line)
+		return (0);
 	line += get_float(line, &new.z);
 	line += pass_spaces(line);
 	if (*line)
@@ -122,6 +126,8 @@ int			parse_texture(char *line, t_load_vertex *array, t_mega_obj *mega)
 	line += pass_spaces(line);
 	line += get_float(line, &new.x);
 	line += pass_spaces(line);
+	if (!*line)
+		return (0);
 	line += get_float(line, &new.y);
 	line += pass_spaces(line);
 	if (*line || new.x < 0 || new.x > 1 || new.y < 0 || new.y > 1)
