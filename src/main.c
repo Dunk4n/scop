@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/13 16:10:26 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/11 02:29:05 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/11 20:11:36 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ GL_FALSE, (const GLfloat*)proj.val);
 	glUniformMatrix4fv(glGetUniformLocation(scop->shader, "ViewMatrix"), 1,
 GL_FALSE, (const GLfloat*)view.val);
 
-	t_vec3f	light = (t_vec3f){0, 0, -1};
+	t_vec3f	light = (t_vec3f){0, 0, -3};
 	glUniform3fv(glGetUniformLocation(scop->shader, "lightPos"), 1,
 	(const GLfloat*)&light);
 	glUniform3fv(glGetUniformLocation(scop->shader, "cameraPos"), 1,
@@ -67,6 +67,7 @@ int		main(int ac, char **av)
 		if ((scop.transition > 0 && scop.transition_speed < 0) ||
 (scop.transition < 1 && scop.transition_speed > 0))
 			scop.transition += scop.transition_speed;
+		scop.mega.objs[0].rotation.y += 1;
 	}
 	free(scop.tex.data);
 	delete_mega(&scop.mega);

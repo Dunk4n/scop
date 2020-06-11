@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/25 16:26:02 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/25 18:48:51 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/11 19:24:53 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,15 @@ mesh->index, GL_STATIC_DRAW);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(t_vertex),
 (GLvoid*)offsetof(t_vertex, normal));
 	glEnableVertexAttribArray(1);
+
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(t_vertex),
 (GLvoid*)offsetof(t_vertex, texcoord));
 	glEnableVertexAttribArray(2);
+
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(t_vertex),
+(GLvoid*)offsetof(t_vertex, color));
+	glEnableVertexAttribArray(3);
+
 	glBindVertexArray(0);
 	mesh->load = true;
 }

@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 22:50:19 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/11 05:27:07 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/11 19:42:56 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ static void	preprocess_mesh_pos(t_mesh *mesh)
 	i = 0;
 	while (i < mesh->nb_vertex)
 	{
+		mesh->vertex[i].color = (t_vec3f){(float)(rand() % 100) / 100.0,
+(float)(rand() % 100) / 100.0, (float)(rand() % 100) / 100.0};
 		mesh->vertex[i].position.x -= x;
 		mesh->vertex[i].position.y -= y;
 		mesh->vertex[i++].position.z -= z;
@@ -69,37 +71,40 @@ mesh->vertex[i].normal.z)
 	}
 }
 
+static t_vec3f	get_normal(t_vec3f a, t_vec3f b, t_vec3f c)
+{
+	t_vec3f	normal;
+
+	b = sub_vector(b, a);
+	c = sub_vector(c, a);
+	normal = cross_vector(b, c);
+	return (normalize_vector(normal));
+}
+
 static void	preprocess_mesh_rand(t_mesh *mesh)
 {
 	uint	i;
 	bool	tex;
 	bool	norm;
 	bool	square;
+	t_vec3f	normal;
 
 	if (!mesh)
 		return ;
 	is_empty_norm_tex(&norm, &tex, mesh);
 	if (norm && tex)
 		return ;
-//		if (!norm)
-//			mesh->vertex[i].normal = (t_vec3f){(float)(rand() % 100) / 100.0,
-//(float)(rand() % 100) / 100.0, (float)(rand() % 100) / 100.0};
-//		if (!tex)
-//			mesh->vertex[i].texcoord =
-//(t_vec2f){(float)(rand() % 100) / 100.0, (float)(rand() % 100) / 100.0};
-
 	square = false;
 	i = 0;
 	while (i < mesh->nb_index)
 	{
 		if (!norm)
 		{
-			mesh->vertex[mesh->index[i]].normal = (t_vec3f){(float)(rand() % 100) / 100.0,
-(float)(rand() % 100) / 100.0, (float)(rand() % 100) / 100.0};
-			mesh->vertex[mesh->index[i + 1]].normal = (t_vec3f){(float)(rand() % 100) / 100.0,
-(float)(rand() % 100) / 100.0, (float)(rand() % 100) / 100.0};
-			mesh->vertex[mesh->index[i + 2]].normal = (t_vec3f){(float)(rand() % 100) / 100.0,
-(float)(rand() % 100) / 100.0, (float)(rand() % 100) / 100.0};
+			normal = get_normal(mesh->vertex[mesh->index[i]].position,
+mesh->vertex[mesh->index[i + 1]].position, mesh->vertex[mesh->index[i + 2]].position);
+			mesh->vertex[mesh->index[i]].normal = normal;
+			mesh->vertex[mesh->index[i + 1]].normal = normal;
+			mesh->vertex[mesh->index[i + 2]].normal = normal;
 		}
 		if (!tex)
 		{
@@ -111,6 +116,8 @@ static void	preprocess_mesh_rand(t_mesh *mesh)
 			mesh->vertex[mesh->index[i + (square ? 1 : 2)]].texcoord = (t_vec2f){0.0, 1.0};
 			square = !square;
 		}
+		mesh->vertex[i + 1].color = mesh->vertex[i].color;
+		mesh->vertex[i + 2].color = mesh->vertex[i].color;
 		i += 3;
 	}
 }

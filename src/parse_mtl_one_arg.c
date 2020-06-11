@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/10 20:26:53 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/11 02:24:23 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/11 18:38:45 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int		parse_shininess(char *line, t_mtl_vector *mtl)
 	if (mtl->materials[mtl->nb_material - 1].shininess < 0 ||
 	mtl->materials[mtl->nb_material - 1].shininess > 1000)
 		return (0);
+	if (mtl->materials[mtl->nb_material - 1].shininess < 1)
+		mtl->materials[mtl->nb_material - 1].shininess = 1;
 	line += pass_spaces(line);
 	if (*line)
 		return (0);

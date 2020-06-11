@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/25 17:28:59 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/11 03:11:09 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/11 18:04:31 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	load_material(t_material *material, GLuint shader)
 {
 	t_material	mat;
 
-	if (false /*material*/)
+	if (material)
 		mat = *material;
 	else
 	{

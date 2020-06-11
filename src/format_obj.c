@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 23:40:39 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/11 05:26:59 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/11 19:49:21 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ array->nb_texture || old_idx[idx * 3 + 2] == 0)
 		new.texcoord = (t_vec2f){0, 0};
 	else
 		new.texcoord = array->texture[old_idx[idx * 3 + 2] - 1];
+	new.color = (t_vec3f){0, 0, 0};
 	return (new);
 }
 

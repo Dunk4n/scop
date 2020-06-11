@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 14:32:39 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/11 05:11:59 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/11 19:53:10 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ int				init(t_scop *scop, const char *filename)
 	scop->cam = init_cam();
 	init_value(scop);
 	scop->tex = get_bmp("resources/gri.bmp", GL_TEXTURE_2D);
-	//TODO material with parser
 	if (!scop->tex.data || !load_obj(&scop->mega, filename))
 	{
 		free(scop->tex.data);

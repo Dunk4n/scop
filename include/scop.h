@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 14:41:51 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/10 21:45:50 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/11 19:24:55 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct	s_vertex
 	t_vec3f	position;
 	t_vec3f	normal;
 	t_vec2f	texcoord;
+	t_vec3f	color;
 }				t_vertex;
 
 typedef struct	s_mat4

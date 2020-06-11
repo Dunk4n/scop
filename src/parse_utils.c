@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 12:52:49 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/24 17:34:15 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/11 20:22:35 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,14 +78,15 @@ uint	get_float(char *line, float *nb)
 		++i;
 	}
 	i += get_uint(line + i, &tmp);
-	*nb = tmp;
+	if (nb)
+		*nb = tmp;
 	if (!i || line[i] != '.')
 		return (i);
 	++i;
 	if (line[i] < '0' || line[i] > '9')
 		return (i);
 	j = get_uint(line + i, &tmp);
-	*nb += (float)tmp / (float)ft_pow(10, j);
-	*nb *= neg;
+	if (nb)
+		*nb = (*nb + (float)tmp / (float)ft_pow(10, j)) * neg;
 	return (i + j);
 }

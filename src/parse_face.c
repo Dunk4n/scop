@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 15:37:30 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/11 04:05:51 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/11 20:23:11 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,14 +77,14 @@ static uint	get_arg_face(char *line, t_vec3ui *vec)
 		return (i);
 	++i;
 	tmp = get_uint(line + i, &vec->y);
-	if (!tmp)
+	if (!tmp || vec->y == 0)
 		vec->y = (uint)-1;
 	i += tmp;
 	if (*(line + i) != '/')
 		return (i);
 	++i;
 	tmp = get_uint(line + i, &vec->z);
-	if (!tmp)
+	if (!tmp || vec->z == 0)
 		vec->z = (uint)-1;
 	i += tmp;
 	return (i);
