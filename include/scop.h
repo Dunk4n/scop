@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 14:41:51 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/11 19:24:55 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/12 04:03:13 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,10 +186,14 @@ typedef struct	s_scop
 	t_window	win;
 	t_mega_obj	mega;
 	GLuint		shader;
-	t_camera	cam;
+	t_camera	*cam;
+	t_camera	cams[3];
 	t_texture	tex;
 	float		transition;
 	float		transition_speed;
+	bool		use_material;
+	bool		light_pos;
+	bool		obj_move;
 }				t_scop;
 
 int		init(t_scop *scop, const char *filename);
@@ -230,7 +234,7 @@ void	load_gl_mega(t_mega_obj *mega);
 void	load_gl_obj(t_obj *obj);
 void	load_gl_mesh(t_mesh *mesh);
 void	draw_mega(t_mega_obj *mega, GLuint shader, t_texture *tex);
-void	update(t_window *win, t_camera *cam, float *vitesse_transition);
+void	update(t_scop *scop, t_camera *cam);
 void	update_camera_vector(t_camera *cam);
 t_texture	get_bmp(char *name, GLenum type);
 void	load_texture(t_texture *tex);

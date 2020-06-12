@@ -21,13 +21,20 @@ uniform vec3 lightPos;
 uniform vec3 cameraPos;
 
 uniform float transition;
+uniform int use_material;
 uniform sampler2D tex;
 
 void main()
 {
-	//vec4(1.f, 0.5f, 0.32f, 1.f)
-	vec3 color = vec3(texture(tex, vs_texcoord) * transition +
-	vec4(vs_color, 1.f) * (1.f - transition));
+	vec3 color;
+
+	if (use_material == 1)
+		color = vec3(1.f);
+	else
+	{
+		color = vec3(texture(tex, vs_texcoord) * transition +
+		vec4(vs_color, 1.f) * (1.f - transition));
+	}
 
 	vec3 ambient = color * material.ambient;
 	

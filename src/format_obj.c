@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 23:40:39 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/11 20:31:48 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/12 01:20:04 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static t_vertex	generate_vertex(uint idx, uint *old_idx, t_load_vertex *array)
 		new.texcoord = (t_vec2f){0, 0};
 	else
 		new.texcoord = array->texture[old_idx[idx * 3 + 2] - 1];
-	new.color = (t_vec3f){0, 0, 0};
+	new.color = (t_vec3f){1, 1, 1};
 	return (new);
 }
 

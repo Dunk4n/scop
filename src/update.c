@@ -6,97 +6,109 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/26 12:04:06 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/08 19:56:36 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/12 04:05:51 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.h"
 
-void	update_event(t_window *win, float *vitesse_transition)
+void	update_event(t_scop *scop)
 {
 	SDL_Event	event;
 
 	while (SDL_PollEvent(&event))
 	{
 		if (event.type == SDL_QUIT)
-			win->open = false;
+			scop->win.open = false;
 		else if (event.type == SDL_KEYUP)
 		{
 			if (event.key.keysym.sym == SDLK_w)
-				win->key[KEY_W] = false;
+				scop->win.key[KEY_W] = false;
 			if (event.key.keysym.sym == SDLK_s)
-				win->key[KEY_S] = false;
+				scop->win.key[KEY_S] = false;
 			if (event.key.keysym.sym == SDLK_d)
-				win->key[KEY_D] = false;
+				scop->win.key[KEY_D] = false;
 			if (event.key.keysym.sym == SDLK_a)
-				win->key[KEY_A] = false;
+				scop->win.key[KEY_A] = false;
 			if (event.key.keysym.sym == SDLK_e)
-				win->key[KEY_E] = false;
+				scop->win.key[KEY_E] = false;
 			if (event.key.keysym.sym == SDLK_q)
-				win->key[KEY_Q] = false;
+				scop->win.key[KEY_Q] = false;
 			if (event.key.keysym.sym == SDLK_UP)
-				win->key[KEY_UP] = false;
+				scop->win.key[KEY_UP] = false;
 			if (event.key.keysym.sym == SDLK_DOWN)
-				win->key[KEY_DOWN] = false;
+				scop->win.key[KEY_DOWN] = false;
 			if (event.key.keysym.sym == SDLK_RIGHT)
-				win->key[KEY_RIGHT] = false;
+				scop->win.key[KEY_RIGHT] = false;
 			if (event.key.keysym.sym == SDLK_LEFT)
-				win->key[KEY_LEFT] = false;
+				scop->win.key[KEY_LEFT] = false;
 			if (event.key.keysym.sym == SDLK_SPACE)
-				*vitesse_transition *= -1;
+				scop->transition_speed *= -1;
+			if (event.key.keysym.sym == SDLK_1)
+				scop->cam = &scop->cams[0];
+			if (event.key.keysym.sym == SDLK_2)
+				scop->cam = &scop->cams[1];
+			if (event.key.keysym.sym == SDLK_3)
+				scop->cam = &scop->cams[2];
 			if (event.key.keysym.sym == SDLK_ESCAPE)
-				win->open = false;
+				scop->win.open = false;
+			if (event.key.keysym.sym == SDLK_u)
+				scop->use_material = !scop->use_material;
+			if (event.key.keysym.sym == SDLK_i)
+				scop->light_pos = !scop->light_pos;
+			if (event.key.keysym.sym == SDLK_o)
+				scop->obj_move = !scop->obj_move;
 		}
 		else if (event.type == SDL_KEYDOWN)
 		{
 			if (event.key.keysym.sym == SDLK_w)
-				win->key[KEY_W] = true;
+				scop->win.key[KEY_W] = true;
 			if (event.key.keysym.sym == SDLK_s)
-				win->key[KEY_S] = true;
+				scop->win.key[KEY_S] = true;
 			if (event.key.keysym.sym == SDLK_d)
-				win->key[KEY_D] = true;
+				scop->win.key[KEY_D] = true;
 			if (event.key.keysym.sym == SDLK_a)
-				win->key[KEY_A] = true;
+				scop->win.key[KEY_A] = true;
 			if (event.key.keysym.sym == SDLK_e)
-				win->key[KEY_E] = true;
+				scop->win.key[KEY_E] = true;
 			if (event.key.keysym.sym == SDLK_q)
-				win->key[KEY_Q] = true;
+				scop->win.key[KEY_Q] = true;
 			if (event.key.keysym.sym == SDLK_UP)
-				win->key[KEY_UP] = true;
+				scop->win.key[KEY_UP] = true;
 			if (event.key.keysym.sym == SDLK_DOWN)
-				win->key[KEY_DOWN] = true;
+				scop->win.key[KEY_DOWN] = true;
 			if (event.key.keysym.sym == SDLK_RIGHT)
-				win->key[KEY_RIGHT] = true;
+				scop->win.key[KEY_RIGHT] = true;
 			if (event.key.keysym.sym == SDLK_LEFT)
-				win->key[KEY_LEFT] = true;
+				scop->win.key[KEY_LEFT] = true;
 		}
 	}
 }
 
-void	update(t_window *win, t_camera *cam, float *vitesse_transition)
+void	update(t_scop *scop, t_camera *cam)
 {
-	SDL_GL_SwapWindow(win->win);
-	update_event(win, vitesse_transition);
+	SDL_GL_SwapWindow(scop->win.win);
+	update_event(scop);
 	update_camera_vector(cam);
 	//TODO make camera movement
-	if (win->key[KEY_W])
+	if (scop->win.key[KEY_W])
 		cam->position = add_vector(cam->position, mult_vector(cam->front, cam->movement_speed));
-	if (win->key[KEY_S])
+	if (scop->win.key[KEY_S])
 		cam->position = sub_vector(cam->position, mult_vector(cam->front, cam->movement_speed));
-	if (win->key[KEY_D])
+	if (scop->win.key[KEY_D])
 		cam->position = sub_vector(cam->position, mult_vector(cam->right, cam->movement_speed));
-	if (win->key[KEY_A])
+	if (scop->win.key[KEY_A])
 		cam->position = add_vector(cam->position, mult_vector(cam->right, cam->movement_speed));
-	if (win->key[KEY_E])
+	if (scop->win.key[KEY_E])
 		cam->position = add_vector(cam->position, mult_vector(cam->up, cam->movement_speed));
-	if (win->key[KEY_Q])
+	if (scop->win.key[KEY_Q])
 		cam->position = sub_vector(cam->position, mult_vector(cam->up, cam->movement_speed));
-	if (win->key[KEY_UP] && cam->pitch + 1 <= 90)
+	if (scop->win.key[KEY_UP] && cam->pitch + 1 <= 90)
 		cam->pitch += 1;
-	if (win->key[KEY_DOWN] && cam->pitch - 1 >= -90)
+	if (scop->win.key[KEY_DOWN] && cam->pitch - 1 >= -90)
 		cam->pitch -= 1;
-	if (win->key[KEY_RIGHT])
+	if (scop->win.key[KEY_RIGHT])
 		cam->yaw -= 1;
-	if (win->key[KEY_LEFT])
+	if (scop->win.key[KEY_LEFT])
 		cam->yaw += 1;
 }

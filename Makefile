@@ -6,7 +6,7 @@
 #    By: niduches <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/19 16:00:17 by niduches          #+#    #+#              #
-#    Updated: 2020/06/11 04:41:59 by niduches         ###   ########.fr        #
+#    Updated: 2020/06/12 02:56:10 by niduches         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,7 @@ NAME		=	a.out
 
 OBJ			=	$(SRC:%.c=$(BUILD_DIR)/%.o)
 
+#TODO remove -g
 CFLAGS		=	-I$(D_INC) -g -Wall -Wextra #-Werror
 
 LDFLAGS		=	-L./libft/ -lft -lm -lGL -lX11 -lSDL2 -lGLEW

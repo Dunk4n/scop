@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 22:50:19 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/11 19:42:56 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/12 04:01:43 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,8 +116,11 @@ mesh->vertex[mesh->index[i + 1]].position, mesh->vertex[mesh->index[i + 2]].posi
 			mesh->vertex[mesh->index[i + (square ? 1 : 2)]].texcoord = (t_vec2f){0.0, 1.0};
 			square = !square;
 		}
-		mesh->vertex[i + 1].color = mesh->vertex[i].color;
-		mesh->vertex[i + 2].color = mesh->vertex[i].color;
+		if (!tex && !norm)
+		{
+			mesh->vertex[mesh->index[i + 1]].color = mesh->vertex[mesh->index[i]].color;
+			mesh->vertex[mesh->index[i + 2]].color = mesh->vertex[mesh->index[i]].color;
+		}
 		i += 3;
 	}
 }
