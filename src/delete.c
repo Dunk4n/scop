@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/25 11:48:55 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/25 14:54:21 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/13 02:11:52 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ void	delete_mega(t_mega_obj *mega)
 {
 	uint	i;
 
+	if (!mega)
+		return ;
 	i = 0;
 	while (i < mega->nb_obj)
 		delete_obj(&mega->objs[i++]);

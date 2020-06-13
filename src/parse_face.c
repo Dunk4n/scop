@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 15:37:30 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/12 03:24:33 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/12 18:28:59 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,11 @@ t_load_vertex *array, t_mesh *mesh)
 	while (i < 3)
 	{
 		if (triangle[i].x > array->nb_position)
-		{
-			printf("1 %d, %d\n", triangle[i].x, array->nb_position);
 			return (0);
-		}
 		if (triangle[i].y > array->nb_texture)
-		{
-			printf("2\n");
 			return (0);
-		}
 		if (triangle[i].z > array->nb_normal)
-		{
-			printf("3\n");
 			return (0);
-		}
 		mesh->index[mesh->nb_index * 9 + 3 * i] = triangle[i].x;
 		mesh->index[mesh->nb_index * 9 + 1 + 3 * i] = triangle[i].z;
 		mesh->index[mesh->nb_index * 9 + 2 + 3 * i] = triangle[i].y;
@@ -56,19 +47,13 @@ t_load_vertex *array, t_mesh *mesh)
 	if (mesh->nb_vertex > mesh->nb_index)
 	{
 		if (!put_triangle_in(triangle, array, mesh))
-		{
-			printf("A\n");
 			return (0);
-		}
 		return (1);
 	}
 	tmp = mesh->index;
 	mesh->nb_vertex = (!mesh->nb_vertex) ? 1 : mesh->nb_vertex * 2;
 	if (!(mesh->index = malloc(sizeof(uint) * mesh->nb_vertex * 9)))
-	{
-		printf("B\n");
 		return (0);
-	}
 	i = 0;
 	while (i < mesh->nb_index * 9)
 	{
@@ -77,10 +62,7 @@ t_load_vertex *array, t_mesh *mesh)
 	}
 	free(tmp);
 	if (!put_triangle_in(triangle, array, mesh))
-	{
-		printf("C\n");
 		return (0);
-	}
 	return (1);
 }
 
@@ -125,10 +107,7 @@ int		parse_face(char *line, t_load_vertex *array, t_mega_obj *mega)
 			return (0);
 		line += pass_spaces(line + i) + i;
 		if (!add_index_triangle(triangle, array, get_actual_mesh(mega)))
-		{
-			printf("a\n");
 			return (0);
-		}
 		triangle[1] = triangle[2];
 	}
 	return (1);

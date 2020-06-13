@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 22:50:19 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/12 04:01:43 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/13 03:18:59 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ static void	preprocess_mesh_pos(t_mesh *mesh)
 (float)(rand() % 100) / 100.0, (float)(rand() % 100) / 100.0};
 		mesh->vertex[i].position.x -= x;
 		mesh->vertex[i].position.y -= y;
-		mesh->vertex[i++].position.z -= z;
+		mesh->vertex[i].position.z -= z;
+		++i;
 	}
 }
 
@@ -140,8 +141,12 @@ void		preprocess_mega(t_mega_obj *mega)
 		{
 			preprocess_mesh_pos(mega->objs[i].meshs + j);
 			preprocess_mesh_rand(mega->objs[i].meshs + j);
+			mega->objs[i].meshs[j].position.y += (j - (mega->objs[i].nb_mesh - 1) / 2.0) * 10;
+			mega->objs[i].meshs[j].origin.y += mega->objs[i].position.x;
 			++j;
 		}
+		mega->objs[i].position.x += (i - (mega->nb_obj - 1) / 2.0) * 10;
+		mega->objs[i].origin.x += mega->objs[i].position.x;
 		++i;
 	}
 }

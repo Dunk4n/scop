@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 18:57:34 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/25 14:58:56 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/13 02:35:27 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static int	add_new_mesh(t_obj *obj)
 		obj->meshs[i] = tmp[i];
 		++i;
 	}
+	obj->meshs[obj->nb_mesh].material = tmp[obj->nb_mesh - 1].material;
 	++obj->nb_mesh;
 	free(tmp);
 	return (1);

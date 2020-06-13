@@ -17,7 +17,7 @@ uniform mat4 ModelMatrix;
 void main()
 {
     vs_position = vec3(ModelMatrix * vec4(vertex_position, 1.0f));
-    vs_normal = vec3(ModelMatrix * vec4(vertex_normal, 1.0f));
+    vs_normal = mat3(transpose(inverse(ModelMatrix))) * vertex_normal;
 	vs_texcoord = vertex_texcoord;
 	vs_color = vertex_color;
     gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * vec4(vertex_position, 1.0f);

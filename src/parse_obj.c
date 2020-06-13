@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/25 19:03:27 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/25 19:03:56 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/12 18:29:18 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static int	add_new_obj(t_mega_obj *mega)
 	init_obj(&mega->objs[i]);
 	if (!(mega->objs[i].meshs = malloc(sizeof(t_mesh))))
 		return (0);
+	mega->objs[i].nb_mesh = 1;
 	init_mesh(mega->objs[i].meshs);
 	return (1);
 }

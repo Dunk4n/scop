@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/26 12:04:06 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/12 04:05:51 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/13 03:39:32 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,26 @@ void	update_event(t_scop *scop)
 				scop->light_pos = !scop->light_pos;
 			if (event.key.keysym.sym == SDLK_o)
 				scop->obj_move = !scop->obj_move;
+			if (event.key.keysym.sym == SDLK_p)
+			{
+				if (scop->polygon_mode == 0)
+				{
+					glDisable(GL_CULL_FACE);
+					glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+					scop->polygon_mode = 1;
+				}
+				else if (scop->polygon_mode == 1)
+				{
+					glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+					scop->polygon_mode = 2;
+				}
+				else if (scop->polygon_mode == 2)
+				{
+					glEnable(GL_CULL_FACE);
+					glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+					scop->polygon_mode = 0;
+				}
+			}
 		}
 		else if (event.type == SDL_KEYDOWN)
 		{

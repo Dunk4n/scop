@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 23:16:38 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/12 03:19:35 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/13 02:10:49 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ int		init_load(t_mega_obj *mega, const char *name, int *fd, t_load_vertex *array
 {
 	if ((*fd = open(name, O_RDONLY)) < 0)
 	{
-		//TODO maybe not delete mega when not good file
 		delete_mega(mega);
 		return (0);
 	}

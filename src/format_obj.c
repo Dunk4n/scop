@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 23:40:39 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/12 01:20:04 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/12 18:27:29 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,20 +134,8 @@ int				format_obj(t_obj *obj, t_load_vertex *array)
 	while (i < obj->nb_mesh)
 	{
 		if (!format_mesh(&obj->meshs[i], array))
-		{
-			free(array->position);
-			array->position = NULL;
-			free(array->normal);
-			array->normal = NULL;
-			free(array->texture);
-			array->texture = NULL;
 			return (0);
-		}
 		++i;
 	}
-	free(array->position);
-	free(array->normal);
-	free(array->texture);
-	ft_bzero((void*)(array), sizeof(t_load_vertex));
 	return (0);
 }

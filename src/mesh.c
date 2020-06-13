@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 23:00:37 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/26 15:38:17 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/12 17:37:06 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ rotation_matrix(mesh->model_matrix, (mesh->rotation.z * M_PI) / 180.0, (t_vec3f)
 
 void	init_mesh(t_mesh *mesh)
 {
+	if (!mesh)
+		return ;
 	mesh->position = (t_vec3f){0, 0, 0};
 	mesh->origin = (t_vec3f){0, 0, 0};
 	mesh->rotation = (t_vec3f){0, 0, 0};

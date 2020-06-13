@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 14:41:51 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/12 04:03:13 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/13 03:30:35 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,9 +194,10 @@ typedef struct	s_scop
 	bool		use_material;
 	bool		light_pos;
 	bool		obj_move;
+	char		polygon_mode;
 }				t_scop;
 
-int		init(t_scop *scop, const char *filename);
+int		init(t_scop *scop, int ac, char **av);
 GLuint	get_shader(const char *vertex_name, const char *fragment_name);
 void	update_mesh_matrix(t_mesh *mesh, t_mat4 obj_model);
 void	update_obj_matrix(t_obj *obj);

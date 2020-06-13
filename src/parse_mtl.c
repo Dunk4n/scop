@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/25 01:09:50 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/11 01:28:09 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/12 18:34:06 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ int			parse_usemtl(char *line, t_load_vertex *array, t_mega_obj *mega)
 	line += pass_spaces(line);
 	line += pass_word(line);
 	line += pass_spaces(line);
-
 	i = 0;
 	size = pass_word(line);
 	if (!size || size > 63)

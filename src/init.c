@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 14:32:39 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/12 04:03:47 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/13 03:32:47 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,24 @@ static void		init_value(t_scop *scop)
 	scop->use_material = false;
 	scop->light_pos = false;
 	scop->obj_move = true;
+	scop->polygon_mode = 0;
 }
 
-int				init(t_scop *scop, const char *filename)
+int		init_all_obj_file(t_scop *scop, int ac, char **av)
+{
+	int	i;
+
+	i = 0;
+	while (i < ac)
+	{
+		if (!load_obj(&scop->mega, av[i + 1]))
+			return (0);
+		++i;
+	}
+	return (1);
+}
+
+int				init(t_scop *scop, int ac, char **av)
 {
 	srand(time(NULL));
 	scop->win = init_window("scop", 800, 600);
@@ -110,7 +125,7 @@ int				init(t_scop *scop, const char *filename)
 	scop->cam = &scop->cams[0];
 	init_value(scop);
 	scop->tex = get_bmp("resources/gri.bmp", GL_TEXTURE_2D);
-	if (!scop->tex.data || !load_obj(&scop->mega, filename))
+	if (!scop->tex.data || !init_all_obj_file(scop, ac - 1, av))
 	{
 		free(scop->tex.data);
 		scop->tex.data = NULL;

@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 12:52:49 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/11 20:22:35 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/12 18:49:51 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,25 @@ uint	get_uint(char *str, uint *nb)
 	return (i);
 }
 
+uint	get_float_exponent(char *line, float *nb)
+{
+	int		tmp;
+	uint	i;
+
+	if (*line != 'e')
+		return (0);
+	i = get_int(line + 1, &tmp);
+	if (i == 0)
+		return (0);
+	if (tmp == 0)
+		return (i + 1);
+	if (nb && tmp < 0)
+		*nb /= ft_pow(10, -tmp);
+	else if (nb)
+		*nb *= ft_pow(10, tmp);
+	return (i + 1);
+}
+
 uint	get_float(char *line, float *nb)
 {
 	int		neg;
@@ -81,12 +100,12 @@ uint	get_float(char *line, float *nb)
 	if (nb)
 		*nb = tmp;
 	if (!i || line[i] != '.')
-		return (i);
+		return (i + get_float_exponent(line + i, nb));
 	++i;
 	if (line[i] < '0' || line[i] > '9')
-		return (i);
+		return (i + get_float_exponent(line + i, nb));
 	j = get_uint(line + i, &tmp);
 	if (nb)
 		*nb = (*nb + (float)tmp / (float)ft_pow(10, j)) * neg;
-	return (i + j);
+	return (i + j + get_float_exponent(line + i + j, nb));
 }
