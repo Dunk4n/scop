@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/25 11:48:55 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/13 02:11:52 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/15 15:24:03 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,6 @@ void	delete_obj(t_obj *obj)
 	obj->load = false;
 }
 
-void	delete_material(t_material *material)
-{
-	(void)material;
-	//TODO delete material
-}
-
 void	delete_mega(t_mega_obj *mega)
 {
 	uint	i;
@@ -64,8 +58,6 @@ void	delete_mega(t_mega_obj *mega)
 	mega->objs = NULL;
 	mega->nb_obj = 0;
 	i = 0;
-	while (i < mega->nb_material)
-		delete_material(&mega->materials[i++]);
 	free(mega->materials);
 	mega->materials = NULL;
 	mega->nb_material = 0;

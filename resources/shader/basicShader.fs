@@ -35,6 +35,11 @@ void main()
 		color = vec3(texture(tex, vs_texcoord) * transition +
 		vec4(vs_color, 1.f) * (1.f - transition));
 	}
+	if (use_material == 2)
+	{
+		fs_color = vec4(color, 1.f);
+		return ;
+	}
 
 	vec3 ambient = color * material.ambient;
 	

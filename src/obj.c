@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 01:01:06 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/25 19:15:40 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/15 14:43:46 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,63 @@ void	init_obj(t_obj *obj)
 	obj->model_matrix = identity_matrix();
 	obj->name[0] = '\0';
 	obj->load = false;
+}
+
+void	move_mega(t_mega_obj *mega, t_vec3f move)
+{
+	uint	i;
+
+	i = 0;
+	while (i < mega->nb_obj)
+	{
+		mega->objs[i].position.x += move.x;
+		mega->objs[i].position.y += move.y;
+		mega->objs[i].position.z += move.z;
+		++i;
+	}
+}
+
+void	move_origine_mega(t_mega_obj *mega, t_vec3f move)
+{
+	uint	i;
+
+	i = 0;
+	while (i < mega->nb_obj)
+	{
+		mega->objs[i].origin.x += move.x;
+		mega->objs[i].origin.y += move.y;
+		mega->objs[i].origin.z += move.z;
+		++i;
+	}
+}
+
+void	rotate_mega(t_mega_obj *mega, t_vec3f rotate)
+{
+	uint	i;
+
+	i = 0;
+	while (i < mega->nb_obj)
+	{
+		mega->objs[i].rotation.x += rotate.x;
+		mega->objs[i].rotation.y += rotate.y;
+		mega->objs[i].rotation.z += rotate.z;
+		++i;
+	}
+}
+
+void	scale_mega(t_mega_obj *mega, t_vec3f scale)
+{
+	uint	i;
+
+	i = 0;
+	while (i < mega->nb_obj)
+	{
+		mega->objs[i].scale.x = (mega->objs[i].scale.x + scale.x < 0) ?
+		0 : scale.x + mega->objs[i].scale.x;
+		mega->objs[i].scale.y = (mega->objs[i].scale.y + scale.y < 0) ?
+		0 : scale.y + mega->objs[i].scale.y;
+		mega->objs[i].scale.z = (mega->objs[i].scale.z + scale.z < 0) ?
+		0 : scale.z + mega->objs[i].scale.z;
+		++i;
+	}
 }

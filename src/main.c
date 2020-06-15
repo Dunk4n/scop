@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/13 16:10:26 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/13 03:05:07 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/15 16:15:31 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,10 @@ int		main(int ac, char **av)
 	if (ac < 2)
 		return (0);
 	if (!init(&scop, ac, av))
-		return (1);
+		return (0);
 	while (scop.win.open)
 	{
+		//TODO delta time
 		clear();
 		update_uniform(&scop);
 		update_matrix(&scop.mega);
@@ -77,7 +78,7 @@ int		main(int ac, char **av)
 (scop.transition < 1 && scop.transition_speed > 0))
 			scop.transition += scop.transition_speed;
 		if (scop.obj_move)
-			scop.mega.objs[0].rotation.y += 1;
+			rotate_mega(&scop.mega, (t_vec3f){0, 0.5, 0});
 	}
 	free(scop.tex.data);
 	delete_mega(&scop.mega);

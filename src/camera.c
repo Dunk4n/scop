@@ -6,11 +6,21 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/22 14:05:26 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/08 19:50:23 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/15 15:31:29 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.h"
+
+void	move_camera(t_camera *cam, t_vec3f pos)
+{
+	cam->position = add_vector(cam->position,
+	mult_vector(cam->right, cam->movement_speed * pos.x));
+	cam->position = add_vector(cam->position,
+	mult_vector(cam->up, cam->movement_speed * pos.y));
+	cam->position = add_vector(cam->position,
+	mult_vector(cam->front, cam->movement_speed * pos.z));
+}
 
 void	update_camera_vector(t_camera *cam)
 {

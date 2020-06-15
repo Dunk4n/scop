@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 22:50:19 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/13 03:18:59 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/15 15:20:18 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	get_all_value(double *x, double *y, double *z, t_mesh *mesh)
 	}
 }
 
-static void	preprocess_mesh_pos(t_mesh *mesh)
+static void	preprocess_mesh_pos(t_mesh *mesh, bool color)
 {
 	uint	i;
 	double	x;
@@ -43,10 +43,17 @@ static void	preprocess_mesh_pos(t_mesh *mesh)
 	y /= mesh->nb_vertex;
 	z /= mesh->nb_vertex;
 	i = 0;
+	float tmp;
 	while (i < mesh->nb_vertex)
 	{
-		mesh->vertex[i].color = (t_vec3f){(float)(rand() % 100) / 100.0,
-(float)(rand() % 100) / 100.0, (float)(rand() % 100) / 100.0};
+		tmp = (float)(rand() % 1000) / 1000.0;
+		if (color)
+		{
+			mesh->vertex[i].color =
+(t_vec3f){tmp, (float)(rand() % 1000) / 1000.0, (float)(rand() % 1000) / 1000.0};
+		}
+		else
+			mesh->vertex[i].color = (t_vec3f){tmp, tmp, tmp};
 		mesh->vertex[i].position.x -= x;
 		mesh->vertex[i].position.y -= y;
 		mesh->vertex[i].position.z -= z;
@@ -126,7 +133,7 @@ mesh->vertex[mesh->index[i + 1]].position, mesh->vertex[mesh->index[i + 2]].posi
 	}
 }
 
-void		preprocess_mega(t_mega_obj *mega)
+void		preprocess_mega(t_mega_obj *mega, bool color)
 {
 	uint	i;
 	uint	j;
@@ -139,14 +146,14 @@ void		preprocess_mega(t_mega_obj *mega)
 		j = 0;
 		while (j < mega->objs[i].nb_mesh)
 		{
-			preprocess_mesh_pos(mega->objs[i].meshs + j);
+			preprocess_mesh_pos(mega->objs[i].meshs + j, color);
 			preprocess_mesh_rand(mega->objs[i].meshs + j);
-			mega->objs[i].meshs[j].position.y += (j - (mega->objs[i].nb_mesh - 1) / 2.0) * 10;
-			mega->objs[i].meshs[j].origin.y += mega->objs[i].position.x;
+			mega->objs[i].meshs[j].position.y = (j - (mega->objs[i].nb_mesh - 1) / 2.0) * 8;
+			mega->objs[i].meshs[j].origin.y = mega->objs[i].position.x;
 			++j;
 		}
-		mega->objs[i].position.x += (i - (mega->nb_obj - 1) / 2.0) * 10;
-		mega->objs[i].origin.x += mega->objs[i].position.x;
+		mega->objs[i].position.x = (i - (mega->nb_obj - 1) / 2.0) * 8;
+		mega->objs[i].origin.x = mega->objs[i].position.x;
 		++i;
 	}
 }

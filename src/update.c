@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/26 12:04:06 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/13 03:39:32 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/15 15:38:49 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,14 @@ void	update_event(t_scop *scop)
 			if (event.key.keysym.sym == SDLK_ESCAPE)
 				scop->win.open = false;
 			if (event.key.keysym.sym == SDLK_u)
-				scop->use_material = !scop->use_material;
+			{
+				if (scop->use_material == 0)
+					scop->use_material = 1;
+				else if (scop->use_material == 1)
+					scop->use_material = 2;
+				else if (scop->use_material == 2)
+					scop->use_material = 0;
+			}
 			if (event.key.keysym.sym == SDLK_i)
 				scop->light_pos = !scop->light_pos;
 			if (event.key.keysym.sym == SDLK_o)
@@ -78,6 +85,22 @@ void	update_event(t_scop *scop)
 					scop->polygon_mode = 0;
 				}
 			}
+			if (event.key.keysym.sym == SDLK_j)
+				scop->win.key[KEY_J] = false;
+			if (event.key.keysym.sym == SDLK_n)
+				scop->win.key[KEY_N] = false;
+			if (event.key.keysym.sym == SDLK_k)
+				scop->win.key[KEY_K] = false;
+			if (event.key.keysym.sym == SDLK_m)
+				scop->win.key[KEY_M] = false;
+			if (event.key.keysym.sym == SDLK_l)
+				scop->win.key[KEY_L] = false;
+			if (event.key.keysym.sym == SDLK_COMMA)
+				scop->win.key[KEY_COMMA] = false;
+			if (event.key.keysym.sym == SDLK_SEMICOLON)
+				scop->win.key[KEY_SEMICOLON] = false;
+			if (event.key.keysym.sym == SDLK_PERIOD)
+				scop->win.key[KEY_PERIOD] = false;
 		}
 		else if (event.type == SDL_KEYDOWN)
 		{
@@ -101,28 +124,47 @@ void	update_event(t_scop *scop)
 				scop->win.key[KEY_RIGHT] = true;
 			if (event.key.keysym.sym == SDLK_LEFT)
 				scop->win.key[KEY_LEFT] = true;
+			if (event.key.keysym.sym == SDLK_j)
+				scop->win.key[KEY_J] = true;
+			if (event.key.keysym.sym == SDLK_n)
+				scop->win.key[KEY_N] = true;
+			if (event.key.keysym.sym == SDLK_k)
+				scop->win.key[KEY_K] = true;
+			if (event.key.keysym.sym == SDLK_m)
+				scop->win.key[KEY_M] = true;
+			if (event.key.keysym.sym == SDLK_l)
+				scop->win.key[KEY_L] = true;
+			if (event.key.keysym.sym == SDLK_COMMA)
+				scop->win.key[KEY_COMMA] = true;
+			if (event.key.keysym.sym == SDLK_SEMICOLON)
+				scop->win.key[KEY_SEMICOLON] = true;
+			if (event.key.keysym.sym == SDLK_PERIOD)
+				scop->win.key[KEY_PERIOD] = true;
 		}
 	}
 }
 
 void	update(t_scop *scop, t_camera *cam)
 {
+	t_vec3f	tmp;
+
 	SDL_GL_SwapWindow(scop->win.win);
 	update_event(scop);
 	update_camera_vector(cam);
-	//TODO make camera movement
+	tmp = (t_vec3f){0, 0, 0};
 	if (scop->win.key[KEY_W])
-		cam->position = add_vector(cam->position, mult_vector(cam->front, cam->movement_speed));
+		tmp.z += 1;
 	if (scop->win.key[KEY_S])
-		cam->position = sub_vector(cam->position, mult_vector(cam->front, cam->movement_speed));
+		tmp.z -= 1;
 	if (scop->win.key[KEY_D])
-		cam->position = sub_vector(cam->position, mult_vector(cam->right, cam->movement_speed));
+		tmp.x -= 1;
 	if (scop->win.key[KEY_A])
-		cam->position = add_vector(cam->position, mult_vector(cam->right, cam->movement_speed));
+		tmp.x += 1;
 	if (scop->win.key[KEY_E])
-		cam->position = add_vector(cam->position, mult_vector(cam->up, cam->movement_speed));
+		tmp.y += 1;
 	if (scop->win.key[KEY_Q])
-		cam->position = sub_vector(cam->position, mult_vector(cam->up, cam->movement_speed));
+		tmp.y -= 1;
+	move_camera(cam, tmp);
 	if (scop->win.key[KEY_UP] && cam->pitch + 1 <= 90)
 		cam->pitch += 1;
 	if (scop->win.key[KEY_DOWN] && cam->pitch - 1 >= -90)
@@ -131,4 +173,38 @@ void	update(t_scop *scop, t_camera *cam)
 		cam->yaw -= 1;
 	if (scop->win.key[KEY_LEFT])
 		cam->yaw += 1;
+	if (scop->win.key[KEY_J])
+	{
+		move_mega(&scop->mega, (t_vec3f){0.1, 0, 0});
+		move_origine_mega(&scop->mega, (t_vec3f){0.1, 0, 0});
+	}
+	if (scop->win.key[KEY_N])
+	{
+		move_mega(&scop->mega, (t_vec3f){-0.1, 0, 0});
+		move_origine_mega(&scop->mega, (t_vec3f){-0.1, 0, 0});
+	}
+	if (scop->win.key[KEY_K])
+	{
+		move_mega(&scop->mega, (t_vec3f){0, 0.1, 0});
+		move_origine_mega(&scop->mega, (t_vec3f){0, 0.1, 0});
+	}
+	if (scop->win.key[KEY_M])
+	{
+		move_mega(&scop->mega, (t_vec3f){0, -0.1, 0});
+		move_origine_mega(&scop->mega, (t_vec3f){0, -0.1, 0});
+	}
+	if (scop->win.key[KEY_L])
+	{
+		move_mega(&scop->mega, (t_vec3f){0, 0, 0.1});
+		move_origine_mega(&scop->mega, (t_vec3f){0, 0, 0.1});
+	}
+	if (scop->win.key[KEY_COMMA])
+	{
+		move_mega(&scop->mega, (t_vec3f){0, 0, -0.1});
+		move_origine_mega(&scop->mega, (t_vec3f){0, 0, -0.1});
+	}
+	if (scop->win.key[KEY_SEMICOLON])
+		scale_mega(&scop->mega, (t_vec3f){0.02, 0.02, 0.02});
+	if (scop->win.key[KEY_PERIOD])
+		scale_mega(&scop->mega, (t_vec3f){-0.02, -0.02, -0.02});
 }

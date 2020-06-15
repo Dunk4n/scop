@@ -6,25 +6,56 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/10 19:01:36 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/11 02:03:25 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/15 16:14:34 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fcntl.h>
 #include "scop.h"
 
-//void	remove_comment(char *line, t_mtl_vector *mtl)
-//{
-//	while (*line)
-//	{
-//		if (*line == '#')
-//		{
-//			*line = '\0';
-//			return ;
-//		}
-//		++line;
-//	}
-//}
+void	resize_mtl(char **line, char *tmp, t_mtl_vector *mtl)
+{
+	uint	nb;
+
+	tmp += pass_spaces(tmp);
+	tmp += get_uint(tmp, &nb);
+	tmp += pass_spaces(tmp);
+	if (*tmp || !nb || nb > 10000)
+		return ;
+	if (!(mtl->materials = malloc(sizeof(t_material) * nb)))
+	{
+		free(*line);
+		*line = NULL;
+		return ;
+	}
+	mtl->capacity_material = nb;
+}
+
+void	remove_mtl_comment(char **line, t_mtl_vector *mtl)
+{
+	char	*tmp;
+	uint	i;
+
+	tmp = *line;
+	while (*tmp)
+	{
+		if (*tmp == '#')
+		{
+			i = 0;
+			while (*line && *(tmp + i) && !mtl->capacity_material)
+			{
+				if (*(tmp + i) == 'M' &&
+				!ft_strncmp(tmp + i, "Material Count:", 15))
+					resize_mtl(line, tmp + i + 15, mtl);
+				++i;
+			}
+			if (*line)
+				**line = '\0';
+			return ;
+		}
+		++tmp;
+	}
+}
 
 int		add_to_mega(t_mtl_vector *mtl, t_mega_obj *mega)
 {
@@ -72,6 +103,8 @@ static int	get_type(char *line)
 	unsigned int	i;
 	unsigned int	size;
 
+	if (!line)
+		return (-2);
 	line += pass_spaces(line);
 	if (!*line)
 		return (-1);
@@ -116,8 +149,7 @@ int		load_mtl(char *filename, t_mega_obj *mega)
 		return (0);
 	while ((ret = get_next_line(fd, &line)))
 	{
-		//TODO maybe change capacity	Material Count: 1
-		remove_comment(line);
+		remove_mtl_comment(&line, &mtl);
 		if ((type = get_type(line)) == -1)
 		{
 			free(line);
@@ -133,7 +165,6 @@ int		load_mtl(char *filename, t_mega_obj *mega)
 	}
 	free(line);
 	close(fd);
-	//TODO select used one
 	if (ret != -1 && !add_to_mega(&mtl, mega))
 		ret = -1;
 	free(mtl.materials);

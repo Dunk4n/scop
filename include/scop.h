@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 14:41:51 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/13 03:30:35 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/15 15:31:43 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,14 @@ enum	e_key
 	KEY_DOWN,
 	KEY_RIGHT,
 	KEY_LEFT,
+	KEY_J,
+	KEY_N,
+	KEY_K,
+	KEY_M,
+	KEY_L,
+	KEY_COMMA,
+	KEY_SEMICOLON,
+	KEY_PERIOD,
 	NB_KEY
 };
 
@@ -191,9 +199,10 @@ typedef struct	s_scop
 	t_texture	tex;
 	float		transition;
 	float		transition_speed;
-	bool		use_material;
+	char		use_material;
 	bool		light_pos;
 	bool		obj_move;
+	bool		color;
 	char		polygon_mode;
 }				t_scop;
 
@@ -242,7 +251,7 @@ void	load_texture(t_texture *tex);
 void	unload_texture(t_texture *tex);
 void	bind_texture(t_texture *tex, const GLint pos);
 void	unbind_texture(t_texture *tex);
-void	preprocess_mega(t_mega_obj *mega);
+void	preprocess_mega(t_mega_obj *mega, bool color);
 void	remove_comment(char *line);
 
 int		load_mtl(char *filename, t_mega_obj *mega);
@@ -255,6 +264,11 @@ int		parse_newmtl(char *line, t_mtl_vector *mtl);
 int		parse_ambient(char *line, t_mtl_vector *mtl);
 int		parse_diffuse(char *line, t_mtl_vector *mtl);
 int		parse_specular(char *line, t_mtl_vector *mtl);
+void	move_mega(t_mega_obj *mega, t_vec3f move);
+void	move_origine_mega(t_mega_obj *mega, t_vec3f move);
+void	rotate_mega(t_mega_obj *mega, t_vec3f rotate);
+void	scale_mega(t_mega_obj *mega, t_vec3f scale);
+void	move_camera(t_camera *cam, t_vec3f pos);
 
 //MATH
 t_vec3f	sub_vec3f(t_vec3f a, t_vec3f b);
