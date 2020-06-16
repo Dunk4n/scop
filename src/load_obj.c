@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 23:16:38 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/13 02:10:49 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/17 01:11:52 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,7 @@ int		load_obj(t_mega_obj *mega, const char *name)
 	close(fd);
 	if (ret == -1)
 	{
+		get_next_line(fd, NULL);
 		delete_array(&array);
 		delete_mega(mega);
 		return (0);

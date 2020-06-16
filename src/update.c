@@ -6,11 +6,33 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/26 12:04:06 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/15 21:37:15 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/16 21:05:50 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.h"
+
+void	change_material(t_mega_obj *mega, int dir)
+{
+	uint	i;
+	uint	j;
+
+	i = 0;
+	while (i < mega->nb_obj)
+	{
+		j = 0;
+		while (j < mega->objs[i].nb_mesh)
+		{
+			if (dir < 0 && (uint)(-dir) > mega->objs[i].meshs[j].material)
+				mega->objs[i].meshs[j].material += mega->nb_material;
+			mega->objs[i].meshs[j].material += dir;
+			if (mega->objs[i].meshs[j].material > mega->nb_material)
+				mega->objs[i].meshs[j].material -= mega->nb_material + 1;
+			++j;
+		}
+		++i;
+	}
+}
 
 void	update_event(t_scop *scop)
 {
@@ -103,6 +125,10 @@ void	update_event(t_scop *scop)
 				scop->win.key[KEY_PERIOD] = false;
 			if (event.key.keysym.sym == SDLK_LSHIFT)
 				scop->win.key[KEY_LSHIFT] = false;
+			if (event.key.keysym.sym == SDLK_0)
+				change_material(&scop->mega, 1);
+			if (event.key.keysym.sym == SDLK_9)
+				change_material(&scop->mega, -1);
 		}
 		else if (event.type == SDL_KEYDOWN)
 		{

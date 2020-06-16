@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/10 19:01:36 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/15 16:14:34 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/17 01:12:27 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,9 +144,9 @@ int		load_mtl(char *filename, t_mega_obj *mega)
 	int				type;
 	t_mtl_vector	mtl;
 
-
 	if (!init_mtl(filename, &fd, &mtl))
 		return (0);
+	//TODO add texture
 	while ((ret = get_next_line(fd, &line)))
 	{
 		remove_mtl_comment(&line, &mtl);
@@ -169,6 +169,9 @@ int		load_mtl(char *filename, t_mega_obj *mega)
 		ret = -1;
 	free(mtl.materials);
 	if (ret == -1)
+	{
+		get_next_line(fd, NULL);
 		return (0);
+	}
 	return (1);
 }

@@ -1,6 +1,7 @@
 # cube.obj
 #
 mtllib material.mtl 
+mtllib 42.mtl
 g cube
  
 #usemtl jade

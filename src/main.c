@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/13 16:10:26 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/16 04:41:35 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/16 20:50:11 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,6 @@ int		main(int ac, char **av)
 			update_matrix(&scop.mega);
 
 			draw_mega(&scop.mega, scop.shader, &scop.tex);
-
-			scop.last_time_draw = scop.current_time;
 
 			if ((scop.transition > 0 && scop.transition_speed < 0) ||
 (scop.transition < 1 && scop.transition_speed > 0))

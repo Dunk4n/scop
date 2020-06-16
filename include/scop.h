@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 14:41:51 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/16 04:41:07 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/17 01:33:55 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,16 @@ typedef struct	s_obj
 	bool			load;
 }				t_obj;
 
+typedef struct	s_texture
+{
+	GLuint			id;
+	uint			type;
+	uint			width;
+	uint			height;
+	unsigned char	*data;
+	bool			load;
+}				t_texture;
+
 typedef struct	s_material
 {
 	char	name[64];
@@ -102,6 +112,8 @@ typedef struct	s_material
 	float	transparency;
 	float	dencity;
 	char	illum;
+	t_texture	ambient_tex; //map_Ka
+	t_texture	specular_tex; //map_Ks
 }				t_material;
 
 typedef struct	s_mega_obj
@@ -147,16 +159,6 @@ typedef struct	s_camera
 	GLfloat	roll;
 }				t_camera;
 
-typedef struct	s_texture
-{
-	GLuint			id;
-	uint			type;
-	uint			width;
-	uint			height;
-	unsigned char	*data;
-	bool			load;
-}				t_texture;
-
 enum	e_key
 {
 	KEY_W,
@@ -201,7 +203,6 @@ typedef struct	s_scop
 	t_texture	tex;
 	double		current_time;
 	double		last_time;
-	double		last_time_draw;
 	double		dt;
 	float		transition;
 	float		transition_speed;

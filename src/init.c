@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 14:32:39 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/16 04:26:25 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/17 00:50:01 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ static void		init_value(t_scop *scop)
 	scop->polygon_mode = 0;
 	scop->current_time = 0;
 	scop->last_time = 0;
-	scop->last_time_draw = 0;
 	scop->dt = 0;
 }
 
@@ -135,7 +134,7 @@ int				init(t_scop *scop, int ac, char **av)
 		++av;
 	}
 	init_value(scop);
-	scop->tex = get_bmp("resources/gri.bmp", GL_TEXTURE_2D);
+	scop->tex = get_bmp("resources/container.bmp", GL_TEXTURE_2D);
 	if (!scop->tex.data || !init_all_obj_file(scop, ac - 1, av))
 	{
 		free(scop->tex.data);
