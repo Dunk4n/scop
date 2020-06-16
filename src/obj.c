@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 01:01:06 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/15 14:43:46 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/16 04:21:30 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,20 @@ void	rotate_mega(t_mega_obj *mega, t_vec3f rotate)
 	while (i < mega->nb_obj)
 	{
 		mega->objs[i].rotation.x += rotate.x;
+		while (mega->objs[i].rotation.x > 360)
+			mega->objs[i].rotation.x -= 360;
+		while (mega->objs[i].rotation.x < -360)
+			mega->objs[i].rotation.x += 360;
 		mega->objs[i].rotation.y += rotate.y;
+		while (mega->objs[i].rotation.y > 360)
+			mega->objs[i].rotation.y -= 360;
+		while (mega->objs[i].rotation.y < -360)
+			mega->objs[i].rotation.y += 360;
 		mega->objs[i].rotation.z += rotate.z;
+		while (mega->objs[i].rotation.z > 360)
+			mega->objs[i].rotation.z -= 360;
+		while (mega->objs[i].rotation.z < -360)
+			mega->objs[i].rotation.z += 360;
 		++i;
 	}
 }

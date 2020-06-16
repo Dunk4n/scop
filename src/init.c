@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 14:32:39 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/15 15:08:51 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/16 04:26:25 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static t_window	init_window(char *name, int width, int height)
 static void		init_value(t_scop *scop)
 {
 	scop->transition = 0;
-	scop->transition_speed = -0.01;
+	scop->transition_speed = -0.4;
 	scop->mega.objs = NULL;
 	scop->mega.materials = NULL;
 	scop->mega.nb_obj = 0;
@@ -91,6 +91,10 @@ static void		init_value(t_scop *scop)
 	scop->light_pos = false;
 	scop->obj_move = true;
 	scop->polygon_mode = 0;
+	scop->current_time = 0;
+	scop->last_time = 0;
+	scop->last_time_draw = 0;
+	scop->dt = 0;
 }
 
 int		init_all_obj_file(t_scop *scop, int ac, char **av)

@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/26 12:04:06 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/15 15:38:49 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/15 21:37:15 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,8 @@ void	update_event(t_scop *scop)
 				scop->win.key[KEY_SEMICOLON] = false;
 			if (event.key.keysym.sym == SDLK_PERIOD)
 				scop->win.key[KEY_PERIOD] = false;
+			if (event.key.keysym.sym == SDLK_LSHIFT)
+				scop->win.key[KEY_LSHIFT] = false;
 		}
 		else if (event.type == SDL_KEYDOWN)
 		{
@@ -140,39 +142,47 @@ void	update_event(t_scop *scop)
 				scop->win.key[KEY_SEMICOLON] = true;
 			if (event.key.keysym.sym == SDLK_PERIOD)
 				scop->win.key[KEY_PERIOD] = true;
+			if (event.key.keysym.sym == SDLK_LSHIFT)
+				scop->win.key[KEY_LSHIFT] = true;
+
 		}
 	}
 }
 
 void	update(t_scop *scop, t_camera *cam)
 {
-	t_vec3f	tmp;
+	t_vec3f	pos;
+	t_vec2f	rot;
 
-	SDL_GL_SwapWindow(scop->win.win);
+	scop->current_time = get_time();
+	scop->dt = scop->current_time - scop->last_time;
+	scop->last_time = scop->current_time;
 	update_event(scop);
 	update_camera_vector(cam);
-	tmp = (t_vec3f){0, 0, 0};
+	pos = (t_vec3f){0, 0, 0};
 	if (scop->win.key[KEY_W])
-		tmp.z += 1;
+		pos.z += 2;
 	if (scop->win.key[KEY_S])
-		tmp.z -= 1;
+		pos.z -= 2;
 	if (scop->win.key[KEY_D])
-		tmp.x -= 1;
+		pos.x -= 2;
 	if (scop->win.key[KEY_A])
-		tmp.x += 1;
+		pos.x += 2;
 	if (scop->win.key[KEY_E])
-		tmp.y += 1;
+		pos.y += 2;
 	if (scop->win.key[KEY_Q])
-		tmp.y -= 1;
-	move_camera(cam, tmp);
-	if (scop->win.key[KEY_UP] && cam->pitch + 1 <= 90)
-		cam->pitch += 1;
-	if (scop->win.key[KEY_DOWN] && cam->pitch - 1 >= -90)
-		cam->pitch -= 1;
+		pos.y -= 2;
+	move_camera(cam, scop->dt * (scop->win.key[KEY_LSHIFT] ? 2 : 1), pos);
+	rot = (t_vec2f){0, 0};
+	if (scop->win.key[KEY_UP])
+		rot.x += 20;
+	if (scop->win.key[KEY_DOWN])
+		rot.x -= 20;
 	if (scop->win.key[KEY_RIGHT])
-		cam->yaw -= 1;
+		rot.y -= 20;
 	if (scop->win.key[KEY_LEFT])
-		cam->yaw += 1;
+		rot.y += 20;
+	rotate_camera(cam, scop->dt * (scop->win.key[KEY_LSHIFT] ? 2 : 1), rot);
 	if (scop->win.key[KEY_J])
 	{
 		move_mega(&scop->mega, (t_vec3f){0.1, 0, 0});

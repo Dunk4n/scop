@@ -6,10 +6,11 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/13 16:10:26 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/15 16:15:31 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/16 04:41:35 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <sys/time.h>
 #include "scop.h"
 
 void	quit(t_window *window)
@@ -56,6 +57,11 @@ GL_FALSE, (const GLfloat*)view.val);
 	glUseProgram(0);
 }
 
+double	get_time(void)
+{
+	return (SDL_GetTicks() * 0.001);
+}
+
 int		main(int ac, char **av)
 {
 	t_scop		scop;
@@ -64,21 +70,39 @@ int		main(int ac, char **av)
 		return (0);
 	if (!init(&scop, ac, av))
 		return (0);
+	clear();
+//			update(&scop, scop.cam);
+//			update_uniform(&scop);
+//			update_matrix(&scop.mega);
+//
+//			draw_mega(&scop.mega, scop.shader, &scop.tex);
+//	SDL_GL_SwapWindow(scop.win.win);
+	scop.last_time = get_time();
 	while (scop.win.open)
 	{
-		//TODO delta time
-		clear();
-		update_uniform(&scop);
-		update_matrix(&scop.mega);
-		draw_mega(&scop.mega, scop.shader, &scop.tex);
+		if (get_time() - scop.last_time > FRAMES_RATE)
+		{
+			SDL_GL_SwapWindow(scop.win.win);
+			clear();
 
-		update(&scop, scop.cam);
+			update(&scop, scop.cam);
+			update_uniform(&scop);
+			update_matrix(&scop.mega);
 
-		if ((scop.transition > 0 && scop.transition_speed < 0) ||
+			draw_mega(&scop.mega, scop.shader, &scop.tex);
+
+			scop.last_time_draw = scop.current_time;
+
+			if ((scop.transition > 0 && scop.transition_speed < 0) ||
 (scop.transition < 1 && scop.transition_speed > 0))
-			scop.transition += scop.transition_speed;
-		if (scop.obj_move)
-			rotate_mega(&scop.mega, (t_vec3f){0, 0.5, 0});
+				scop.transition += scop.transition_speed * scop.dt;
+			if (scop.transition < 0)
+				scop.transition = 0;
+			if (scop.transition > 1)
+				scop.transition = 1;
+			if (scop.obj_move)
+				rotate_mega(&scop.mega, (t_vec3f){0, 40 * scop.dt, 0});
+		}
 	}
 	free(scop.tex.data);
 	delete_mega(&scop.mega);

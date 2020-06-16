@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 14:41:51 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/15 15:31:43 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/16 04:41:07 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 
 # define NB_OBJ_KEYWORD 9
 # define NB_MTL_KEYWORD 9
+# define FRAMES_RATE 0.0166 // 60 fps
 
 typedef unsigned int uint;
 
@@ -176,6 +177,7 @@ enum	e_key
 	KEY_COMMA,
 	KEY_SEMICOLON,
 	KEY_PERIOD,
+	KEY_LSHIFT,
 	NB_KEY
 };
 
@@ -197,6 +199,10 @@ typedef struct	s_scop
 	t_camera	*cam;
 	t_camera	cams[3];
 	t_texture	tex;
+	double		current_time;
+	double		last_time;
+	double		last_time_draw;
+	double		dt;
 	float		transition;
 	float		transition_speed;
 	char		use_material;
@@ -268,7 +274,9 @@ void	move_mega(t_mega_obj *mega, t_vec3f move);
 void	move_origine_mega(t_mega_obj *mega, t_vec3f move);
 void	rotate_mega(t_mega_obj *mega, t_vec3f rotate);
 void	scale_mega(t_mega_obj *mega, t_vec3f scale);
-void	move_camera(t_camera *cam, t_vec3f pos);
+void	move_camera(t_camera *cam, double dt, t_vec3f pos);
+double	get_time(void);
+void	rotate_camera(t_camera *cam, double dt, t_vec2f rot);
 
 //MATH
 t_vec3f	sub_vec3f(t_vec3f a, t_vec3f b);

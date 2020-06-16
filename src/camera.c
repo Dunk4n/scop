@@ -6,20 +6,34 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/22 14:05:26 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/15 15:31:29 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/16 04:13:25 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.h"
 
-void	move_camera(t_camera *cam, t_vec3f pos)
+void	move_camera(t_camera *cam, double dt, t_vec3f pos)
 {
 	cam->position = add_vector(cam->position,
-	mult_vector(cam->right, cam->movement_speed * pos.x));
+	mult_vector(cam->right, pos.x * cam->movement_speed * dt));
 	cam->position = add_vector(cam->position,
-	mult_vector(cam->up, cam->movement_speed * pos.y));
+	mult_vector(cam->up, pos.y * cam->movement_speed * dt));
 	cam->position = add_vector(cam->position,
-	mult_vector(cam->front, cam->movement_speed * pos.z));
+	mult_vector(cam->front, pos.z * cam->movement_speed * dt));
+}
+
+void	rotate_camera(t_camera *cam, double dt, t_vec2f rot)
+{
+	cam->pitch += rot.x * cam->sensitivity * dt;
+	cam->yaw += rot.y * cam->sensitivity * dt;
+	if (cam->pitch > 90)
+		cam->pitch = 90;
+	if (cam->pitch < -90)
+		cam->pitch = -90;
+	while (cam->yaw > 360)
+		cam->yaw -= 360;
+	while (cam->yaw < -360)
+		cam->yaw += 360;
 }
 
 void	update_camera_vector(t_camera *cam)
@@ -66,7 +80,7 @@ t_camera		init_cam()
 	t_camera	cam;
 
 	cam.view_matrix = identity_matrix();
-	cam.movement_speed = 0.1;
+	cam.movement_speed = 3.0;
 	cam.sensitivity = 5.0;
 	cam.world_up = (t_vec3f){0, 1, 0};
 	cam.position = (t_vec3f){0, 0, -2};
