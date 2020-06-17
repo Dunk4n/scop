@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/13 16:10:26 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/16 20:50:11 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/17 15:03:02 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ GL_FALSE, (const GLfloat*)view.val);
 (GLfloat)scop->transition);
 	glUniform1i(glGetUniformLocation(scop->shader, "use_material"),
 (GLint)scop->use_material);
-	glUniform1i(glGetUniformLocation(scop->shader, "tex"), scop->tex.type);
+	glUniform1i(glGetUniformLocation(scop->shader, "material.diffuse_tex"), 0);
+	glUniform1i(glGetUniformLocation(scop->shader, "material.specular_tex"), 1);
 	glUseProgram(0);
 }
 
@@ -71,6 +72,7 @@ int		main(int ac, char **av)
 	if (!init(&scop, ac, av))
 		return (0);
 	clear();
+	//TODO
 //			update(&scop, scop.cam);
 //			update_uniform(&scop);
 //			update_matrix(&scop.mega);
@@ -89,7 +91,7 @@ int		main(int ac, char **av)
 			update_uniform(&scop);
 			update_matrix(&scop.mega);
 
-			draw_mega(&scop.mega, scop.shader, &scop.tex);
+			draw_mega(&scop.mega, scop.shader);
 
 			if ((scop.transition > 0 && scop.transition_speed < 0) ||
 (scop.transition < 1 && scop.transition_speed > 0))
@@ -102,7 +104,8 @@ int		main(int ac, char **av)
 				rotate_mega(&scop.mega, (t_vec3f){0, 40 * scop.dt, 0});
 		}
 	}
-	free(scop.tex.data);
+	//TODO unload texture
+	//TODO free texture
 	delete_mega(&scop.mega);
 	glDeleteProgram(scop.shader);
 	quit(&scop.win);

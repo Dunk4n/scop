@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/25 01:09:50 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/12 18:34:06 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/17 11:57:01 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int			parse_mtllib(char *line, t_load_vertex *array, t_mega_obj *mega)
 	if (*line)
 		return (0);
 	*(pos + size) = '\0';
-	if (!load_mtl(pos, mega))
+	if (!get_material(pos, mega))
 		return (0);
 	return (1);
 }

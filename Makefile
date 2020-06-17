@@ -6,7 +6,7 @@
 #    By: niduches <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/19 16:00:17 by niduches          #+#    #+#              #
-#    Updated: 2020/06/17 01:35:34 by niduches         ###   ########.fr        #
+#    Updated: 2020/06/17 11:55:41 by niduches         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,14 +44,18 @@ SRC_PATH	=	main.c				\
 				load_mtl.c			\
 				parse_mtl_one_arg.c	\
 				parse_mtl_args.c	\
+				parse_mtl_tex.c		\
+				texture.c			\
+				material.c			\
 
 SRC			=	$(addprefix $(D_SRC),$(SRC_PATH))
 
-NAME		=	scop
+NAME		=	a.out
 
 OBJ			=	$(SRC:%.c=$(BUILD_DIR)/%.o)
 
-CFLAGS		=	-I$(D_INC) -Wall -Wextra #-Werror
+#TODO rm -g
+CFLAGS		=	-I$(D_INC) -g -Wall -Wextra #-Werror
 
 LDFLAGS		=	-L./libft/ -lft -lm -lGL -lX11 -lSDL2 -lGLEW
 

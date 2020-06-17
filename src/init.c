@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 14:32:39 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/17 00:50:01 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/17 15:03:19 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,11 +134,9 @@ int				init(t_scop *scop, int ac, char **av)
 		++av;
 	}
 	init_value(scop);
-	scop->tex = get_bmp("resources/container.bmp", GL_TEXTURE_2D);
-	if (!scop->tex.data || !init_all_obj_file(scop, ac - 1, av))
+	//TODO default texture
+	if (!init_all_obj_file(scop, ac - 1, av))
 	{
-		free(scop->tex.data);
-		scop->tex.data = NULL;
 		delete_mega(&scop->mega);
 		glDeleteProgram(scop->shader);
 		quit(&scop->win);
@@ -146,6 +144,16 @@ int				init(t_scop *scop, int ac, char **av)
 	}
 	preprocess_mega(&scop->mega, scop->color);
 	load_gl_mega(&scop->mega);
-	load_texture(&scop->tex);
+	uint	i;
+
+	i = 0;
+	while (i < scop->mega.nb_material)
+	{
+		if (scop->mega.materials[i].diffuse_tex.data)
+			load_texture(&scop->mega.materials[i].diffuse_tex);
+		if (scop->mega.materials[i].specular_tex.data)
+			load_texture(&scop->mega.materials[i].specular_tex);
+		++i;
+	}
 	return (1);
 }

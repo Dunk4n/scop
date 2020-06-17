@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/10 20:53:16 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/10 22:36:07 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/17 14:25:32 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int			parse_newmtl(char *line, t_mtl_vector *mtl)
 		return (0);
 	mat = &mtl->materials[mtl->nb_material];
 	ft_strlcpy(mat->name, line, size + 1);
-	line += size + pass_spaces(line);
+	line += size + pass_spaces(line + size);
 	if (*line)
 		return (0);
 	mat->ambient = (t_vec3f){0, 0, 0};
@@ -63,6 +63,8 @@ int			parse_newmtl(char *line, t_mtl_vector *mtl)
 	mat->transparency = 1;
 	mat->dencity = 1;
 	mat->illum = 2;
+	mat->diffuse_tex.data = NULL;
+	mat->specular_tex.data = NULL;
 	++mtl->nb_material;
 	return (1);
 }

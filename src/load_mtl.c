@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/10 19:01:36 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/17 01:12:27 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/17 15:05:48 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,10 @@ int		add_to_mega(t_mtl_vector *mtl, t_mega_obj *mega)
 		return (1);
 	new = malloc(sizeof(t_material) * (mega->nb_material + mtl->nb_material));
 	if (!new)
+	{
+		free_materials(mtl->materials, mtl->nb_material);
 		return (0);
+	}
 	i = 0;
 	while (i < mega->nb_material)
 	{
@@ -90,12 +93,14 @@ static int	(* const g_mtl_parse_line[NB_MTL_KEYWORD])
 (char *line, t_mtl_vector *mtl) =
 {
 	parse_newmtl, parse_ambient, parse_diffuse, parse_specular, parse_shininess,
-	parse_transparency, parse_inv_transparency, parse_density, parse_illum
+	parse_transparency, parse_inv_transparency, parse_density, parse_illum,
+	parse_diffuse_tex, parse_specular_tex,
 };
 
 static const char *keyword[NB_MTL_KEYWORD] =
 {
-	"newmtl", "Ka", "Kd", "Ks", "Ns", "d", "Tr", "Ni", "illum"
+	"newmtl", "Ka", "Kd", "Ks", "Ns", "d", "Tr", "Ni", "illum", "map_Kd",
+	"map_Ks",
 };
 
 static int	get_type(char *line)
@@ -122,16 +127,12 @@ static int	get_type(char *line)
 
 int		init_mtl(char *filename, int *fd, t_mtl_vector *mtl)
 {
-	char	name[256];
-
 	mtl->materials = NULL;
 	mtl->nb_material = 0;
 	mtl->capacity_material = 0;
 	if (!filename)
 		return (0);
-	ft_strcpy(name, "resources/");
-	ft_strcat(name, filename);
-	if ((*fd = open(name, O_RDONLY)) < 0)
+	if ((*fd = open(filename, O_RDONLY)) < 0)
 		return (0);
 	return (1);
 }
@@ -146,7 +147,6 @@ int		load_mtl(char *filename, t_mega_obj *mega)
 
 	if (!init_mtl(filename, &fd, &mtl))
 		return (0);
-	//TODO add texture
 	while ((ret = get_next_line(fd, &line)))
 	{
 		remove_mtl_comment(&line, &mtl);
@@ -170,6 +170,7 @@ int		load_mtl(char *filename, t_mega_obj *mega)
 	free(mtl.materials);
 	if (ret == -1)
 	{
+		free_materials(mtl.materials, mtl.nb_material);
 		get_next_line(fd, NULL);
 		return (0);
 	}

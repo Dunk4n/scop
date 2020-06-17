@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/26 12:04:06 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/16 21:05:50 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/17 14:55:50 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,17 +187,17 @@ void	update(t_scop *scop, t_camera *cam)
 	update_camera_vector(cam);
 	pos = (t_vec3f){0, 0, 0};
 	if (scop->win.key[KEY_W])
-		pos.z += 2;
+		pos.z += 1;
 	if (scop->win.key[KEY_S])
-		pos.z -= 2;
+		pos.z -= 1;
 	if (scop->win.key[KEY_D])
-		pos.x -= 2;
+		pos.x -= 1;
 	if (scop->win.key[KEY_A])
-		pos.x += 2;
+		pos.x += 1;
 	if (scop->win.key[KEY_E])
-		pos.y += 2;
+		pos.y += 1;
 	if (scop->win.key[KEY_Q])
-		pos.y -= 2;
+		pos.y -= 1;
 	move_camera(cam, scop->dt * (scop->win.key[KEY_LSHIFT] ? 2 : 1), pos);
 	rot = (t_vec2f){0, 0};
 	if (scop->win.key[KEY_UP])

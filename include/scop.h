@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 14:41:51 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/17 01:33:55 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/17 14:27:37 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define SCOP_H
 
 # include <stdbool.h>
+# include <limits.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <math.h>
@@ -22,8 +23,10 @@
 # include "../libft/libft.h"
 
 # define NB_OBJ_KEYWORD 9
-# define NB_MTL_KEYWORD 9
+# define NB_MTL_KEYWORD 11
 # define FRAMES_RATE 0.0166 // 60 fps
+# define TEXTURE_PATH "resources/texture"
+# define MATERIAL_PATH "resources/material"
 
 typedef unsigned int uint;
 
@@ -112,7 +115,7 @@ typedef struct	s_material
 	float	transparency;
 	float	dencity;
 	char	illum;
-	t_texture	ambient_tex; //map_Ka
+	t_texture	diffuse_tex; //map_Ka
 	t_texture	specular_tex; //map_Ks
 }				t_material;
 
@@ -200,7 +203,6 @@ typedef struct	s_scop
 	GLuint		shader;
 	t_camera	*cam;
 	t_camera	cams[3];
-	t_texture	tex;
 	double		current_time;
 	double		last_time;
 	double		dt;
@@ -250,7 +252,7 @@ void	unload_gl_mesh(t_mesh *mesh);
 void	load_gl_mega(t_mega_obj *mega);
 void	load_gl_obj(t_obj *obj);
 void	load_gl_mesh(t_mesh *mesh);
-void	draw_mega(t_mega_obj *mega, GLuint shader, t_texture *tex);
+void	draw_mega(t_mega_obj *mega, GLuint shader);
 void	update(t_scop *scop, t_camera *cam);
 void	update_camera_vector(t_camera *cam);
 t_texture	get_bmp(char *name, GLenum type);
@@ -278,6 +280,11 @@ void	scale_mega(t_mega_obj *mega, t_vec3f scale);
 void	move_camera(t_camera *cam, double dt, t_vec3f pos);
 double	get_time(void);
 void	rotate_camera(t_camera *cam, double dt, t_vec2f rot);
+int		parse_diffuse_tex(char *line, t_mtl_vector *mtl);
+int		parse_specular_tex(char *line, t_mtl_vector *mtl);
+int		get_texture(char *name, GLenum type, t_texture *tex);
+int		get_material(char *filename, t_mega_obj *mega);
+void	free_materials(t_material *materials, uint nb_material);
 
 //MATH
 t_vec3f	sub_vec3f(t_vec3f a, t_vec3f b);

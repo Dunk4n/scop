@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/25 17:28:59 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/11 18:04:31 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/17 14:26:37 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ static void	load_material(t_material *material, GLuint shader)
 		mat.specular = (t_vec3f){0, 0, 0};
 		mat.shininess = 1;
 		mat.transparency = 1;
+		mat.diffuse_tex.data = NULL;
+		mat.specular_tex.data = NULL;
 	}
 	glUniform3fv(glGetUniformLocation(shader, "material.ambient"), 1,
 	(const GLfloat*)&mat.ambient);
@@ -36,6 +38,10 @@ static void	load_material(t_material *material, GLuint shader)
 	mat.shininess);
 	glUniform1f(glGetUniformLocation(shader, "material.transparency"),
 	mat.transparency);
+	if (mat.diffuse_tex.data)
+		bind_texture(&mat.diffuse_tex, 0);
+	if (mat.specular_tex.data)
+		bind_texture(&mat.specular_tex, 1);
 }
 
 static void	draw_mesh(t_mega_obj *mega, t_mesh *mesh, GLuint shader)
@@ -44,13 +50,17 @@ static void	draw_mesh(t_mega_obj *mega, t_mesh *mesh, GLuint shader)
 		return ;
 	glUseProgram(shader);
 	glBindVertexArray(mesh->array_obj);
-	if (mesh->material && mesh->material <= mega->nb_material)
+	if (mesh->material)
 		load_material(&mega->materials[mesh->material - 1], shader);
 	else
 		load_material(NULL, shader);
 	glUniformMatrix4fv(glGetUniformLocation(shader, "ModelMatrix"),
 1, GL_TRUE, (const GLfloat*)mesh->model_matrix.val);
 	glDrawElements(GL_TRIANGLES, mesh->nb_index, GL_UNSIGNED_INT, 0);
+	if (mesh->material && mega->materials[mesh->material - 1].diffuse_tex.data)
+		unbind_texture(&mega->materials[mesh->material - 1].diffuse_tex);
+	if (mesh->material && mega->materials[mesh->material - 1].specular_tex.data)
+		unbind_texture(&mega->materials[mesh->material - 1].specular_tex);
 	glBindVertexArray(0);
 	glUseProgram(0);
 }
@@ -66,13 +76,11 @@ static void	draw_obj(t_mega_obj *mega, t_obj *obj, GLuint shader)
 		draw_mesh(mega, &obj->meshs[i++], shader);
 }
 
-void	draw_mega(t_mega_obj *mega, GLuint shader, t_texture *tex)
+void	draw_mega(t_mega_obj *mega, GLuint shader)
 {
 	uint	i;
 
-	bind_texture(tex, 0);
 	i = 0;
 	while (i < mega->nb_obj)
 		draw_obj(mega, &mega->objs[i++], shader);
-	unbind_texture(tex);
 }
