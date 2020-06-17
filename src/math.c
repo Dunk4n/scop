@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 20:37:48 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/10 00:19:18 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/17 18:21:24 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ t_mat4	perspective_matrix(float fov, float ar, float near, float far)
 	t_mat4	new;
 	float	tan_half_fov;
 
-	new = identity_matrix();
+	ft_bzero((void*)&new, sizeof(t_mat4));
 	if (ar == 0 || far == near)
 		return (new);
 	tan_half_fov = tan((fov * M_PI / 180.0) / 2.0);

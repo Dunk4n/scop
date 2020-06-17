@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/26 12:04:06 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/17 14:55:50 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/17 18:54:31 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,7 @@ void	update(t_scop *scop, t_camera *cam)
 	t_vec3f	pos;
 	t_vec2f	rot;
 
+	//TODO add rotation on obj
 	scop->current_time = get_time();
 	scop->dt = scop->current_time - scop->last_time;
 	scop->last_time = scop->current_time;
@@ -191,9 +192,9 @@ void	update(t_scop *scop, t_camera *cam)
 	if (scop->win.key[KEY_S])
 		pos.z -= 1;
 	if (scop->win.key[KEY_D])
-		pos.x -= 1;
-	if (scop->win.key[KEY_A])
 		pos.x += 1;
+	if (scop->win.key[KEY_A])
+		pos.x -= 1;
 	if (scop->win.key[KEY_E])
 		pos.y += 1;
 	if (scop->win.key[KEY_Q])
@@ -201,13 +202,13 @@ void	update(t_scop *scop, t_camera *cam)
 	move_camera(cam, scop->dt * (scop->win.key[KEY_LSHIFT] ? 2 : 1), pos);
 	rot = (t_vec2f){0, 0};
 	if (scop->win.key[KEY_UP])
-		rot.x += 20;
+		rot.x += 1;
 	if (scop->win.key[KEY_DOWN])
-		rot.x -= 20;
+		rot.x -= 1;
 	if (scop->win.key[KEY_RIGHT])
-		rot.y -= 20;
+		rot.y += 1;
 	if (scop->win.key[KEY_LEFT])
-		rot.y += 20;
+		rot.y -= 1;
 	rotate_camera(cam, scop->dt * (scop->win.key[KEY_LSHIFT] ? 2 : 1), rot);
 	if (scop->win.key[KEY_J])
 	{

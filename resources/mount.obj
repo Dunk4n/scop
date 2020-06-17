@@ -1,5 +1,6 @@
 # Blender v2.70 (sub 0) OBJ File: 'mount.blend1.blend'
 # www.blender.org
+mtllib material.mtl
 o Plane
 v -16.548750 -0.206907 9.209969
 v 8.962208 -0.206907 9.209969
@@ -8,6 +9,7 @@ v 8.962208 -0.206907 -16.300989
 s off
 
 o Landscape
+usemtl mount
 v -3.230412 0.000213 4.191674
 v -3.230409 0.000042 4.049577
 v -3.230408 0.000000 3.907485

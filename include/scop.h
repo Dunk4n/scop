@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 14:41:51 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/17 14:27:37 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/17 17:35:22 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,8 @@ typedef struct	s_material
 	float	transparency;
 	float	dencity;
 	char	illum;
-	t_texture	diffuse_tex; //map_Ka
-	t_texture	specular_tex; //map_Ks
+	t_texture	diffuse_tex;
+	t_texture	specular_tex;
 }				t_material;
 
 typedef struct	s_mega_obj
@@ -125,6 +125,7 @@ typedef struct	s_mega_obj
 	t_material		*materials;
 	unsigned int	nb_obj;
 	unsigned int	nb_material;
+	t_texture	tex;
 }				t_mega_obj;
 
 typedef struct	s_load_vertex

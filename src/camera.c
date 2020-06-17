@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/22 14:05:26 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/17 14:34:03 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/17 18:55:20 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@ t_mat4		get_view_matrix(t_camera *cam)
 	t_vec3f	f;
 	t_vec3f	s;
 	t_vec3f	u;
-	t_vec3f	eye;
+	t_vec3f	center;
 
 	update_camera_vector(cam);
-	eye = add_vector(cam->position, cam->front);
-	f = normalize_vector(sub_vector(cam->position, eye));
+	center = add_vector(cam->position, cam->front);
+	f = normalize_vector(sub_vector(center, cam->position));
 	s = normalize_vector(cross_vector(f, cam->up));
 	u = cross_vector(s, f);
 	cam->view_matrix = identity_matrix();
@@ -66,12 +66,12 @@ t_mat4		get_view_matrix(t_camera *cam)
 	cam->view_matrix.val[0][1] = u.x;
 	cam->view_matrix.val[1][1] = u.y;
 	cam->view_matrix.val[2][1] = u.z;
-	cam->view_matrix.val[0][2] = f.x;
-	cam->view_matrix.val[1][2] = f.y;
-	cam->view_matrix.val[2][2] = f.z;
-	cam->view_matrix.val[3][0] = -dot_vector(s, eye);
-	cam->view_matrix.val[3][1] = -dot_vector(u, eye);
-	cam->view_matrix.val[3][2] = -dot_vector(f, eye);
+	cam->view_matrix.val[0][2] = -f.x;
+	cam->view_matrix.val[1][2] = -f.y;
+	cam->view_matrix.val[2][2] = -f.z;
+	cam->view_matrix.val[3][0] = -dot_vector(s, cam->position);
+	cam->view_matrix.val[3][1] = -dot_vector(u, cam->position);
+	cam->view_matrix.val[3][2] = dot_vector(f, cam->position);
 	return (cam->view_matrix);
 }
 
@@ -81,9 +81,9 @@ t_camera		init_cam()
 
 	cam.view_matrix = identity_matrix();
 	cam.movement_speed = 3.0;
-	cam.sensitivity = 5.0;
+	cam.sensitivity = 100.0;
 	cam.world_up = (t_vec3f){0, 1, 0};
-	cam.position = (t_vec3f){0, 0, -1.3};
+	cam.position = (t_vec3f){0, 0, -3};
 	cam.right = (t_vec3f){0, 0, 0};
 	cam.up = cam.world_up;
 

@@ -12,6 +12,26 @@ illum 2
 map_Kd container.bmp
 map_Ks container_specular.bmp
 
+newmtl mount
+Ns 1000.0
+Ka 0.200000 0.200000 0.200000
+Kd 0.500000 0.500000 0.500000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd ground.bmp
+
+newmtl mount_plastique
+Ns 40.0
+Ka 0.200000 0.200000 0.200000
+Kd 0.500000 0.500000 0.500000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd ground.bmp
+
 newmtl emerald
 Ka 0.021500		0.1745		0.0215
 Kd 0.07568		0.61424		0.07568

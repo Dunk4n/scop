@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/13 16:10:26 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/17 15:03:02 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/17 19:02:42 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	clear(void)
 
 void	update_uniform(t_scop *scop)
 {
-	t_mat4	proj = perspective_matrix(90.0,
-(float)scop->win.width / (float)scop->win.height, 0.1, 1000.0);
+	t_mat4	proj = perspective_matrix(80.0,
+(float)scop->win.width / (float)scop->win.height, 0.1, 100.0);
 	t_mat4	view = get_view_matrix(scop->cam);
 	glUseProgram(scop->shader);
 	glUniformMatrix4fv(glGetUniformLocation(scop->shader, "ProjectionMatrix"), 1,
@@ -79,6 +79,7 @@ int		main(int ac, char **av)
 //
 //			draw_mega(&scop.mega, scop.shader, &scop.tex);
 //	SDL_GL_SwapWindow(scop.win.win);
+//	TODO add text fps counter or material name
 	scop.last_time = get_time();
 	while (scop.win.open)
 	{
@@ -104,8 +105,8 @@ int		main(int ac, char **av)
 				rotate_mega(&scop.mega, (t_vec3f){0, 40 * scop.dt, 0});
 		}
 	}
-	//TODO unload texture
-	//TODO free texture
+	//TODO unload textures and texture
+	//TODO free textures and texture
 	delete_mega(&scop.mega);
 	glDeleteProgram(scop.shader);
 	quit(&scop.win);

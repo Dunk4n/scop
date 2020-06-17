@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 14:32:39 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/17 15:03:19 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/17 18:44:21 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void		enable_gl_option(void)
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
-	glFrontFace(GL_CW);
+	glFrontFace(GL_CCW);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -134,14 +134,16 @@ int				init(t_scop *scop, int ac, char **av)
 		++av;
 	}
 	init_value(scop);
-	//TODO default texture
-	if (!init_all_obj_file(scop, ac - 1, av))
+	if (!get_texture("gri.bmp", GL_TEXTURE_2D, &scop->mega.tex) ||
+	!init_all_obj_file(scop, ac - 1, av))
 	{
+		free(scop->mega.tex.data);
 		delete_mega(&scop->mega);
 		glDeleteProgram(scop->shader);
 		quit(&scop->win);
 		return (0);
 	}
+	load_texture(&scop->mega.tex);
 	preprocess_mega(&scop->mega, scop->color);
 	load_gl_mega(&scop->mega);
 	uint	i;
