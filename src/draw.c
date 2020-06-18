@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/25 17:28:59 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/17 17:34:12 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/18 00:38:25 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	draw_mesh(t_mega_obj *mega, t_mesh *mesh, GLuint shader)
 	else
 		load_material(mega, NULL, shader);
 	glUniformMatrix4fv(glGetUniformLocation(shader, "ModelMatrix"),
-1, GL_TRUE, (const GLfloat*)mesh->model_matrix.val);
+1, GL_FALSE, (const GLfloat*)mesh->model_matrix.val);
 	glDrawElements(GL_TRIANGLES, mesh->nb_index, GL_UNSIGNED_INT, 0);
 	if (mesh->material && mega->materials[mesh->material - 1].diffuse_tex.data)
 		unbind_texture(&mega->materials[mesh->material - 1].diffuse_tex);

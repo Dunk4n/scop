@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/22 14:05:26 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/17 18:55:20 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/18 01:34:55 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,12 @@ t_camera		init_cam()
 	cam.movement_speed = 3.0;
 	cam.sensitivity = 100.0;
 	cam.world_up = (t_vec3f){0, 1, 0};
-	cam.position = (t_vec3f){0, 0, -3};
+	cam.position = (t_vec3f){0, 0, 3};
 	cam.right = (t_vec3f){0, 0, 0};
 	cam.up = cam.world_up;
 
 	cam.pitch = 0;
-	cam.yaw = 90;
+	cam.yaw = -90;
 	cam.roll = 0;
 	update_camera_vector(&cam);
 	return (cam);

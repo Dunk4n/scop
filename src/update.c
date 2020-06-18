@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/26 12:04:06 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/17 18:54:31 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/18 02:14:23 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,6 @@ void	update(t_scop *scop, t_camera *cam)
 	t_vec3f	pos;
 	t_vec2f	rot;
 
-	//TODO add rotation on obj
 	scop->current_time = get_time();
 	scop->dt = scop->current_time - scop->last_time;
 	scop->last_time = scop->current_time;
@@ -210,36 +209,49 @@ void	update(t_scop *scop, t_camera *cam)
 	if (scop->win.key[KEY_LEFT])
 		rot.y -= 1;
 	rotate_camera(cam, scop->dt * (scop->win.key[KEY_LSHIFT] ? 2 : 1), rot);
-	if (scop->win.key[KEY_J])
+	if (scop->win.key[KEY_J] && !scop->win.key[KEY_LSHIFT])
 	{
 		move_mega(&scop->mega, (t_vec3f){0.1, 0, 0});
 		move_origine_mega(&scop->mega, (t_vec3f){0.1, 0, 0});
 	}
-	if (scop->win.key[KEY_N])
+	if (scop->win.key[KEY_N] && !scop->win.key[KEY_LSHIFT])
 	{
 		move_mega(&scop->mega, (t_vec3f){-0.1, 0, 0});
 		move_origine_mega(&scop->mega, (t_vec3f){-0.1, 0, 0});
 	}
-	if (scop->win.key[KEY_K])
+	if (scop->win.key[KEY_K] && !scop->win.key[KEY_LSHIFT])
 	{
 		move_mega(&scop->mega, (t_vec3f){0, 0.1, 0});
 		move_origine_mega(&scop->mega, (t_vec3f){0, 0.1, 0});
 	}
-	if (scop->win.key[KEY_M])
+	if (scop->win.key[KEY_M] && !scop->win.key[KEY_LSHIFT])
 	{
 		move_mega(&scop->mega, (t_vec3f){0, -0.1, 0});
 		move_origine_mega(&scop->mega, (t_vec3f){0, -0.1, 0});
 	}
-	if (scop->win.key[KEY_L])
+	if (scop->win.key[KEY_L] && !scop->win.key[KEY_LSHIFT])
 	{
 		move_mega(&scop->mega, (t_vec3f){0, 0, 0.1});
 		move_origine_mega(&scop->mega, (t_vec3f){0, 0, 0.1});
 	}
-	if (scop->win.key[KEY_COMMA])
+	if (scop->win.key[KEY_COMMA] && !scop->win.key[KEY_LSHIFT])
 	{
 		move_mega(&scop->mega, (t_vec3f){0, 0, -0.1});
 		move_origine_mega(&scop->mega, (t_vec3f){0, 0, -0.1});
 	}
+
+	if (scop->win.key[KEY_J] && scop->win.key[KEY_LSHIFT])
+		rotate_mega(&scop->mega, (t_vec3f){1, 0, 0});
+	if (scop->win.key[KEY_N] && scop->win.key[KEY_LSHIFT])
+		rotate_mega(&scop->mega, (t_vec3f){-1, 0, 0});
+	if (scop->win.key[KEY_K] && scop->win.key[KEY_LSHIFT])
+		rotate_mega(&scop->mega, (t_vec3f){0, 1, 0});
+	if (scop->win.key[KEY_M] && scop->win.key[KEY_LSHIFT])
+		rotate_mega(&scop->mega, (t_vec3f){0, -1, 0});
+	if (scop->win.key[KEY_L] && scop->win.key[KEY_LSHIFT])
+		rotate_mega(&scop->mega, (t_vec3f){0, 0, 1});
+	if (scop->win.key[KEY_COMMA] && scop->win.key[KEY_LSHIFT])
+		rotate_mega(&scop->mega, (t_vec3f){0, 0, -1});
 	if (scop->win.key[KEY_SEMICOLON])
 		scale_mega(&scop->mega, (t_vec3f){0.02, 0.02, 0.02});
 	if (scop->win.key[KEY_PERIOD])

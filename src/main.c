@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/13 16:10:26 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/17 19:02:42 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/18 02:06:12 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,8 @@ int		main(int ac, char **av)
 				scop.transition = 0;
 			if (scop.transition > 1)
 				scop.transition = 1;
-			if (scop.obj_move)
-				rotate_mega(&scop.mega, (t_vec3f){0, 40 * scop.dt, 0});
+		//	if (scop.obj_move)
+		//		rotate_mega(&scop.mega, (t_vec3f){0, 0, 40 * scop.dt});
 		}
 	}
 	//TODO unload textures and texture

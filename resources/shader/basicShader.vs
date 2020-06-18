@@ -20,5 +20,5 @@ void main()
     vs_normal = mat3(transpose(inverse(ModelMatrix))) * vertex_normal;
 	vs_texcoord = vertex_texcoord;
 	vs_color = vertex_color;
-    gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * vec4(vertex_position, 1.0f);
+    gl_Position = ProjectionMatrix * ViewMatrix * vec4(vs_position, 1.0f);
 }

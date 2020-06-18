@@ -6,11 +6,25 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 23:00:37 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/12 17:37:06 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/18 02:08:06 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.h"
+
+void	display_matrix(t_mat4 mat)
+{
+	printf("mat:\n%f, %f, %f, %f\n%f, %f, %f, %f\n%f, %f, %f, %f\n%f, %f, %f, %f\n\n",
+	mat.val[0][0], mat.val[0][1], mat.val[0][2], mat.val[0][3],
+	mat.val[1][0], mat.val[1][1], mat.val[1][2], mat.val[1][3],
+	mat.val[2][0], mat.val[2][1], mat.val[2][2], mat.val[2][3],
+	mat.val[3][0], mat.val[3][1], mat.val[3][2], mat.val[3][3]);
+}
+
+void	display_vec(t_vec3f vec)
+{
+	printf("vec:\n%f, %f, %f\n\n", vec.x, vec.y, vec.z);
+}
 
 void	update_mesh_matrix(t_mesh *mesh, t_mat4 obj_model)
 {

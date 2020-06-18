@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 20:37:48 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/17 18:21:24 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/18 01:57:35 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,49 +50,110 @@ t_mat4	translation_matrix(t_mat4 mat, t_vec3f vec)
 	t_mat4	new;
 
 	new = identity_matrix();
-	new.val[0][3] = vec.x;
-	new.val[1][3] = vec.y;
-	new.val[2][3] = vec.z;
+	new.val[3][0] = vec.x;
+	new.val[3][1] = vec.y;
+	new.val[3][2] = vec.z;
 	return (mult_matrix(mat, new));
 }
 
 t_mat4	rotation_matrix(t_mat4 mat, float angl, t_vec3f vec)
 {
+//	t_mat4	new;
+//	float	tmp;
+//
+//	new = identity_matrix();
+//	tmp = angl * vec.x;
+//	new.val[1][1] = cos(tmp);
+//	new.val[1][2] = -sin(tmp);
+//	new.val[2][1] = sin(tmp);
+//	new.val[2][2] = cos(tmp);
+//	mat = mult_matrix(mat, new);
+//	new = identity_matrix();
+//	tmp = angl * vec.y;
+//	new.val[0][0] = cos(tmp);
+//	new.val[0][2] = sin(tmp);
+//	new.val[2][0] = -sin(tmp);
+//	new.val[2][2] = cos(tmp);
+//	mat = mult_matrix(mat, new);
+//	new = identity_matrix();
+//	tmp = angl * vec.z;
+//	new.val[0][0] = cos(tmp);
+//	new.val[0][1] = -sin(tmp);
+//	new.val[1][0] = sin(tmp);
+//	new.val[1][1] = cos(tmp);
+//	return (mult_matrix(mat, new));
+	
+	float	c;
+	float	s;
+	t_vec3f	tmp;
 	t_mat4	new;
-	float	tmp;
 
-	new = identity_matrix();
-	tmp = angl * vec.x;
-	new.val[1][1] = cos(tmp);
-	new.val[1][2] = -sin(tmp);
-	new.val[2][1] = sin(tmp);
-	new.val[2][2] = cos(tmp);
-	mat = mult_matrix(mat, new);
-	new = identity_matrix();
-	tmp = angl * vec.y;
-	new.val[0][0] = cos(tmp);
-	new.val[0][2] = sin(tmp);
-	new.val[2][0] = -sin(tmp);
-	new.val[2][2] = cos(tmp);
-	mat = mult_matrix(mat, new);
-	new = identity_matrix();
-	tmp = angl * vec.z;
-	new.val[0][0] = cos(tmp);
-	new.val[0][1] = sin(tmp);
-	new.val[1][0] = -sin(tmp);
-	new.val[1][1] = cos(tmp);
-	return (mult_matrix(mat, new));
+	c = cos(angl);
+	s = sin(angl);
+	vec = normalize_vector(vec);
+	tmp = mult_vector(vec, 1.0 - c);
+	ft_bzero((void*)&new, sizeof(t_mat4));
+	new.val[0][0] = c + tmp.x * vec.x;
+	new.val[0][1] = tmp.x * vec.y + s * vec.z;
+	new.val[0][2] = tmp.x * vec.z - s * vec.y;
+
+	new.val[1][0] = tmp.y * vec.x - s * vec.z;
+	new.val[1][1] = c + tmp.y * vec.y;
+	new.val[1][2] = tmp.y * vec.z + s * vec.x;
+
+	new.val[2][0] = tmp.z * vec.x + s * vec.y;
+	new.val[2][1] = tmp.z * vec.y - s * vec.x;
+	new.val[2][2] = c + tmp.z * vec.z;
+
+	t_mat4	res;
+	ft_bzero((void*)&res, sizeof(t_mat4));
+	res.val[0][0] = mat.val[0][0] * new.val[0][0] + mat.val[1][0] * new.val[0][1] + mat.val[2][0] * new.val[0][2];
+	res.val[0][1] = mat.val[0][1] * new.val[0][0] + mat.val[1][1] * new.val[0][1] + mat.val[2][1] * new.val[0][2];
+	res.val[0][2] = mat.val[0][2] * new.val[0][0] + mat.val[1][2] * new.val[0][1] + mat.val[2][2] * new.val[0][2];
+	res.val[0][3] = mat.val[0][3] * new.val[0][0] + mat.val[1][3] * new.val[0][1] + mat.val[2][3] * new.val[0][2];
+
+	res.val[1][0] = mat.val[0][0] * new.val[1][0] + mat.val[1][0] * new.val[1][1] + mat.val[2][0] * new.val[1][2];
+	res.val[1][1] = mat.val[0][1] * new.val[1][0] + mat.val[1][1] * new.val[1][1] + mat.val[2][1] * new.val[1][2];
+	res.val[1][2] = mat.val[0][2] * new.val[1][0] + mat.val[1][2] * new.val[1][1] + mat.val[2][2] * new.val[1][2];
+	res.val[1][3] = mat.val[0][3] * new.val[1][0] + mat.val[1][3] * new.val[1][1] + mat.val[2][3] * new.val[1][2];
+
+	res.val[2][0] = mat.val[0][0] * new.val[2][0] + mat.val[1][0] * new.val[2][1] + mat.val[2][0] * new.val[2][2];
+	res.val[2][1] = mat.val[0][1] * new.val[2][0] + mat.val[1][1] * new.val[2][1] + mat.val[2][1] * new.val[2][2];
+	res.val[2][2] = mat.val[0][2] * new.val[2][0] + mat.val[1][2] * new.val[2][1] + mat.val[2][2] * new.val[2][2];
+	res.val[2][3] = mat.val[0][3] * new.val[2][0] + mat.val[1][3] * new.val[2][1] + mat.val[2][3] * new.val[2][2];
+
+	res.val[3][0] = mat.val[3][0];
+	res.val[3][1] = mat.val[3][1];
+	res.val[3][2] = mat.val[3][2];
+	res.val[3][3] = mat.val[3][3];
+	return (res);
 }
 
 t_mat4	scale_matrix(t_mat4 mat, t_vec3f vec)
 {
 	t_mat4	new;
 
-	new = identity_matrix();
-	new.val[0][0] = vec.x;
-	new.val[1][1] = vec.y;
-	new.val[2][2] = vec.z;
-	return (mult_matrix(mat, new));
+	ft_bzero((void*)&new, sizeof(t_mat4));
+	new.val[0][0] = mat.val[0][0] * vec.x;
+	new.val[0][1] = mat.val[0][1] * vec.x;
+	new.val[0][2] = mat.val[0][2] * vec.x;
+	new.val[0][3] = mat.val[0][3] * vec.x;
+
+	new.val[1][0] = mat.val[1][0] * vec.y;
+	new.val[1][1] = mat.val[1][1] * vec.y;
+	new.val[1][2] = mat.val[1][2] * vec.y;
+	new.val[1][3] = mat.val[1][3] * vec.y;
+
+	new.val[2][0] = mat.val[2][0] * vec.z;
+	new.val[2][1] = mat.val[2][1] * vec.z;
+	new.val[2][2] = mat.val[2][2] * vec.z;
+	new.val[2][3] = mat.val[2][3] * vec.z;
+
+	new.val[3][0] = mat.val[3][0];
+	new.val[3][1] = mat.val[3][1];
+	new.val[3][2] = mat.val[3][2];
+	new.val[3][3] = mat.val[3][3];
+	return (new);
 }
 
 t_mat4	perspective_matrix(float fov, float ar, float near, float far)
