@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 14:32:39 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/19 02:25:12 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/19 16:12:04 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ static void		init_value(t_scop *scop)
 	scop->last_time = 0;
 	scop->dt = 0;
 	scop->explo = 0;
+	scop->normal = 0;
 }
 
 int		init_all_obj_file(t_scop *scop, int ac, char **av)
@@ -111,14 +112,45 @@ int		init_all_obj_file(t_scop *scop, int ac, char **av)
 	return (1);
 }
 
-int				init(t_scop *scop, int ac, char **av)
+void	get_arg(t_scop *scop, int *ac, char ***av)
+{
+	scop->color = false;
+	if (*ac > 1 && (!ft_strcmp((*av)[1], "-c") || !ft_strcmp((*av)[1], "--color")))
+	{
+		scop->color = true;
+		--(*ac);
+		++(*av);
+	}
+	scop->pos = false;
+	if (*ac > 1 && (!ft_strcmp((*av)[1], "-p") || !ft_strcmp((*av)[1], "--position")))
+	{
+		scop->pos = true;
+		--(*ac);
+		++(*av);
+	}
+	if (*ac > 1 && !scop->color && (!ft_strcmp((*av)[1], "-c") || !ft_strcmp((*av)[1], "--color")))
+	{
+		scop->color = true;
+		--(*ac);
+		++(*av);
+	}
+}
+
+int		init(t_scop *scop, int ac, char **av)
 {
 	srand(time(NULL));
-	scop->win = init_window("scop", 800, 600);
-	if (!scop->win.open)
+	scop->win = init_window("scop", 1920, 1080);
+	get_arg(scop, &ac, &av);
+	if (ac < 2 || !scop->win.open)
 		return (0);
-	if (!(scop->shader = get_shader(
-"resources/shader/basicShader.vs", "resources/shader/basicShader.gs", "resources/shader/basicShader.fs")))
+	if (!(scop->shader = get_shader("resources/shader/basicShader.vs",
+"resources/shader/basicShader.gs", "resources/shader/basicShader.fs")))
+	{
+		quit(&scop->win);
+		return (0);
+	}
+	if (!(scop->shader_normal = get_shader("resources/shader/normalShader.vs",
+"resources/shader/normalShader.gs", "resources/shader/normalShader.fs")))
 	{
 		quit(&scop->win);
 		return (0);
@@ -127,13 +159,6 @@ int				init(t_scop *scop, int ac, char **av)
 	scop->cams[1] = init_cam();
 	scop->cams[2] = init_cam();
 	scop->cam = &scop->cams[0];
-	scop->color = false;
-	if (!ft_strcmp(av[1], "-c") || !ft_strcmp(av[1], "--color"))
-	{
-		scop->color = true;
-		--ac;
-		++av;
-	}
 	init_value(scop);
 	if (!get_texture("gri.bmp", GL_TEXTURE_2D, &scop->mega.tex) ||
 	!init_all_obj_file(scop, ac - 1, av))
@@ -141,14 +166,14 @@ int				init(t_scop *scop, int ac, char **av)
 		free(scop->mega.tex.data);
 		delete_mega(&scop->mega);
 		glDeleteProgram(scop->shader);
+		glDeleteProgram(scop->shader_normal);
 		quit(&scop->win);
 		return (0);
 	}
 	load_texture(&scop->mega.tex);
-	preprocess_mega(&scop->mega, scop->color);
+	preprocess_mega(&scop->mega, scop->color, scop->pos);
 	load_gl_mega(&scop->mega);
 	uint	i;
-
 	i = 0;
 	while (i < scop->mega.nb_material)
 	{

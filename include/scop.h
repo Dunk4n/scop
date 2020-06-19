@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 14:41:51 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/18 23:58:11 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/19 16:12:21 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,6 +202,7 @@ typedef struct	s_scop
 	t_window	win;
 	t_mega_obj	mega;
 	GLuint		shader;
+	GLuint		shader_normal;
 	t_camera	*cam;
 	t_camera	cams[3];
 	double		current_time;
@@ -214,6 +215,8 @@ typedef struct	s_scop
 	bool		light_pos;
 	bool		obj_move;
 	bool		color;
+	bool		pos;
+	bool		normal;
 	char		polygon_mode;
 }				t_scop;
 
@@ -263,7 +266,7 @@ void	load_texture(t_texture *tex);
 void	unload_texture(t_texture *tex);
 void	bind_texture(t_texture *tex, const GLint pos);
 void	unbind_texture(t_texture *tex);
-void	preprocess_mega(t_mega_obj *mega, bool color);
+void	preprocess_mega(t_mega_obj *mega, bool color, bool pos);
 void	remove_comment(char *line);
 
 int		load_mtl(char *filename, t_mega_obj *mega);

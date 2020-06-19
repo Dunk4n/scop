@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 20:37:48 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/18 01:57:35 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/19 15:53:57 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,31 +58,6 @@ t_mat4	translation_matrix(t_mat4 mat, t_vec3f vec)
 
 t_mat4	rotation_matrix(t_mat4 mat, float angl, t_vec3f vec)
 {
-//	t_mat4	new;
-//	float	tmp;
-//
-//	new = identity_matrix();
-//	tmp = angl * vec.x;
-//	new.val[1][1] = cos(tmp);
-//	new.val[1][2] = -sin(tmp);
-//	new.val[2][1] = sin(tmp);
-//	new.val[2][2] = cos(tmp);
-//	mat = mult_matrix(mat, new);
-//	new = identity_matrix();
-//	tmp = angl * vec.y;
-//	new.val[0][0] = cos(tmp);
-//	new.val[0][2] = sin(tmp);
-//	new.val[2][0] = -sin(tmp);
-//	new.val[2][2] = cos(tmp);
-//	mat = mult_matrix(mat, new);
-//	new = identity_matrix();
-//	tmp = angl * vec.z;
-//	new.val[0][0] = cos(tmp);
-//	new.val[0][1] = -sin(tmp);
-//	new.val[1][0] = sin(tmp);
-//	new.val[1][1] = cos(tmp);
-//	return (mult_matrix(mat, new));
-	
 	float	c;
 	float	s;
 	t_vec3f	tmp;

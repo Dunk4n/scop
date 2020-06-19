@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/26 12:04:06 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/19 02:25:17 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/19 14:41:46 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,8 @@ void	update_event(t_scop *scop)
 				change_material(&scop->mega, 1);
 			if (event.key.keysym.sym == SDLK_9)
 				change_material(&scop->mega, -1);
+			if (event.key.keysym.sym == SDLK_h)
+				scop->normal = !scop->normal;
 		}
 		else if (event.type == SDL_KEYDOWN)
 		{
