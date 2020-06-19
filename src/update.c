@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/26 12:04:06 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/18 02:14:23 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/19 02:25:17 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	change_material(t_mega_obj *mega, int dir)
 		while (j < mega->objs[i].nb_mesh)
 		{
 			if (dir < 0 && (uint)(-dir) > mega->objs[i].meshs[j].material)
-				mega->objs[i].meshs[j].material += mega->nb_material;
+				mega->objs[i].meshs[j].material += mega->nb_material + 1;
 			mega->objs[i].meshs[j].material += dir;
 			if (mega->objs[i].meshs[j].material > mega->nb_material)
 				mega->objs[i].meshs[j].material -= mega->nb_material + 1;
@@ -66,6 +66,14 @@ void	update_event(t_scop *scop)
 				scop->win.key[KEY_LEFT] = false;
 			if (event.key.keysym.sym == SDLK_SPACE)
 				scop->transition_speed *= -1;
+			if (event.key.keysym.sym == SDLK_y)
+			{
+				scop->explo = !scop->explo;
+				if (!scop->polygon_mode && !scop->explo)
+					glEnable(GL_CULL_FACE);
+				else
+					glDisable(GL_CULL_FACE);
+			}
 			if (event.key.keysym.sym == SDLK_1)
 				scop->cam = &scop->cams[0];
 			if (event.key.keysym.sym == SDLK_2)
@@ -102,7 +110,8 @@ void	update_event(t_scop *scop)
 				}
 				else if (scop->polygon_mode == 2)
 				{
-					glEnable(GL_CULL_FACE);
+					if (!scop->explo)
+						glEnable(GL_CULL_FACE);
 					glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 					scop->polygon_mode = 0;
 				}

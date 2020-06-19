@@ -6,14 +6,14 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 10:40:04 by niduches          #+#    #+#             */
-/*   Updated: 2020/04/23 11:02:58 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/18 20:19:09 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fcntl.h>
 #include "scop.h"
 
-static GLuint	link_program(GLuint vertex, GLuint fragment)
+static GLuint	link_program(GLuint vertex, GLuint geometry, GLuint fragment)
 {
 	char	info[512];
 	GLuint	prog;
@@ -21,6 +21,7 @@ static GLuint	link_program(GLuint vertex, GLuint fragment)
 
 	prog = glCreateProgram();
 	glAttachShader(prog, vertex);
+	glAttachShader(prog, geometry);
 	glAttachShader(prog, fragment);
 	glLinkProgram(prog);
 	glGetProgramiv(prog, GL_LINK_STATUS, &success);
@@ -116,9 +117,11 @@ static GLuint	load_shader(GLenum type, const char *name)
 	return (shader);
 }
 
-GLuint			get_shader(const char *vertex_name, const char *fragment_name)
+GLuint			get_shader(const char *vertex_name, const char *geometry_name,
+const char *fragment_name)
 {
 	GLuint	vertex_shader;
+	GLuint	geometry_shader;
 	GLuint	fragment_shader;
 	GLuint	program;
 
@@ -126,13 +129,20 @@ GLuint			get_shader(const char *vertex_name, const char *fragment_name)
 		return (0);
 	if (!(vertex_shader = load_shader(GL_VERTEX_SHADER, vertex_name)))
 		return (0);
-	if (!(fragment_shader = load_shader(GL_FRAGMENT_SHADER, fragment_name)))
+	if (!(geometry_shader = load_shader(GL_GEOMETRY_SHADER, geometry_name)))
 	{
 		glDeleteShader(vertex_shader);
 		return (0);
 	}
-	program = link_program(vertex_shader, fragment_shader);
+	if (!(fragment_shader = load_shader(GL_FRAGMENT_SHADER, fragment_name)))
+	{
+		glDeleteShader(vertex_shader);
+		glDeleteShader(geometry_shader);
+		return (0);
+	}
+	program = link_program(vertex_shader, geometry_shader, fragment_shader);
 	glDeleteShader(vertex_shader);
+	glDeleteShader(geometry_shader);
 	glDeleteShader(fragment_shader);
 	return (program);
 }

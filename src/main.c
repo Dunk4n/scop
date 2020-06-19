@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/13 16:10:26 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/18 02:06:12 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/19 00:51:13 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,15 @@ void	clear(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
+double	get_time(void)
+{
+	return (SDL_GetTicks() * 0.001);
+}
+
 void	update_uniform(t_scop *scop)
 {
 	t_mat4	proj = perspective_matrix(80.0,
-(float)scop->win.width / (float)scop->win.height, 0.1, 100.0);
+(float)scop->win.width / (float)scop->win.height, 0.1, 1000.0);
 	t_mat4	view = get_view_matrix(scop->cam);
 	glUseProgram(scop->shader);
 	glUniformMatrix4fv(glGetUniformLocation(scop->shader, "ProjectionMatrix"), 1,
@@ -44,23 +49,22 @@ GL_FALSE, (const GLfloat*)view.val);
 	else
 	{
 		glUniform3fv(glGetUniformLocation(scop->shader, "lightPos"), 1,
-		(const GLfloat*)&(t_vec3f){0, 0, -3});
+		(const GLfloat*)&(t_vec3f){0, 0, 3});
 	}
 	glUniform3fv(glGetUniformLocation(scop->shader, "cameraPos"), 1,
 	(const GLfloat*)&scop->cam->position);
 
 	glUniform1f(glGetUniformLocation(scop->shader, "transition"),
 (GLfloat)scop->transition);
+	if (scop->explo)
+		glUniform1f(glGetUniformLocation(scop->shader, "explosion"), (GLfloat)scop->last_time);
+	else
+		glUniform1f(glGetUniformLocation(scop->shader, "explosion"), (GLfloat)(-1.0));
 	glUniform1i(glGetUniformLocation(scop->shader, "use_material"),
 (GLint)scop->use_material);
 	glUniform1i(glGetUniformLocation(scop->shader, "material.diffuse_tex"), 0);
 	glUniform1i(glGetUniformLocation(scop->shader, "material.specular_tex"), 1);
 	glUseProgram(0);
-}
-
-double	get_time(void)
-{
-	return (SDL_GetTicks() * 0.001);
 }
 
 int		main(int ac, char **av)
@@ -72,15 +76,13 @@ int		main(int ac, char **av)
 	if (!init(&scop, ac, av))
 		return (0);
 	clear();
-	//TODO
-//			update(&scop, scop.cam);
-//			update_uniform(&scop);
-//			update_matrix(&scop.mega);
-//
-//			draw_mega(&scop.mega, scop.shader, &scop.tex);
-//	SDL_GL_SwapWindow(scop.win.win);
-//	TODO add text fps counter or material name
-	scop.last_time = get_time();
+	SDL_GL_SwapWindow(scop.win.win);
+	clear();
+	update(&scop, scop.cam);
+	update_uniform(&scop);
+	update_matrix(&scop.mega);
+
+	draw_mega(&scop.mega, scop.shader);
 	while (scop.win.open)
 	{
 		if (get_time() - scop.last_time > FRAMES_RATE)
@@ -89,6 +91,7 @@ int		main(int ac, char **av)
 			clear();
 
 			update(&scop, scop.cam);
+			//printf("%f\n", 1 / scop.dt);
 			update_uniform(&scop);
 			update_matrix(&scop.mega);
 
@@ -101,12 +104,10 @@ int		main(int ac, char **av)
 				scop.transition = 0;
 			if (scop.transition > 1)
 				scop.transition = 1;
-		//	if (scop.obj_move)
-		//		rotate_mega(&scop.mega, (t_vec3f){0, 0, 40 * scop.dt});
+			if (scop.obj_move)
+				rotate_mega(&scop.mega, (t_vec3f){0, 20 * scop.dt, 0});
 		}
 	}
-	//TODO unload textures and texture
-	//TODO free textures and texture
 	delete_mega(&scop.mega);
 	glDeleteProgram(scop.shader);
 	quit(&scop.win);

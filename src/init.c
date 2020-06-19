@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 14:32:39 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/17 18:44:21 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/19 02:25:12 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ static void		init_value(t_scop *scop)
 	scop->current_time = 0;
 	scop->last_time = 0;
 	scop->dt = 0;
+	scop->explo = 0;
 }
 
 int		init_all_obj_file(t_scop *scop, int ac, char **av)
@@ -117,7 +118,7 @@ int				init(t_scop *scop, int ac, char **av)
 	if (!scop->win.open)
 		return (0);
 	if (!(scop->shader = get_shader(
-"resources/shader/basicShader.vs", "resources/shader/basicShader.fs")))
+"resources/shader/basicShader.vs", "resources/shader/basicShader.gs", "resources/shader/basicShader.fs")))
 	{
 		quit(&scop->win);
 		return (0);
