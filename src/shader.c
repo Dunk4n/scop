@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 10:40:04 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/18 20:19:09 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/20 21:47:50 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ static GLuint	link_program(GLuint vertex, GLuint geometry, GLuint fragment)
 	if (!success)
 	{
 		glGetProgramInfoLog(prog, 512, NULL, info);
-		ft_printf("\033[0;31mERROR\033[0m::SHADER::COULD_NOT_LINK_PROGRAM\n%s", info);
+		ft_printf("\033[0;31mERROR\033[0m::SHADER::COULD_NOT_LINK_PROGRAM\n%s",
+		info);
 		glUseProgram(0);
 		return (0);
 	}
@@ -111,7 +112,8 @@ static GLuint	load_shader(GLenum type, const char *name)
 	if (!success)
 	{
 		glGetShaderInfoLog(shader, 512, NULL, info);
-		ft_printf("\033[0;31mERROR\033[0m::SHADER::COULD_NOT_COMPILE_SHADER\n%s", info);
+		ft_printf(
+		"\033[0;31mERROR\033[0m::SHADER::COULD_NOT_COMPILE_SHADER\n%s", info);
 		return (0);
 	}
 	return (shader);

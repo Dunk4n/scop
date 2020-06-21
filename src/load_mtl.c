@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/10 19:01:36 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/17 15:05:48 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/20 21:28:18 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	remove_mtl_comment(char **line, t_mtl_vector *mtl)
 int		add_to_mega(t_mtl_vector *mtl, t_mega_obj *mega)
 {
 	t_material	*new;
+	t_material	*ptr;
 	uint		i;
 	uint		j;
 
@@ -72,17 +73,13 @@ int		add_to_mega(t_mtl_vector *mtl, t_mega_obj *mega)
 		return (0);
 	}
 	i = 0;
+	ptr = mega->materials;
 	while (i < mega->nb_material)
-	{
-		new[i] = mega->materials[i];
-		++i;
-	}
+		new[i++] = *(ptr++);
 	j = 0;
+	ptr = mtl->materials;
 	while (j < mtl->nb_material)
-	{
-		new[i + j] = mtl->materials[j];
-		++j;
-	}
+		new[i + j++] = *(ptr++);
 	free(mega->materials);
 	mega->materials = new;
 	mega->nb_material = mega->nb_material + mtl->nb_material;
@@ -137,17 +134,31 @@ int		init_mtl(char *filename, int *fd, t_mtl_vector *mtl)
 	return (1);
 }
 
-int		load_mtl(char *filename, t_mega_obj *mega)
+static int	end_load_mtl(t_mega_obj *mega, t_mtl_vector *mtl, int fd, int ret)
+{
+	close(fd);
+	if (ret > -1 && !add_to_mega(mtl, mega))
+		ret = -1;
+	free(mtl->materials);
+	if (ret < 0)
+	{
+		free_materials(mtl->materials, mtl->nb_material);
+		get_next_line(fd, NULL);
+		return (0);
+	}
+	return (1);
+}
+
+int			load_mtl(char *filename, t_mega_obj *mega)
 {
 	int				fd;
-	int				ret;
 	char			*line;
 	int				type;
 	t_mtl_vector	mtl;
 
 	if (!init_mtl(filename, &fd, &mtl))
 		return (0);
-	while ((ret = get_next_line(fd, &line)))
+	while ((type = get_next_line(fd, &line)))
 	{
 		remove_mtl_comment(&line, &mtl);
 		if ((type = get_type(line)) == -1)
@@ -157,22 +168,12 @@ int		load_mtl(char *filename, t_mega_obj *mega)
 		}
 		if (type < 0 || !g_mtl_parse_line[type](line, &mtl))
 		{
-			ret = -1;
+			type = -1;
 			break ;
 		}
 		free(line);
 		line = NULL;
 	}
 	free(line);
-	close(fd);
-	if (ret != -1 && !add_to_mega(&mtl, mega))
-		ret = -1;
-	free(mtl.materials);
-	if (ret == -1)
-	{
-		free_materials(mtl.materials, mtl.nb_material);
-		get_next_line(fd, NULL);
-		return (0);
-	}
-	return (1);
+	return (end_load_mtl(mega, &mtl, fd, type));
 }

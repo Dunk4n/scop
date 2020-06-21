@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/13 16:10:26 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/19 16:22:06 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/21 01:48:35 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,17 @@ void	quit(t_window *window)
 	SDL_Quit();
 }
 
+void	delete_all(t_scop *scop)
+{
+	delete_mega(&scop->mega);
+	glDeleteProgram(scop->shader);
+	glDeleteProgram(scop->shader_normal);
+	quit(&scop->win);
+}
+
 void	clear(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-
-double	get_time(void)
-{
-	return (SDL_GetTicks() * 0.001);
 }
 
 void	update_uniform(t_scop *scop, GLuint shader)
@@ -40,26 +43,14 @@ void	update_uniform(t_scop *scop, GLuint shader)
 GL_FALSE, (const GLfloat*)proj.val);
 	glUniformMatrix4fv(glGetUniformLocation(shader, "ViewMatrix"), 1,
 GL_FALSE, (const GLfloat*)view.val);
-
-	if (scop->light_pos)
-	{
-		glUniform3fv(glGetUniformLocation(shader, "lightPos"), 1,
-		(const GLfloat*)&scop->cam->position);
-	}
-	else
-	{
-		glUniform3fv(glGetUniformLocation(shader, "lightPos"), 1,
-		(const GLfloat*)&(t_vec3f){0, 0, 3});
-	}
+	glUniform3fv(glGetUniformLocation(shader, "lightPos"), 1, (scop->light_pos)
+? (const GLfloat*)&scop->cam->position : (const GLfloat*)&(t_vec3f){0, 0, 3});
 	glUniform3fv(glGetUniformLocation(shader, "cameraPos"), 1,
 	(const GLfloat*)&scop->cam->position);
-
 	glUniform1f(glGetUniformLocation(shader, "transition"),
 (GLfloat)scop->transition);
-	if (scop->explo)
-		glUniform1f(glGetUniformLocation(shader, "explosion"), (GLfloat)scop->last_time);
-	else
-		glUniform1f(glGetUniformLocation(shader, "explosion"), (GLfloat)(-1.0));
+	glUniform1f(glGetUniformLocation(shader, "explosion"), scop->explo ?
+(GLfloat)scop->last_time : (GLfloat)(-1.0));
 	glUniform1i(glGetUniformLocation(shader, "use_material"),
 (GLint)scop->use_material);
 	glUniform1i(glGetUniformLocation(shader, "material.diffuse_tex"), 0);
@@ -67,9 +58,37 @@ GL_FALSE, (const GLfloat*)view.val);
 	glUseProgram(0);
 }
 
+double	get_time(void)
+{
+	return (SDL_GetTicks() * 0.001);
+}
+
+void	update_display(t_scop *scop)
+{
+	SDL_GL_SwapWindow(scop->win.win);
+	clear();
+	update(scop, scop->cam);
+	update_matrix(&scop->mega);
+	update_uniform(scop, scop->shader);
+	draw_mega(&scop->mega, scop->shader);
+	if (scop->normal)
+	{
+		update_uniform(scop, scop->shader_normal);
+		draw_mega(&scop->mega, scop->shader_normal);
+	}
+	if ((scop->transition > 0 && scop->transition_speed < 0) ||
+(scop->transition < 1 && scop->transition_speed > 0))
+		scop->transition += scop->transition_speed * scop->dt;
+	if (scop->transition < 0)
+		scop->transition = 0;
+	if (scop->transition > 1)
+		scop->transition = 1;
+	if (scop->obj_move)
+		rotate_mega(&scop->mega, (t_vec3f){0, 20 * scop->dt, 0});
+}
+
 int		main(int ac, char **av)
 {
-	//TODO LA NORME!!!!!!!!!!
 	t_scop		scop;
 
 	if (ac < 2)
@@ -82,42 +101,12 @@ int		main(int ac, char **av)
 	update(&scop, scop.cam);
 	update_matrix(&scop.mega);
 	update_uniform(&scop, scop.shader);
-
 	draw_mega(&scop.mega, scop.shader);
 	while (scop.win.open)
 	{
 		if (get_time() - scop.last_time >= FRAMES_RATE)
-		{
-			SDL_GL_SwapWindow(scop.win.win);
-			clear();
-
-			update(&scop, scop.cam);
-			//ft_printf("%f\n", (scop.dt) ? 1 / scop.dt : 1);
-			update_matrix(&scop.mega);
-			update_uniform(&scop, scop.shader);
-
-			draw_mega(&scop.mega, scop.shader);
-
-			if (scop.normal)
-			{
-				update_uniform(&scop, scop.shader_normal);
-				draw_mega(&scop.mega, scop.shader_normal);
-			}
-
-			if ((scop.transition > 0 && scop.transition_speed < 0) ||
-(scop.transition < 1 && scop.transition_speed > 0))
-				scop.transition += scop.transition_speed * scop.dt;
-			if (scop.transition < 0)
-				scop.transition = 0;
-			if (scop.transition > 1)
-				scop.transition = 1;
-			if (scop.obj_move)
-				rotate_mega(&scop.mega, (t_vec3f){0, 20 * scop.dt, 0});
-		}
+			update_display(&scop);
 	}
-	delete_mega(&scop.mega);
-	glDeleteProgram(scop.shader);
-	glDeleteProgram(scop.shader_normal);
-	quit(&scop.win);
+	delete_all(&scop);
 	return (0);
 }

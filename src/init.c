@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 14:32:39 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/19 16:12:04 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/20 18:20:15 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,16 @@ static int		set_sdl(char *name, int width, int height, t_window *window)
 	SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK,
+	SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 4);
 	window->win = SDL_CreateWindow(name, SDL_WINDOWPOS_CENTERED,
 SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
-	if (!window->win)
-		return (0);
-	window->contex = SDL_GL_CreateContext(window->win);
-	if (!window->contex)
+	if (!window->win || !(window->contex = SDL_GL_CreateContext(window->win)))
 	{
-		SDL_DestroyWindow(window->win);
+		if (window->win)
+			SDL_DestroyWindow(window->win);
 		window->win = NULL;
 		return (0);
 	}
@@ -81,6 +80,10 @@ static t_window	init_window(char *name, int width, int height)
 
 static void		init_value(t_scop *scop)
 {
+	scop->cams[0] = init_cam();
+	scop->cams[1] = init_cam();
+	scop->cams[2] = init_cam();
+	scop->cam = &scop->cams[0];
 	scop->transition = 0;
 	scop->transition_speed = -0.4;
 	scop->mega.objs = NULL;
@@ -115,20 +118,23 @@ int		init_all_obj_file(t_scop *scop, int ac, char **av)
 void	get_arg(t_scop *scop, int *ac, char ***av)
 {
 	scop->color = false;
-	if (*ac > 1 && (!ft_strcmp((*av)[1], "-c") || !ft_strcmp((*av)[1], "--color")))
+	if (*ac > 1 && (!ft_strcmp((*av)[1], "-c") ||
+	!ft_strcmp((*av)[1], "--color")))
 	{
 		scop->color = true;
 		--(*ac);
 		++(*av);
 	}
 	scop->pos = false;
-	if (*ac > 1 && (!ft_strcmp((*av)[1], "-p") || !ft_strcmp((*av)[1], "--position")))
+	if (*ac > 1 && (!ft_strcmp((*av)[1], "-p") ||
+	!ft_strcmp((*av)[1], "--position")))
 	{
 		scop->pos = true;
 		--(*ac);
 		++(*av);
 	}
-	if (*ac > 1 && !scop->color && (!ft_strcmp((*av)[1], "-c") || !ft_strcmp((*av)[1], "--color")))
+	if (*ac > 1 && !scop->color && (!ft_strcmp((*av)[1], "-c") ||
+	!ft_strcmp((*av)[1], "--color")))
 	{
 		scop->color = true;
 		--(*ac);
@@ -136,13 +142,8 @@ void	get_arg(t_scop *scop, int *ac, char ***av)
 	}
 }
 
-int		init(t_scop *scop, int ac, char **av)
+int		init_shader_tex_obj(t_scop *scop, int ac, char **av)
 {
-	srand(time(NULL));
-	scop->win = init_window("scop", 1920, 1080);
-	get_arg(scop, &ac, &av);
-	if (ac < 2 || !scop->win.open)
-		return (0);
 	if (!(scop->shader = get_shader("resources/shader/basicShader.vs",
 "resources/shader/basicShader.gs", "resources/shader/basicShader.fs")))
 	{
@@ -152,13 +153,10 @@ int		init(t_scop *scop, int ac, char **av)
 	if (!(scop->shader_normal = get_shader("resources/shader/normalShader.vs",
 "resources/shader/normalShader.gs", "resources/shader/normalShader.fs")))
 	{
+		glDeleteProgram(scop->shader);
 		quit(&scop->win);
 		return (0);
 	}
-	scop->cams[0] = init_cam();
-	scop->cams[1] = init_cam();
-	scop->cams[2] = init_cam();
-	scop->cam = &scop->cams[0];
 	init_value(scop);
 	if (!get_texture("gri.bmp", GL_TEXTURE_2D, &scop->mega.tex) ||
 	!init_all_obj_file(scop, ac - 1, av))
@@ -170,6 +168,19 @@ int		init(t_scop *scop, int ac, char **av)
 		quit(&scop->win);
 		return (0);
 	}
+	return (1);
+}
+
+int		init(t_scop *scop, int ac, char **av)
+{
+	srand(time(NULL));
+	get_arg(scop, &ac, &av);
+	if (ac >= 2)
+		scop->win = init_window("scop", 1920, 1080);
+	if (ac < 2 || !scop->win.open)
+		return (0);
+	if (!init_shader_tex_obj(scop, ac, av))
+		return (0);
 	load_texture(&scop->mega.tex);
 	preprocess_mega(&scop->mega, scop->color, scop->pos);
 	load_gl_mega(&scop->mega);

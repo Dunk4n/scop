@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/26 22:09:51 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/17 11:34:28 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/21 01:49:11 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,23 +57,16 @@ static int	bmp_get_header(int fd, t_texture *new, unsigned int *data_size)
 	unsigned char	header_size;
 	ssize_t			size;
 
+	new->data = NULL;
+	new->load = false;
 	if ((size = read(fd, file_header, 14)) != 14)
-	{
-		close(fd);
 		return (0);
-	}
 	header_size = file_header[10];
 	if (header_size < 23 || file_header[0] != 'B' || file_header[1] != 'M')
-	{
-		close(fd);
 		return (0);
-	}
 	*data_size = *(unsigned int*)(file_header + 2) - header_size;
 	if ((size = read(fd, info_header, header_size - 14)) != header_size - 14)
-	{
-		close(fd);
 		return (0);
-	}
 	new->width = *(unsigned int*)(info_header + 4);
 	new->height = *(unsigned int*)(info_header + 8);
 	return (1);
@@ -92,7 +85,6 @@ static void	bmp_format_data(t_texture *tex)
 {
 	unsigned int	i;
 	unsigned int	j;
-	unsigned int	tmp;
 
 	i = 0;
 	while (i < tex->height / 2)
@@ -103,10 +95,6 @@ static void	bmp_format_data(t_texture *tex)
 			swap_red_blue(((unsigned int*)(tex->data)) + (i * tex->width) + j);
 			swap_red_blue(((unsigned int*)(tex->data)) +
 ((tex->height - 1 - i) * tex->width) + j);
-			tmp = ((unsigned int*)(tex->data))[(i * tex->width) + j];
-			((unsigned int*)(tex->data))[(i * tex->width) + j] =
-			((unsigned int*)(tex->data))[((tex->height - 1 - i) * tex->width) + j];
-			((unsigned int*)(tex->data))[((tex->height - 1 - i) * tex->width) + j] = tmp;
 			++j;
 		}
 		++i;
@@ -121,13 +109,10 @@ t_texture	get_bmp(char *name, GLenum type)
 	unsigned int	data_size;
 
 	new.type = type;
-	new.data = NULL;
-	new.load = false;
 	if ((fd = open(name, O_RDONLY)) < 0)
 		return (new);
-	if (!bmp_get_header(fd, &new, &data_size))
-		return (new);
-	if (!(new.data = malloc(sizeof(char) * (data_size))))
+	if (!bmp_get_header(fd, &new, &data_size) ||
+!(new.data = malloc(sizeof(char) * (data_size))))
 	{
 		close(fd);
 		return (new);

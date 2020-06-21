@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 20:37:48 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/19 15:53:57 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/21 00:28:58 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,51 +56,52 @@ t_mat4	translation_matrix(t_mat4 mat, t_vec3f vec)
 	return (mult_matrix(mat, new));
 }
 
+void	rotation_result(t_mat4 *res, t_mat4 new, t_mat4 mat, int nb)
+{
+	if (nb == 3)
+	{
+		res->val[3][0] = mat.val[3][0];
+		res->val[3][1] = mat.val[3][1];
+		res->val[3][2] = mat.val[3][2];
+		res->val[3][3] = mat.val[3][3];
+		return ;
+	}
+	res->val[nb][0] = mat.val[0][0] * new.val[nb][0] + mat.val[1][0] *
+	new.val[nb][1] + mat.val[2][0] * new.val[nb][2];
+	res->val[nb][1] = mat.val[0][1] * new.val[nb][0] + mat.val[1][1] *
+	new.val[nb][1] + mat.val[2][1] * new.val[nb][2];
+	res->val[nb][2] = mat.val[0][2] * new.val[nb][0] + mat.val[1][2] *
+	new.val[nb][1] + mat.val[2][2] * new.val[nb][2];
+	res->val[nb][3] = mat.val[0][3] * new.val[nb][0] + mat.val[1][3] *
+	new.val[nb][1] + mat.val[2][3] * new.val[nb][2];
+}
+
 t_mat4	rotation_matrix(t_mat4 mat, float angl, t_vec3f vec)
 {
-	float	c;
-	float	s;
+	t_vec2f	cosinus;
 	t_vec3f	tmp;
 	t_mat4	new;
-
-	c = cos(angl);
-	s = sin(angl);
-	vec = normalize_vector(vec);
-	tmp = mult_vector(vec, 1.0 - c);
-	ft_bzero((void*)&new, sizeof(t_mat4));
-	new.val[0][0] = c + tmp.x * vec.x;
-	new.val[0][1] = tmp.x * vec.y + s * vec.z;
-	new.val[0][2] = tmp.x * vec.z - s * vec.y;
-
-	new.val[1][0] = tmp.y * vec.x - s * vec.z;
-	new.val[1][1] = c + tmp.y * vec.y;
-	new.val[1][2] = tmp.y * vec.z + s * vec.x;
-
-	new.val[2][0] = tmp.z * vec.x + s * vec.y;
-	new.val[2][1] = tmp.z * vec.y - s * vec.x;
-	new.val[2][2] = c + tmp.z * vec.z;
-
 	t_mat4	res;
+
+	cosinus.x = cos(angl);
+	cosinus.y = sin(angl);
+	vec = normalize_vector(vec);
+	tmp = mult_vector(vec, 1.0 - cosinus.x);
+	ft_bzero((void*)&new, sizeof(t_mat4));
+	new.val[0][0] = cosinus.x + tmp.x * vec.x;
+	new.val[0][1] = tmp.x * vec.y + cosinus.y * vec.z;
+	new.val[0][2] = tmp.x * vec.z - cosinus.y * vec.y;
+	new.val[1][0] = tmp.y * vec.x - cosinus.y * vec.z;
+	new.val[1][1] = cosinus.x + tmp.y * vec.y;
+	new.val[1][2] = tmp.y * vec.z + cosinus.y * vec.x;
+	new.val[2][0] = tmp.z * vec.x + cosinus.y * vec.y;
+	new.val[2][1] = tmp.z * vec.y - cosinus.y * vec.x;
+	new.val[2][2] = cosinus.x + tmp.z * vec.z;
 	ft_bzero((void*)&res, sizeof(t_mat4));
-	res.val[0][0] = mat.val[0][0] * new.val[0][0] + mat.val[1][0] * new.val[0][1] + mat.val[2][0] * new.val[0][2];
-	res.val[0][1] = mat.val[0][1] * new.val[0][0] + mat.val[1][1] * new.val[0][1] + mat.val[2][1] * new.val[0][2];
-	res.val[0][2] = mat.val[0][2] * new.val[0][0] + mat.val[1][2] * new.val[0][1] + mat.val[2][2] * new.val[0][2];
-	res.val[0][3] = mat.val[0][3] * new.val[0][0] + mat.val[1][3] * new.val[0][1] + mat.val[2][3] * new.val[0][2];
-
-	res.val[1][0] = mat.val[0][0] * new.val[1][0] + mat.val[1][0] * new.val[1][1] + mat.val[2][0] * new.val[1][2];
-	res.val[1][1] = mat.val[0][1] * new.val[1][0] + mat.val[1][1] * new.val[1][1] + mat.val[2][1] * new.val[1][2];
-	res.val[1][2] = mat.val[0][2] * new.val[1][0] + mat.val[1][2] * new.val[1][1] + mat.val[2][2] * new.val[1][2];
-	res.val[1][3] = mat.val[0][3] * new.val[1][0] + mat.val[1][3] * new.val[1][1] + mat.val[2][3] * new.val[1][2];
-
-	res.val[2][0] = mat.val[0][0] * new.val[2][0] + mat.val[1][0] * new.val[2][1] + mat.val[2][0] * new.val[2][2];
-	res.val[2][1] = mat.val[0][1] * new.val[2][0] + mat.val[1][1] * new.val[2][1] + mat.val[2][1] * new.val[2][2];
-	res.val[2][2] = mat.val[0][2] * new.val[2][0] + mat.val[1][2] * new.val[2][1] + mat.val[2][2] * new.val[2][2];
-	res.val[2][3] = mat.val[0][3] * new.val[2][0] + mat.val[1][3] * new.val[2][1] + mat.val[2][3] * new.val[2][2];
-
-	res.val[3][0] = mat.val[3][0];
-	res.val[3][1] = mat.val[3][1];
-	res.val[3][2] = mat.val[3][2];
-	res.val[3][3] = mat.val[3][3];
+	rotation_result(&res, new, mat, 0);
+	rotation_result(&res, new, mat, 1);
+	rotation_result(&res, new, mat, 2);
+	rotation_result(&res, new, mat, 3);
 	return (res);
 }
 

@@ -6,15 +6,12 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 15:37:30 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/12 18:28:59 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/20 19:02:33 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.h"
 
-/*
-**nb_vertex is temporarily capacity of index
-*/
 static int	put_triangle_in(t_vec3ui triangle[3],
 t_load_vertex *array, t_mesh *mesh)
 {

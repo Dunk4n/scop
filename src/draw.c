@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/25 17:28:59 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/19 14:42:04 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/20 21:35:20 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,10 @@ static void	load_material(t_mega_obj *mega, t_material *material, GLuint shader)
 		mat = *material;
 	else
 	{
+		ft_bzero((char*)&mat, sizeof(t_material));
 		mat.ambient = (t_vec3f){1, 1, 1};
-		mat.diffuse = (t_vec3f){0, 0, 0};
-		mat.specular = (t_vec3f){0, 0, 0};
 		mat.shininess = 1;
 		mat.transparency = 1;
-		mat.diffuse_tex.data = NULL;
-		mat.specular_tex.data = NULL;
 	}
 	glUniform3fv(glGetUniformLocation(shader, "material.ambient"), 1,
 	(const GLfloat*)&mat.ambient);
@@ -38,10 +35,7 @@ static void	load_material(t_mega_obj *mega, t_material *material, GLuint shader)
 	mat.shininess);
 	glUniform1f(glGetUniformLocation(shader, "material.transparency"),
 	mat.transparency);
-	if (mat.diffuse_tex.data)
-		bind_texture(&mat.diffuse_tex, 0);
-	else
-		bind_texture(&mega->tex, 0);
+	bind_texture(mat.diffuse_tex.data ? &mat.diffuse_tex : &mega->tex, 0);
 	if (mat.specular_tex.data)
 		bind_texture(&mat.specular_tex, 1);
 }

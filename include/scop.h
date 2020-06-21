@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 14:41:51 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/19 16:12:21 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/21 01:08:43 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,6 +281,7 @@ int		parse_diffuse(char *line, t_mtl_vector *mtl);
 int		parse_specular(char *line, t_mtl_vector *mtl);
 void	move_mega(t_mega_obj *mega, t_vec3f move);
 void	move_origine_mega(t_mega_obj *mega, t_vec3f move);
+void	move_and_origine_mega(t_mega_obj *mega, t_vec3f move);
 void	rotate_mega(t_mega_obj *mega, t_vec3f rotate);
 void	scale_mega(t_mega_obj *mega, t_vec3f scale);
 void	move_camera(t_camera *cam, double dt, t_vec3f pos);

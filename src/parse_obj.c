@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/25 19:03:27 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/12 18:29:18 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/20 19:14:21 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,20 +50,13 @@ static int	add_new_obj(t_mega_obj *mega)
 int		parse_obj(char *line, t_load_vertex *array, t_mega_obj *mega)
 {
 	char	name[64];
-	int		i;
 	int		j;
 
 	line += pass_spaces(line);
 	line += pass_word(line);
 	line += pass_spaces(line);
 	j = pass_word(line);
-	i = 0;
-	while (i < j && i < 63)
-	{
-		name[i] = line[i];
-		++i;
-	}
-	name[i] = '\0';
+	ft_strncpy(name, line, (j > 63) ? 63 : j);
 	line += pass_spaces(line + j) + j;
 	if (*line)
 		return (0);

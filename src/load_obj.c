@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 23:16:38 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/17 12:13:07 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/20 21:27:33 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,7 @@ int		init_load(t_mega_obj *mega, const char *name, int *fd, t_load_vertex *array
 	}
 	init_mesh(mega->objs[mega->nb_obj - 1].meshs);
 	mega->objs[mega->nb_obj - 1].nb_mesh = 1;
-	array->position = NULL;
-	array->normal = NULL;
-	array->texture = NULL;
-	array->nb_position = 0;
-	array->nb_normal = 0;
-	array->nb_texture = 0;
-	array->capacity_position = 0;
-	array->capacity_normal = 0;
-	array->capacity_texture = 0;
+	ft_bzero((char*)array, sizeof(t_load_vertex));
 	return (1);
 }
 
@@ -120,6 +112,7 @@ static int	get_type(char *line)
 	unsigned int	i;
 	unsigned int	size;
 
+	remove_comment(line);
 	line += pass_spaces(line);
 	if (!*line)
 		return (-1);
@@ -135,6 +128,21 @@ static int	get_type(char *line)
 	return (-2);
 }
 
+int		load_obj_end(t_mega_obj *mega, t_load_vertex *array, int ret, int fd)
+{
+	close(fd);
+	if (ret == -1)
+	{
+		get_next_line(fd, NULL);
+		delete_array(array);
+		delete_mega(mega);
+		return (0);
+	}
+	format_obj(get_actual_obj(mega), array);
+	delete_array(array);
+	return (1);
+}
+
 int		load_obj(t_mega_obj *mega, const char *name)
 {
 	int				fd;
@@ -147,7 +155,6 @@ int		load_obj(t_mega_obj *mega, const char *name)
 		return (0);
 	while ((ret = get_next_line(fd, &line)) > 0)
 	{
-		remove_comment(line);
 		if ((type = get_type(line)) == -1)
 		{
 			free(line);
@@ -162,15 +169,5 @@ int		load_obj(t_mega_obj *mega, const char *name)
 		line = NULL;
 	}
 	free(line);
-	close(fd);
-	if (ret == -1)
-	{
-		get_next_line(fd, NULL);
-		delete_array(&array);
-		delete_mega(mega);
-		return (0);
-	}
-	format_obj(get_actual_obj(mega), &array);
-	delete_array(&array);
-	return (1);
+	return (load_obj_end(mega, &array, ret, fd));
 }

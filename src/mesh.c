@@ -6,36 +6,23 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 23:00:37 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/18 02:08:06 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/20 21:42:16 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.h"
 
-void	display_matrix(t_mat4 mat)
-{
-	printf("mat:\n%f, %f, %f, %f\n%f, %f, %f, %f\n%f, %f, %f, %f\n%f, %f, %f, %f\n\n",
-	mat.val[0][0], mat.val[0][1], mat.val[0][2], mat.val[0][3],
-	mat.val[1][0], mat.val[1][1], mat.val[1][2], mat.val[1][3],
-	mat.val[2][0], mat.val[2][1], mat.val[2][2], mat.val[2][3],
-	mat.val[3][0], mat.val[3][1], mat.val[3][2], mat.val[3][3]);
-}
-
-void	display_vec(t_vec3f vec)
-{
-	printf("vec:\n%f, %f, %f\n\n", vec.x, vec.y, vec.z);
-}
-
 void	update_mesh_matrix(t_mesh *mesh, t_mat4 obj_model)
 {
 	mesh->model_matrix = translation_matrix(obj_model, mesh->origin);
-	mesh->model_matrix =
-rotation_matrix(mesh->model_matrix, (mesh->rotation.x * M_PI) / 180.0, (t_vec3f){1, 0, 0});
-	mesh->model_matrix =
-rotation_matrix(mesh->model_matrix, (mesh->rotation.y * M_PI) / 180.0, (t_vec3f){0, 1, 0});
-	mesh->model_matrix =
-rotation_matrix(mesh->model_matrix, (mesh->rotation.z * M_PI) / 180.0, (t_vec3f){0, 0, 1});
-	mesh->model_matrix = translation_matrix(mesh->model_matrix, sub_vec3f(mesh->position, mesh->origin));
+	mesh->model_matrix = rotation_matrix(mesh->model_matrix,
+(mesh->rotation.x * M_PI) / 180.0, (t_vec3f){1, 0, 0});
+	mesh->model_matrix = rotation_matrix(mesh->model_matrix,
+(mesh->rotation.y * M_PI) / 180.0, (t_vec3f){0, 1, 0});
+	mesh->model_matrix = rotation_matrix(mesh->model_matrix,
+(mesh->rotation.z * M_PI) / 180.0, (t_vec3f){0, 0, 1});
+	mesh->model_matrix = translation_matrix(mesh->model_matrix,
+sub_vec3f(mesh->position, mesh->origin));
 	mesh->model_matrix = scale_matrix(mesh->model_matrix, mesh->scale);
 }
 
