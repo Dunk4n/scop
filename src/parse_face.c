@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 15:37:30 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/20 19:02:33 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/21 17:50:52 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static uint	get_arg_face(char *line, t_vec3ui *vec)
 	return (i);
 }
 
-int		parse_face(char *line, t_load_vertex *array, t_mega_obj *mega)
+int			parse_face(char *line, t_load_vertex *array, t_mega_obj *mega)
 {
 	t_vec3ui		triangle[3];
 	unsigned int	i;

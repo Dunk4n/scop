@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/25 01:09:50 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/17 11:57:01 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/21 17:03:20 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int			parse_mtllib(char *line, t_load_vertex *array, t_mega_obj *mega)
 	return (1);
 }
 
-static unsigned int	get_index_material(char *name, t_mega_obj *mega)
+static uint	get_index_material(char *name, t_mega_obj *mega)
 {
 	uint	i;
 

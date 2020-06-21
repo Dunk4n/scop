@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 20:37:48 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/21 00:28:58 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/21 16:57:56 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,45 +15,6 @@
 t_vec3f	sub_vec3f(t_vec3f a, t_vec3f b)
 {
 	return ((t_vec3f){a.x - b.x, a.y - b.y, a.z - b.z});
-}
-
-t_mat4	identity_matrix(void)
-{
-	t_mat4	mat;
-
-	for (int i = 0; i < 4; ++i)
-	{
-		for (int j = 0; j < 4; ++j)
-			mat.val[i][j] = (i == j) ? 1 : 0;
-	}
-	return (mat);
-}
-
-t_mat4	mult_matrix(t_mat4 mat1, t_mat4 mat2)
-{
-	t_mat4	new;
-
-	for (int i = 0; i < 4; ++i)
-	{
-		for (int j = 0; j < 4; ++j)
-		{
-			new.val[i][j] = 0;
-			for (int k = 0; k < 4; ++k)
-				new.val[i][j] += mat1.val[i][k] * mat2.val[k][j];
-		}
-	}
-	return (new);
-}
-
-t_mat4	translation_matrix(t_mat4 mat, t_vec3f vec)
-{
-	t_mat4	new;
-
-	new = identity_matrix();
-	new.val[3][0] = vec.x;
-	new.val[3][1] = vec.y;
-	new.val[3][2] = vec.z;
-	return (mult_matrix(mat, new));
 }
 
 void	rotation_result(t_mat4 *res, t_mat4 new, t_mat4 mat, int nb)
@@ -114,17 +75,14 @@ t_mat4	scale_matrix(t_mat4 mat, t_vec3f vec)
 	new.val[0][1] = mat.val[0][1] * vec.x;
 	new.val[0][2] = mat.val[0][2] * vec.x;
 	new.val[0][3] = mat.val[0][3] * vec.x;
-
 	new.val[1][0] = mat.val[1][0] * vec.y;
 	new.val[1][1] = mat.val[1][1] * vec.y;
 	new.val[1][2] = mat.val[1][2] * vec.y;
 	new.val[1][3] = mat.val[1][3] * vec.y;
-
 	new.val[2][0] = mat.val[2][0] * vec.z;
 	new.val[2][1] = mat.val[2][1] * vec.z;
 	new.val[2][2] = mat.val[2][2] * vec.z;
 	new.val[2][3] = mat.val[2][3] * vec.z;
-
 	new.val[3][0] = mat.val[3][0];
 	new.val[3][1] = mat.val[3][1];
 	new.val[3][2] = mat.val[3][2];

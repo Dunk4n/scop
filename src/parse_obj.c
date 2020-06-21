@@ -6,19 +6,19 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/25 19:03:27 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/20 19:14:21 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/21 17:45:40 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.h"
 
-t_mesh	*get_actual_mesh(t_mega_obj *mega)
+t_mesh		*get_actual_mesh(t_mega_obj *mega)
 {
 	return (&mega->objs[mega->nb_obj - 1].meshs[mega->objs[mega->nb_obj -
 1].nb_mesh - 1]);
 }
 
-t_obj	*get_actual_obj(t_mega_obj *mega)
+t_obj		*get_actual_obj(t_mega_obj *mega)
 {
 	return (&mega->objs[mega->nb_obj - 1]);
 }
@@ -47,7 +47,7 @@ static int	add_new_obj(t_mega_obj *mega)
 	return (1);
 }
 
-int		parse_obj(char *line, t_load_vertex *array, t_mega_obj *mega)
+int			parse_obj(char *line, t_load_vertex *array, t_mega_obj *mega)
 {
 	char	name[64];
 	int		j;

@@ -6,58 +6,14 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/10 19:01:36 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/20 21:28:18 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/21 18:01:22 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fcntl.h>
 #include "scop.h"
 
-void	resize_mtl(char **line, char *tmp, t_mtl_vector *mtl)
-{
-	uint	nb;
-
-	tmp += pass_spaces(tmp);
-	tmp += get_uint(tmp, &nb);
-	tmp += pass_spaces(tmp);
-	if (*tmp || !nb || nb > 10000)
-		return ;
-	if (!(mtl->materials = malloc(sizeof(t_material) * nb)))
-	{
-		free(*line);
-		*line = NULL;
-		return ;
-	}
-	mtl->capacity_material = nb;
-}
-
-void	remove_mtl_comment(char **line, t_mtl_vector *mtl)
-{
-	char	*tmp;
-	uint	i;
-
-	tmp = *line;
-	while (*tmp)
-	{
-		if (*tmp == '#')
-		{
-			i = 0;
-			while (*line && *(tmp + i) && !mtl->capacity_material)
-			{
-				if (*(tmp + i) == 'M' &&
-				!ft_strncmp(tmp + i, "Material Count:", 15))
-					resize_mtl(line, tmp + i + 15, mtl);
-				++i;
-			}
-			if (*line)
-				**line = '\0';
-			return ;
-		}
-		++tmp;
-	}
-}
-
-int		add_to_mega(t_mtl_vector *mtl, t_mega_obj *mega)
+int					add_to_mega(t_mtl_vector *mtl, t_mega_obj *mega)
 {
 	t_material	*new;
 	t_material	*ptr;
@@ -86,7 +42,7 @@ int		add_to_mega(t_mtl_vector *mtl, t_mega_obj *mega)
 	return (1);
 }
 
-static int	(* const g_mtl_parse_line[NB_MTL_KEYWORD])
+static int			(*const g_mtl_parse_line[NB_MTL_KEYWORD])
 (char *line, t_mtl_vector *mtl) =
 {
 	parse_newmtl, parse_ambient, parse_diffuse, parse_specular, parse_shininess,
@@ -94,13 +50,13 @@ static int	(* const g_mtl_parse_line[NB_MTL_KEYWORD])
 	parse_diffuse_tex, parse_specular_tex,
 };
 
-static const char *keyword[NB_MTL_KEYWORD] =
+static const char	*g_keyword[NB_MTL_KEYWORD] =
 {
 	"newmtl", "Ka", "Kd", "Ks", "Ns", "d", "Tr", "Ni", "illum", "map_Kd",
 	"map_Ks",
 };
 
-static int	get_type(char *line)
+static int			get_type(char *line)
 {
 	unsigned int	i;
 	unsigned int	size;
@@ -114,7 +70,7 @@ static int	get_type(char *line)
 	i = 0;
 	while (i < NB_MTL_KEYWORD)
 	{
-		if (size == ft_strlen(keyword[i]) &&
+		if (size == ft_strlen(g_keyword[i]) &&
 !ft_strncmp(line, keyword[i], size))
 			return (i);
 		++i;
@@ -122,7 +78,7 @@ static int	get_type(char *line)
 	return (-2);
 }
 
-int		init_mtl(char *filename, int *fd, t_mtl_vector *mtl)
+int					init_mtl(char *filename, int *fd, t_mtl_vector *mtl)
 {
 	mtl->materials = NULL;
 	mtl->nb_material = 0;
@@ -134,7 +90,8 @@ int		init_mtl(char *filename, int *fd, t_mtl_vector *mtl)
 	return (1);
 }
 
-static int	end_load_mtl(t_mega_obj *mega, t_mtl_vector *mtl, int fd, int ret)
+static int			end_load_mtl(t_mega_obj *mega, t_mtl_vector *mtl,
+int fd, int ret)
 {
 	close(fd);
 	if (ret > -1 && !add_to_mega(mtl, mega))
@@ -149,7 +106,7 @@ static int	end_load_mtl(t_mega_obj *mega, t_mtl_vector *mtl, int fd, int ret)
 	return (1);
 }
 
-int			load_mtl(char *filename, t_mega_obj *mega)
+int					load_mtl(char *filename, t_mega_obj *mega)
 {
 	int				fd;
 	char			*line;

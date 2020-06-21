@@ -6,13 +6,13 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/22 14:05:26 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/21 01:22:01 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/21 17:52:56 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.h"
 
-void	move_camera(t_camera *cam, double dt, t_vec3f pos)
+void		move_camera(t_camera *cam, double dt, t_vec3f pos)
 {
 	cam->position = add_vector(cam->position,
 	mult_vector(cam->right, pos.x * cam->movement_speed * dt));
@@ -22,7 +22,7 @@ void	move_camera(t_camera *cam, double dt, t_vec3f pos)
 	mult_vector(cam->front, pos.z * cam->movement_speed * dt));
 }
 
-void	rotate_camera(t_camera *cam, double dt, t_vec2f rot)
+void		rotate_camera(t_camera *cam, double dt, t_vec2f rot)
 {
 	cam->pitch += rot.x * cam->sensitivity * dt;
 	cam->yaw += rot.y * cam->sensitivity * dt;
@@ -36,12 +36,13 @@ void	rotate_camera(t_camera *cam, double dt, t_vec2f rot)
 		cam->yaw += 360;
 }
 
-void	update_camera_vector(t_camera *cam)
+void		update_camera_vector(t_camera *cam)
 {
-	cam->front.x = cos(cam->yaw * M_PI / 180.0) * cos(cam->pitch * M_PI / 180.0);
+	cam->front.x = cos(cam->yaw * M_PI / 180.0) *
+	cos(cam->pitch * M_PI / 180.0);
 	cam->front.y = sin(cam->pitch * M_PI / 180.0);
-	cam->front.z = sin(cam->yaw * M_PI / 180.0) * cos(cam->pitch * M_PI / 180.0);
-
+	cam->front.z = sin(cam->yaw * M_PI / 180.0) *
+	cos(cam->pitch * M_PI / 180.0);
 	cam->front = normalize_vector(cam->front);
 	cam->right = normalize_vector(cross_vector(cam->front, cam->world_up));
 	cam->up = normalize_vector(cross_vector(cam->right, cam->front));
@@ -75,7 +76,7 @@ t_mat4		get_view_matrix(t_camera *cam)
 	return (cam->view_matrix);
 }
 
-t_camera		init_cam()
+t_camera	init_cam(void)
 {
 	t_camera	cam;
 
@@ -86,7 +87,6 @@ t_camera		init_cam()
 	cam.position = (t_vec3f){0, 0, 3};
 	cam.right = (t_vec3f){0, 0, 0};
 	cam.up = cam.world_up;
-
 	cam.pitch = 0;
 	cam.yaw = -90;
 	cam.roll = 0;

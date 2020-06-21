@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/25 17:28:59 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/20 21:35:20 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/21 17:45:58 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static void	draw_obj(t_mega_obj *mega, t_obj *obj, GLuint shader)
 		draw_mesh(mega, &obj->meshs[i++], shader);
 }
 
-void	draw_mega(t_mega_obj *mega, GLuint shader)
+void		draw_mega(t_mega_obj *mega, GLuint shader)
 {
 	uint	i;
 

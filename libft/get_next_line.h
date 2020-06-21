@@ -6,12 +6,12 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 19:17:40 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/10 22:03:39 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/21 18:12:12 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_BONUS_H
-# define GET_NEXT_LINE_BONUS_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
 # define NB_FD 5
 

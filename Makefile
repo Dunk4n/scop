@@ -6,7 +6,7 @@
 #    By: niduches <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/19 16:00:17 by niduches          #+#    #+#              #
-#    Updated: 2020/06/17 23:40:11 by niduches         ###   ########.fr        #
+#    Updated: 2020/06/21 17:24:33 by niduches         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,36 +17,45 @@ D_INC		=	./include/
 
 BUILD_DIR	=	build
 
-SRC_PATH	=	main.c				\
-				init.c				\
-				shader.c			\
-				math.c				\
-				math_vector.c		\
-				mesh.c				\
-				camera.c			\
-				load_obj.c			\
-				obj.c				\
-				parse_utils.c		\
-				parse_vertex.c		\
-				parse_face.c		\
-				parse_group.c		\
-				parse_obj.c			\
-				parse_s.c			\
-				parse_mtl.c			\
-				format_obj.c		\
-				delete.c			\
-				load_gl.c			\
-				draw.c				\
-				update.c			\
-				get_bmp.c			\
-				preprocess.c		\
-				update_matrix.c		\
-				load_mtl.c			\
-				parse_mtl_one_arg.c	\
-				parse_mtl_args.c	\
-				parse_mtl_tex.c		\
-				texture.c			\
-				material.c			\
+SRC_PATH	=	main.c						\
+				init.c						\
+				shader.c					\
+				math.c						\
+				math_vector.c				\
+				mesh.c						\
+				camera.c					\
+				load_obj.c					\
+				obj.c						\
+				parse_utils.c				\
+				parse_vertex.c				\
+				parse_face.c				\
+				parse_group.c				\
+				parse_obj.c					\
+				parse_s.c					\
+				parse_mtl.c					\
+				format_obj.c				\
+				delete.c					\
+				load_gl.c					\
+				draw.c						\
+				update.c					\
+				get_bmp.c					\
+				preprocess.c				\
+				load_mtl.c					\
+				parse_mtl_one_arg.c			\
+				parse_mtl_args.c			\
+				parse_mtl_tex.c				\
+				texture.c					\
+				material.c					\
+				update_display.c			\
+				format_mesh.c				\
+				init_window.c				\
+				load_mtl_remove_comment.c	\
+				load_obj_init.c				\
+				math_matrix.c				\
+				get_float.c					\
+				preprocess_normal_tex.c		\
+				update_event.c				\
+				math_vector_operation.c		\
 
 SRC			=	$(addprefix $(D_SRC),$(SRC_PATH))
 

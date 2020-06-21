@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/25 16:26:02 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/20 21:46:55 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/21 17:44:46 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void		load_gl_obj(t_obj *obj)
 	obj->load = true;
 }
 
-void	load_gl_mega(t_mega_obj *mega)
+void		load_gl_mega(t_mega_obj *mega)
 {
 	uint	i;
 
