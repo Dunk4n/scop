@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/26 22:09:51 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/21 17:53:43 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/21 23:52:37 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,11 @@ static void	bmp_format_data(t_texture *tex)
 {
 	unsigned int	i;
 	unsigned int	j;
+	unsigned int	height;
 
+	height = tex->height / 2;
 	i = 0;
-	while (i < tex->height / 2)
+	while (i < height)
 	{
 		j = 0;
 		while (j < tex->width)
@@ -61,6 +63,12 @@ static void	bmp_format_data(t_texture *tex)
 			++j;
 		}
 		++i;
+	}
+	if (tex->height % 2)
+	{
+		j = 0;
+		while (j < tex->width)
+			swap_red_blue(((unsigned int*)(tex->data)) + (i * tex->width) + j++);
 	}
 }
 

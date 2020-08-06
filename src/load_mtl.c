@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/10 19:01:36 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/21 18:01:22 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/21 22:24:16 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static int			get_type(char *line)
 	while (i < NB_MTL_KEYWORD)
 	{
 		if (size == ft_strlen(g_keyword[i]) &&
-!ft_strncmp(line, keyword[i], size))
+!ft_strncmp(line, g_keyword[i], size))
 			return (i);
 		++i;
 	}

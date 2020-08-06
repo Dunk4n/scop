@@ -6,7 +6,7 @@
 #    By: niduches <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/19 16:00:17 by niduches          #+#    #+#              #
-#    Updated: 2020/06/21 17:24:33 by niduches         ###   ########.fr        #
+#    Updated: 2020/06/22 00:14:50 by niduches         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,7 @@ SRC_PATH	=	main.c						\
 
 SRC			=	$(addprefix $(D_SRC),$(SRC_PATH))
 
-NAME		=	a.out
+NAME		=	scop
 
 OBJ			=	$(SRC:%.c=$(BUILD_DIR)/%.o)
 

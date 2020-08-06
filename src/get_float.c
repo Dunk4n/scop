@@ -6,24 +6,32 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/21 17:04:56 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/21 17:56:41 by niduches         ###   ########.fr       */
+/*   Updated: 2020/08/05 14:31:26 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "scop.h"
 
-static uint	get_float_exponent(char *line, float *nb)
+static uint	get_float_exponent(char *line, float *nb, int neg)
 {
 	int		tmp;
 	uint	i;
 
+	if (nb)
+		*nb *= neg;
 	if (*line != 'e' && *line != 'E')
+	{
 		return (0);
+	}
 	i = get_int(line + 1, &tmp);
 	if (i == 0)
+	{
 		return (0);
+	}
 	if (tmp == 0)
+	{
 		return (i + 1);
+	}
 	if (nb && tmp < 0)
 		*nb /= ft_pow(10, -tmp);
 	else if (nb)
@@ -64,12 +72,12 @@ uint		get_float(char *line, float *nb)
 	if (nb)
 		*nb = tmp;
 	if (!i || line[i] != '.')
-		return (i + get_float_exponent(line + i, nb));
+		return (i + get_float_exponent(line + i, nb, neg));
 	++i;
 	if (line[i] < '0' || line[i] > '9')
-		return (i + get_float_exponent(line + i, nb));
+		return (i + get_float_exponent(line + i, nb, neg));
 	j = get_uint_float(line + i, &tmp);
 	if (nb)
-		*nb = (*nb + tmp / (double)ft_pow(10, (j > 9) ? 9 : j)) * neg;
-	return (i + j + get_float_exponent(line + i + j, nb));
+		*nb = (*nb + tmp / (double)ft_pow(10, (j > 9) ? 9 : j));
+	return (i + j + get_float_exponent(line + i + j, nb, neg));
 }

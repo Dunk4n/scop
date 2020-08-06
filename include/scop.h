@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 14:41:51 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/21 18:13:15 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/21 22:36:58 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@
 
 # define TEXTURE_PATH "resources/texture"
 # define MATERIAL_PATH "resources/material"
-
-typedef unsigned int	t_uint;
 
 typedef struct			s_vec2f
 {

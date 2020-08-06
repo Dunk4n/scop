@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 14:32:39 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/21 17:58:39 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/21 22:59:20 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int			init_shader_tex_obj(t_scop *scop, int ac, char **av)
 		return (0);
 	}
 	init_value(scop);
-	if (!get_texture("gri.bmp", GL_TEXTURE_2D, &scop->mega.tex) ||
+	if (!get_texture("licorne.bmp", GL_TEXTURE_2D, &scop->mega.tex) ||
 	!init_all_obj_file(scop, ac - 1, av))
 	{
 		free(scop->mega.tex.data);

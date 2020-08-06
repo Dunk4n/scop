@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/23 23:16:38 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/21 17:44:12 by niduches         ###   ########.fr       */
+/*   Updated: 2020/06/21 22:23:44 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int			(*const g_parse_line[NB_OBJ_KEYWORD])
 	parse_obj, parse_s, parse_mtllib, parse_usemtl
 };
 
-const static char	*g_keyword[NB_OBJ_KEYWORD] =
+static const char	*g_keyword[NB_OBJ_KEYWORD] =
 {
 	"v", "vn", "vt", "f", "g", "o", "s", "mtllib", "usemtl"
 };
