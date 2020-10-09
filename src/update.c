@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/26 12:04:06 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/21 17:16:30 by niduches         ###   ########.fr       */
+/*   Updated: 2020/10/09 18:31:04 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,15 @@ void	update_rotate(t_scop *scop)
 	if (scop->win.key[KEY_M] && scop->win.key[KEY_LSHIFT])
 		rotate_mega(&scop->mega, (t_vec3f){0, -40 * scop->dt, 0});
 	if (scop->win.key[KEY_L] && scop->win.key[KEY_LSHIFT])
-		rotate_mega(&scop->mega, (t_vec3f){0, 0, 40 * scop->dt});
-	if (scop->win.key[KEY_COMMA] && scop->win.key[KEY_LSHIFT])
 		rotate_mega(&scop->mega, (t_vec3f){0, 0, -40 * scop->dt});
+	if (scop->win.key[KEY_COMMA] && scop->win.key[KEY_LSHIFT])
+		rotate_mega(&scop->mega, (t_vec3f){0, 0, 40 * scop->dt});
 	if (scop->win.key[KEY_SEMICOLON])
 		scale_mega(&scop->mega,
-		(t_vec3f){0.1 * scop->dt, 0.1 * scop->dt, 0.1 * scop->dt});
+		(t_vec3f){scop->dt, scop->dt, scop->dt});
 	if (scop->win.key[KEY_PERIOD])
 		scale_mega(&scop->mega,
-		(t_vec3f){-0.1 * scop->dt, -0.1 * scop->dt, -0.1 * scop->dt});
+		(t_vec3f){-scop->dt, -scop->dt, -scop->dt});
 }
 
 void	update(t_scop *scop, t_camera *cam)
@@ -93,8 +93,8 @@ void	update(t_scop *scop, t_camera *cam)
 	if (scop->win.key[KEY_M] && !scop->win.key[KEY_LSHIFT])
 		move_and_origine_mega(&scop->mega, (t_vec3f){0, -5 * scop->dt, 0});
 	if (scop->win.key[KEY_L] && !scop->win.key[KEY_LSHIFT])
-		move_and_origine_mega(&scop->mega, (t_vec3f){0, 0, 5 * scop->dt});
-	if (scop->win.key[KEY_COMMA] && !scop->win.key[KEY_LSHIFT])
 		move_and_origine_mega(&scop->mega, (t_vec3f){0, 0, -5 * scop->dt});
+	if (scop->win.key[KEY_COMMA] && !scop->win.key[KEY_LSHIFT])
+		move_and_origine_mega(&scop->mega, (t_vec3f){0, 0, 5 * scop->dt});
 	update_rotate(scop);
 }

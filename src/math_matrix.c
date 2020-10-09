@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/21 16:57:04 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/21 22:35:06 by niduches         ###   ########.fr       */
+/*   Updated: 2020/09/16 18:46:18 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_mat4	mult_matrix(t_mat4 mat1, t_mat4 mat2)
 			k = 0;
 			while (k < 4)
 			{
-				new.val[i][j] += mat1.val[i][k] * mat2.val[k][j];
+				new.val[i][j] += mat1.val[k][j] * mat2.val[i][k];
 				++k;
 			}
 			++j;

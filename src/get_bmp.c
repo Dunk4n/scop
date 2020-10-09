@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/26 22:09:51 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/21 23:52:37 by niduches         ###   ########.fr       */
+/*   Updated: 2020/10/09 17:18:47 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ static void	bmp_format_data(t_texture *tex)
 	{
 		j = 0;
 		while (j < tex->width)
-			swap_red_blue(((unsigned int*)(tex->data)) + (i * tex->width) + j++);
+			swap_red_blue(((unsigned int*)(tex->data)) +
+			(i * tex->width) + j++);
 	}
 }
 
