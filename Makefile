@@ -6,7 +6,7 @@
 #    By: niduches <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/19 16:00:17 by niduches          #+#    #+#              #
-#    Updated: 2020/06/22 00:14:50 by niduches         ###   ########.fr        #
+#    Updated: 2020/10/31 14:21:24 by niduches         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,7 +63,7 @@ NAME		=	scop
 
 OBJ			=	$(SRC:%.c=$(BUILD_DIR)/%.o)
 
-CFLAGS		=	-I$(D_INC) -Wall -Wextra #-Werror
+CFLAGS		=	-I$(D_INC) -Wall -Wextra -Werror
 
 LDFLAGS		=	-L./libft/ -lft -lm -lGL -lX11 -lSDL2 -lGLEW
 
