@@ -6,7 +6,7 @@
 /*   By: niduches <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/25 11:48:55 by niduches          #+#    #+#             */
-/*   Updated: 2020/06/18 18:41:16 by niduches         ###   ########.fr       */
+/*   Updated: 2020/10/31 13:21:32 by niduches         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,6 @@ void	delete_material_mega(t_mega_obj *mega)
 	free(mega->materials);
 	mega->materials = NULL;
 	mega->nb_material = 0;
-	unload_texture(&mega->tex);
-	free(mega->tex.data);
-	mega->tex.data = NULL;
 }
 
 void	delete_mega(t_mega_obj *mega)
@@ -87,4 +84,10 @@ void	delete_mega(t_mega_obj *mega)
 	mega->objs = NULL;
 	mega->nb_obj = 0;
 	delete_material_mega(mega);
+	if (mega->tex.data)
+	{
+		unload_texture(&mega->tex);
+		free(mega->tex.data);
+		mega->tex.data = NULL;
+	}
 }
