@@ -50,6 +50,7 @@ __Other__:
 * `i`: switch the position of the light from the origin to the camera
 * `y`: set or unset destruction mode
 
-![Backpack color](https://raw.githubusercontent.com/Dunk4n/scop/master/resources/img/backpack_color.png)
-![Backpack texture](https://raw.githubusercontent.com/Dunk4n/scop/master/resources/img/backpack_texture.png)
-![Teapot normal vector](https://raw.githubusercontent.com/Dunk4n/scop/master/resources/img/teapot_normal_vector.png)
+![Backpack color](https://github.com/Dunk4n/scop/blob/master/resources/img/backpack_color.png)
+![Backpack texture](https://github.com/Dunk4n/scop/blob/master/resources/img/backpack_texture.png)
+![Teapot normal vector](https://github.com/Dunk4n/scop/blob/master/resources/img/teapot_normal_vector.png)
+![Teapot mesh](https://github.com/Dunk4n/scop/blob/master/resources/img/teapot_mesh.png)
