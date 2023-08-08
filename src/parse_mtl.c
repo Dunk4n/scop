@@ -32,7 +32,10 @@ int			parse_mtllib(char *line, t_load_vertex *array, t_mega_obj *mega)
 		return (0);
 	*(pos + size) = '\0';
 	if (!get_material(pos, mega))
+	{
+		ft_printf("Material file missing or invalid\n");
 		return (0);
+	}
 	return (1);
 }
 

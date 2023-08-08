@@ -39,7 +39,7 @@ double	get_time(void)
 }
 
 char const *g_usage =
-"./scop [--color] [--position] filename.obj ...\n\nCOMMAND\n\n\
+"./scop [--color] [--position] filename.obj ...\n--color: put color to the obj when no texture\n--position: put obj in original position\n\nCOMMAND\n\n\
 Camera:\n\t'w' and 's' move the camera front or back\n\
 \t'd' and 'a' move the camera right or left\n\
 \t'e' and 'q' move the camera up or down\n\
