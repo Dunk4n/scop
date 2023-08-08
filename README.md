@@ -1,7 +1,7 @@
 # scop
 
 _The goal of the project is to display a 3D object using modern OpenGl in C_
-_The parsing of the obj file and the texture_
+_no library was used for parsing obj and mtl files_
 
 ## Installation:
 
