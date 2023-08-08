@@ -44,7 +44,7 @@ Camera:\n\t'w' and 's' move the camera front or back\n\
 \t'd' and 'a' move the camera right or left\n\
 \t'e' and 'q' move the camera up or down\n\
 \t'UP' and 'DOWN' rotate the camera up or down\n\
-\t'RIGHT' and 'LEFT' move the camera right or left\n\
+\t'RIGHT' and 'LEFT' rotate the camera right or left\n\
 \t'1', '2' and '3' switch between 3 different cameras\n\nTransformation:\n\
 \t'o' set or unset model rotation\n\t'j' and 'n' move the model on the x axis\n\
 \t'k' and 'm' move the model on the y axis\n\
@@ -71,7 +71,10 @@ int		main(int ac, char **av)
 		return (0);
 	}
 	if (!init(&scop, ac, av))
+	{
+		ft_printf(g_usage);
 		return (0);
+	}
 	clear();
 	SDL_GL_SwapWindow(scop.win.win);
 	clear();
