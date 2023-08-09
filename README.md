@@ -6,7 +6,7 @@ _No library was used for parsing obj and mtl files_
 ## Installation:
 
 ```sh
-git clone https://github.com/wwatkins42/scop.git
+git clone https://github.com/Dunk4n/scop.git
 cd ./scop
 make
 ```
